@@ -4,5 +4,5 @@ import { setupApp } from '~/logic/common-setup'
 import '../styles'
 
 const app = createApp(App)
-setupApp(app)
+setupApp(app, 'sidepanel')
 app.mount('#app')

@@ -1,7 +1,11 @@
+declare global {
+  type Context = 'popup' | 'options' | 'sidepanel' | 'content-script'
+}
+
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $app: {
-      context: string
+      context: Context
     }
   }
 }

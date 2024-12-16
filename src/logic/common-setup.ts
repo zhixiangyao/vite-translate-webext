@@ -1,9 +1,9 @@
 import type { App } from 'vue'
 
-export function setupApp(app: App) {
+export function setupApp(app: App, context: Context) {
   // Inject a globally available `$app` object in template
   app.config.globalProperties.$app = {
-    context: '',
+    context,
   }
 
   // Provide access to `app` in script setup with `const app = inject('app')`
