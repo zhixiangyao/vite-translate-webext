@@ -12,7 +12,6 @@ A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.c
 - 🌈 [UnoCSS](https://github.com/unocss/unocss) - The instant on-demand Atomic CSS engine.
 - 🦾 [TypeScript](https://www.typescriptlang.org/) - type safe
 - 📦 [Components auto importing](./src/components)
-- 🌟 [Icons](./src/components) - Access to icons from any iconset directly
 - 🖥 Content Script - Use Vue even in content script
 - 🌍 WebExtension - isomorphic extension for Chrome, Firefox, and others
 - 📃 Dynamic `manifest.json` with full type support
@@ -28,8 +27,6 @@ A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.c
 
 - [`unplugin-auto-import`](https://github.com/antfu/unplugin-auto-import) - Directly use `browser` and Vue Composition API without importing
 - [`unplugin-vue-components`](https://github.com/antfu/vite-plugin-components) - components auto import
-- [`unplugin-icons`](https://github.com/antfu/unplugin-icons) - icons as components
-  - [Iconify](https://iconify.design) - use icons from any icon sets [🔍Icônes](https://icones.netlify.app/)
 
 ### Vue Plugins
 

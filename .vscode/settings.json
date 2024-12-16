@@ -1,8 +1,7 @@
 {
   "cSpell.words": ["Vitesse"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "vite.autoStart": false,
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
