@@ -2,29 +2,28 @@
 import { useToggle } from '@vueuse/core'
 import 'uno.css'
 
+import { highlight, unhighlight } from '~/logic/hightlight'
+import { storageWordList } from '~/logic/storage'
+
 const [show, toggle] = useToggle(false)
+
+function handle() {
+  toggle()
+  const words = storageWordList.value.map(value => value.word)
+  if (show.value)
+    highlight(words, 'color: red; font-weight: bold')
+  else unhighlight()
+}
 </script>
 
 <template>
   <div class="fixed right-0 bottom-0 m-5 z-100 flex items-end font-sans select-none leading-1em">
-    <div
-      class="bg-white text-gray-800 rounded-lg shadow w-max h-min"
-      p="x-4 y-2"
-      m="y-auto r-2"
-      transition="opacity duration-300"
-      :class="show ? 'opacity-100' : 'opacity-0'"
-    >
-      <h1 class="text-lg">
-        Vitesse WebExt
-      </h1>
-      <SharedSubtitle />
-    </div>
     <button
-      class="flex w-10 h-10 rounded-full shadow cursor-pointer border-none"
-      bg="teal-600 hover:teal-700"
-      @click="toggle()"
+      class="flex w-10 h-10 rounded-full shadow cursor-pointer border-none justify-center items-center"
+      :bg="show ? 'green-600 hover:green-700' : 'gray-600 hover:gray-700'"
+      @click="handle"
     >
-      ??
+      {{ show ? 'OFF' : 'ON' }}
     </button>
   </div>
 </template>

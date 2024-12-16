@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { onMessage } from 'webext-bridge/content-script'
 import { createApp } from 'vue'
+
 import App from './views/App.vue'
 import { setupApp } from '~/logic/common-setup'
 

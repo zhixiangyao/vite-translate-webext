@@ -1,6 +1,6 @@
 {
   "name": "vite-word-book-webext",
-  "displayName": "Vite Word Book WebExt",
+  "displayName": "单词本",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@9.7.1",
@@ -41,6 +41,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@ant-design/icons-vue": "7.0.1",
     "@antfu/eslint-config": "2.27.0",
     "@ffflorian/jszip-cli": "3.7.1",
     "@playwright/test": "1.46.1",
@@ -53,6 +54,7 @@
     "@vue/compiler-sfc": "3.4.38",
     "@vue/test-utils": "2.4.6",
     "@vueuse/core": "11.0.1",
+    "ant-design-vue": "4.2.6",
     "chokidar": "3.6.0",
     "cross-env": "7.0.3",
     "crx": "5.0.1",

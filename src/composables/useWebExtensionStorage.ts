@@ -2,7 +2,6 @@ import { StorageSerializers } from '@vueuse/core'
 import { pausableWatch, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue-demi'
 import { storage } from 'webextension-polyfill'
-
 import type {
   StorageLikeAsync,
   UseStorageAsyncOptions,
