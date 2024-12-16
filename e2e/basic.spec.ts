@@ -6,7 +6,7 @@ test('example test', async ({ page }, testInfo) => {
   await page.goto('https://example.com')
 
   await page.locator(`#${name} button`).click()
-  await expect(page.locator(`#${name} h1`)).toHaveText('Vitesse WebExt')
+  await expect(page.locator(`#${name} button`)).toHaveText('OFF')
 })
 
 test('popup page', async ({ page, extensionId }) => {
@@ -16,5 +16,5 @@ test('popup page', async ({ page, extensionId }) => {
 
 test('options page', async ({ page, extensionId }) => {
   await page.goto(`chrome-extension://${extensionId}/dist/options/index.html`)
-  await expect(page.locator('img')).toHaveAttribute('alt', 'extension icon')
+  await expect(page.locator('p')).toHaveText('This is the options page')
 })
