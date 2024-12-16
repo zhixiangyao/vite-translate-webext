@@ -5,6 +5,16 @@
   "private": true,
   "packageManager": "pnpm@9.7.1",
   "description": "[description]",
+  "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
+  "homepage": "https://github.com/zhixiangyao/vite-word-book-webext",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhixiangyao/vite-word-book-webext.git"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  },
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
     "dev-firefox": "npm run clear && cross-env NODE_ENV=development EXTENSION=firefox run-p dev:*",
