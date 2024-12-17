@@ -1,16 +1,14 @@
-/* eslint-disable no-console */
 import { onMessage } from 'webext-bridge/content-script'
 import { createApp } from 'vue'
 
 import App from './views/App.vue'
-import { setupApp } from '~/logic/common-setup'
+import { setupApp } from '~/logic'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
 (() => {
-  console.info('[vitesse-webext] Hello world from content script')
-
   // communication example: send previous tab title from background page
   onMessage('tab-prev', ({ data }) => {
+    // eslint-disable-next-line no-console
     console.log(`[vitesse-webext] Navigate from page "${data.title}"`)
   })
 

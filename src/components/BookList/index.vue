@@ -4,7 +4,7 @@ import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 
 import { columns, rules } from './constant'
-import { storageWordList } from '~/logic/storage'
+import { storageWordList } from '~/logic'
 
 defineOptions({ name: 'BookList' })
 

@@ -2,8 +2,7 @@
 import { useToggle } from '@vueuse/core'
 import 'uno.css'
 
-import { highlight, unhighlight } from '~/logic/hightlight'
-import { storageWordList } from '~/logic/storage'
+import { highlight, storageWordList, unhighlight } from '~/logic'
 
 const [show, toggle] = useToggle(false)
 
