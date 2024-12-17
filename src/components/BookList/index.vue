@@ -49,7 +49,7 @@ function handleDelete(i: number) {
         <template v-if="column.key === 'word'">
           <FormItem :name="['dataSource', i, 'word']" :rules="rules['dataSource[i].word']">
             <Input
-              v-model:value="formState.dataSource![i].word"
+              v-model:value.trim="formState.dataSource![i].word"
               :maxlength="100"
               placeholder="请输入"
               show-count
