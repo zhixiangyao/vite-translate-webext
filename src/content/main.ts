@@ -2,17 +2,32 @@ import { sendMessage } from 'webext-bridge/content-script'
 
 import { highlight, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
 
-async function handleWatchSwitchChange(newActivityWebsiteMap: Record<string, boolean>) {
-  if (location.protocol.includes('http') && !!newActivityWebsiteMap[location.host]) {
-    const words = storageWordList.value.map(value => value.word)
-    highlight(words, 'color: red; font-weight: bold')
+const enable = computed(() => {
+  return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]
+})
 
-    sendMessage('event-activity', { show: true }, 'background')
+/** 更新 page 只有首次加载完毕才会执行 */
+async function updatePage() {
+  const words = storageWordList.value.map(value => value.word)
+
+  if (enable.value) {
+    highlight(words, 'color: red; font-weight: bold')
   }
   else {
-    sendMessage('event-activity', { show: false }, 'background')
     unhighlight()
   }
 }
 
-watch(() => toRaw(storageActivityWebsiteMap.value), handleWatchSwitchChange, { immediate: true, deep: true })
+/** 更新 icon 要实时 */
+async function updateIcon() {
+  if (enable.value) {
+    sendMessage('event-activity', { show: true }, 'background')
+  }
+  else {
+    sendMessage('event-activity', { show: false }, 'background')
+  }
+}
+
+watch(() => enable.value, updateIcon, { immediate: true })
+
+window.addEventListener('load', updatePage)
