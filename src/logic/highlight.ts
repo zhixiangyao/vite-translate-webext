@@ -34,7 +34,7 @@ function highlightTextNode(node: HTMLElement, regexList: RegExp[], style: string
   regexList.forEach((regex) => {
     text = text.replace(regex, (match) => {
       // 用 span 包裹每个匹配项，并应用样式
-      return `<span style="${style}">${match}</span>`
+      return `<span data-highlighted-word="true" style="${style}">${match}</span>`
     })
   })
 

@@ -1,5 +1,5 @@
 declare global {
-  type Context = 'popup' | 'options'
+  type Context = 'popup' | 'options' | 'content'
 }
 
 declare module '@vue/runtime-core' {
