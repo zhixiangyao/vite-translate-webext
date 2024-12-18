@@ -30,7 +30,7 @@ async function updatePage() {
   const words = storageWordList.value.map(value => value.word)
 
   if (enable.value) {
-    highlight(words, 'color: red; font-weight: bold')
+    highlight(words, 'color: red; font-weight: bold; cursor: pointer;')
   }
   else {
     unhighlight()

@@ -1,54 +1,71 @@
 <script setup lang="ts">
-import { useDebounce, useEventListener } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
+import Translate from './Translate.vue'
 
 defineOptions({ name: 'Tooltip' })
 
 const tooltip = useTemplateRef<HTMLDivElement>('tooltip')
-const tooltipStyle = ref({
+const state = reactive({
   top: '',
   left: '',
+  text: '',
+  open: false,
 })
-const highlightedText = ref('')
-const isVisible = ref(false)
-const debounceIsVisible = useDebounce(isVisible, 300)
 
-function showTooltip(rect: DOMRect) {
-  const { x, y, height } = rect
-  tooltipStyle.value = {
-    top: `${y + height + window.scrollY}px`,
-    left: `${x + window.scrollX}px`,
-  }
-  isVisible.value = true
+function showTooltip(rect: DOMRect, text: string) {
+  state.text = text
+  state.open = true
+  state.left = `${rect.x + window.scrollX}px`
+  state.top = `${rect.y + rect.height + window.scrollY + 8}px`
 }
 
-function handleMouseOver(event: MouseEvent) {
+function handleClickDown(event: Event) {
+  event.stopPropagation()
+  event.preventDefault()
   const target = event!.target as HTMLElement
 
+  if (target.id.includes(__NAME__))
+    return
+
+  if (window.getSelection()?.toString())
+    return
+
   if (target.tagName === 'SPAN' && target.dataset.highlightedWord && target.textContent) {
-    highlightedText.value = target.textContent
-    showTooltip(target.getBoundingClientRect())
+    const rect = target.getBoundingClientRect()
+    showTooltip(rect, target.textContent)
     return
   }
 
-  if (tooltip.value === target || tooltip.value?.contains(target)) {
-    isVisible.value = true
-    return
-  }
-
-  isVisible.value = false
+  state.open = false
 }
 
-useEventListener(document.body, 'mouseover', handleMouseOver)
-useEventListener(document.querySelector(`#${__NAME__}`)?.shadowRoot, 'mouseover', handleMouseOver)
+function handleClickUp(event: Event) {
+  event.stopPropagation()
+  event.preventDefault()
+  const target = event!.target as HTMLElement
+
+  if (target.id.includes(__NAME__))
+    return
+
+  const selection = window.getSelection()
+
+  if (selection && selection.toString().trim().length > 0) {
+    const rect = selection.getRangeAt(0).getBoundingClientRect()
+    showTooltip(rect, selection.toString())
+  }
+}
+
+useEventListener(document, 'click', handleClickDown)
+useEventListener(document, 'mouseup', handleClickUp)
 </script>
 
 <template>
   <div
-    v-show="debounceIsVisible"
+    v-show="state.open"
     ref="tooltip"
-    class="absolute z-999 w-200px bg-white color-black rounded-md p-2"
-    :style="tooltipStyle"
+    class="absolute z-999 min-w-200px max-w-500px bg-white color-black rounded-sm px-2"
+    :style="{ left: state.left, top: state.top }"
   >
-    <p>单词: {{ highlightedText }}</p>
+    <Translate :value="state.text" />
   </div>
 </template>
