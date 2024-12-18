@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
+import { Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
 
-import { columns, rules } from './constant'
 import { storageWordList } from '~/logic'
+import { columns, rules } from './constant'
 
 defineOptions({ name: 'BookList' })
 

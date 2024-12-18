@@ -1,5 +1,5 @@
-import { onMessage } from 'webext-bridge/background'
 import type { Tabs } from 'webextension-polyfill'
+import { onMessage } from 'webext-bridge/background'
 
 import('./hmr')
 

@@ -1,14 +1,14 @@
-import { StorageSerializers } from '@vueuse/core'
-import { pausableWatch, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
-import type { Ref } from 'vue'
-import { storage } from 'webextension-polyfill'
 import type {
   StorageLikeAsync,
   UseStorageAsyncOptions,
 } from '@vueuse/core'
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import type { Storage } from 'webextension-polyfill'
+import { StorageSerializers } from '@vueuse/core'
+import { pausableWatch, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue'
+import { storage } from 'webextension-polyfill'
 
 export type WebExtensionStorageOptions<T> = UseStorageAsyncOptions<T>
 

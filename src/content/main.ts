@@ -1,9 +1,9 @@
 import { sendMessage } from 'webext-bridge/content-script'
+import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
+import Tooltip from './components/Tooltip.vue'
+
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
-
-import Tooltip from './components/Tooltip.vue'
-import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
 
 const enable = computed(() => {
   return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 
-import App from './Options.vue'
 import { setupApp } from '~/logic'
+import App from './Options.vue'
 import '~/styles'
 
 const app = createApp(App)
