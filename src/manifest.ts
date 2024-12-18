@@ -30,23 +30,10 @@ export async function getManifest() {
       : {
           service_worker: './dist/background/index.mjs',
         },
-    icons: {
-      16: './assets/icons/icon-gray-16.png',
-      48: './assets/icons/icon-gray-48.png',
-      128: './assets/icons/icon-gray-128.png',
-    },
-    permissions: ['tabs', 'storage', 'activeTab', 'sidePanel'],
-    host_permissions: ['*://*/*'],
     content_scripts: [
       {
         matches: ['<all_urls>'],
-        js: ['dist/contentScripts/index.global.js'],
-      },
-    ],
-    web_accessible_resources: [
-      {
-        resources: ['dist/contentScripts/style.css'],
-        matches: ['<all_urls>'],
+        js: ['dist/contentScripts/index.mjs'],
       },
     ],
     content_security_policy: {
@@ -54,6 +41,19 @@ export async function getManifest() {
         ? `script-src \'self\' http://localhost:${port}; object-src \'self\'`
         : 'script-src \'self\'; object-src \'self\'',
     },
+    web_accessible_resources: [
+      {
+        resources: ['dist/contentScripts/style.css'],
+        matches: ['<all_urls>'],
+      },
+    ],
+    icons: {
+      16: './assets/icons/icon-gray-16.png',
+      48: './assets/icons/icon-gray-48.png',
+      128: './assets/icons/icon-gray-128.png',
+    },
+    permissions: ['tabs', 'storage', 'activeTab', 'sidePanel'],
+    host_permissions: ['*://*/*'],
   }
 
   return manifest
