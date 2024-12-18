@@ -1,4 +1,4 @@
 import '@unocss/reset/tailwind.css'
-import 'uno.css'
+import 'virtual:uno.css'
 
 import './main.css'

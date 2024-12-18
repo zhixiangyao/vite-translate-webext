@@ -3,7 +3,7 @@ import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhigh
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
-import 'uno.css'
+import 'virtual:uno.css'
 
 const enable = computed(() => {
   return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]

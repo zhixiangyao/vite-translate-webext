@@ -6,16 +6,17 @@ export function useModalTranslate() {
     left: '',
     text: '',
     open: false,
+    pin: false,
   })
 
-  function show(text: string, left: string, top: string) {
+  function handleShow(text: string, left: string, top: string) {
     state.open = true
     state.text = text
     state.left = left
     state.top = top
   }
 
-  function hidden() {
+  function handleHidden() {
     state.open = false
   }
 
@@ -32,18 +33,19 @@ export function useModalTranslate() {
 
     if (target.tagName === 'SPAN' && target.dataset.highlightedWord && target.textContent) {
       const rect = target.getBoundingClientRect()
-      show(target.textContent, `${rect.x + window.scrollX}px`, `${rect.y + rect.height + window.scrollY + 8}px`)
+      handleShow(target.textContent, `${rect.x + window.scrollX}px`, `${rect.y + rect.height + window.scrollY + 8}px`)
       return
     }
 
-    hidden()
+    !state.pin && handleHidden()
   }
 
   useEventListener(document, 'click', listener)
-  useEventListener(document, 'keydown', e => e.key === 'Escape' && hidden())
+  useEventListener(document, 'keydown', e => e.key === 'Escape' && handleHidden())
 
   return {
     state,
-    show,
+    handleShow,
+    handleHidden,
   }
 }

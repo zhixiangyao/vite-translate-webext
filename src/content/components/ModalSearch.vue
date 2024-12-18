@@ -8,9 +8,13 @@ interface Props {
   open: boolean
 }
 
+interface Emits {
+  search: []
+}
+
 defineOptions({ name: 'ModalSearch' })
 defineProps<Props>()
-defineEmits<{ search: [] }>()
+defineEmits<Emits>()
 </script>
 
 <template>
