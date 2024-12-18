@@ -1,6 +1,6 @@
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
-import Tooltip from './components/Tooltip.vue'
+import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
@@ -50,6 +50,6 @@ async function updateIcon() {
 watch(() => enable.value, updateIcon, { immediate: true })
 
 window.addEventListener('load', updatePage)
-const app = createApp(Tooltip)
+const app = createApp(App)
 setupApp(app, { context: 'content' })
 app.mount(createRoot())
