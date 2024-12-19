@@ -1,6 +1,7 @@
 declare const __DEV__: boolean
 /** Extension name, defined in packageJson.name */
 declare const __NAME__: string
+declare const __TRANSLATE_TOKEN__: string
 
 declare module '*.vue' {
   const component: any

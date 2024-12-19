@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Data } from '~/content/composables/useTranslate'
 import { CloseOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import Result from './Result.vue'
 
@@ -6,10 +7,13 @@ interface Props {
   top: string
   left: string
   open: boolean
+  result?: Data
+  loading: boolean
 }
 
 interface Emits {
   close: []
+  search: [string]
 }
 
 defineOptions({ name: 'ModalTranslate' })
@@ -18,21 +22,6 @@ defineEmits<Emits>()
 
 const text = defineModel<string>('text', { default: '' })
 const pin = defineModel<boolean>('pin', { default: false })
-const result = ref<Record<string, string> | undefined>()
-const loading = ref(false)
-
-async function handleSearch() {
-  try {
-    loading.value = true
-    await new Promise(resolve => setTimeout(resolve, 300))
-    result.value = {
-      a: '123',
-    }
-  }
-  finally {
-    loading.value = false
-  }
-}
 </script>
 
 <template>
@@ -44,7 +33,12 @@ async function handleSearch() {
     </header>
 
     <main class="px-2">
-      <WInput v-model:value="text" placeholder="Please Input" @search="handleSearch" />
+      <WInput
+        v-model:value="text"
+        placeholder="请输入要翻译的内容"
+        :disabled="!text"
+        @search="$emit('search', text)"
+      />
 
       <div class="py-2">
         <Result :result="result" :loading="loading" />

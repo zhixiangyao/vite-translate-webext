@@ -4,6 +4,7 @@ import { CloseOutlined, SearchOutlined } from '@ant-design/icons-vue'
 interface Props {
   placeholder?: string
   autocomplete?: string
+  disabled?: boolean
 }
 
 interface Emits {
@@ -11,13 +12,19 @@ interface Emits {
 }
 
 defineOptions({ name: 'WInput' })
-defineProps<Props>()
-defineEmits<Emits>()
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const inputValue = defineModel<string>('value', { default: '' })
 
 function clear() {
   inputValue.value = ''
+}
+
+function search() {
+  if (props.disabled)
+    return
+  emit('search')
 }
 </script>
 
@@ -30,6 +37,7 @@ function clear() {
       :placeholder="placeholder"
       type="text"
       :autocomplete="autocomplete"
+      @keydown="e => e.key === 'Enter' && search()"
     >
 
     <div class="w-4 h-4 flex items-center justify-center">
@@ -37,7 +45,7 @@ function clear() {
     </div>
 
     <div class="w-4 h-4 flex items-center justify-center">
-      <SearchOutlined @click="$emit('search')" />
+      <SearchOutlined :class="disabled && '!cursor-not-allowed'" @click="search" />
     </div>
   </div>
 </template>

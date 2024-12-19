@@ -17,6 +17,9 @@ const modalSearch = useModalSearch()
     :open="modalTranslate.state.open"
     :left="modalTranslate.state.left"
     :top="modalTranslate.state.top"
+    :result="modalTranslate.state.result"
+    :loading="modalTranslate.state.loading"
+    @search="modalTranslate.handleSearch"
     @close="modalTranslate.handleHidden"
   />
   <ModalSearch

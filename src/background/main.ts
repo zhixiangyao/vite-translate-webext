@@ -1,5 +1,5 @@
 import type { Tabs } from 'webextension-polyfill'
-import { onMessage } from 'webext-bridge/background'
+import { onMessage, sendMessage } from 'webext-bridge/background'
 
 import('./hmr')
 
@@ -50,5 +50,24 @@ onMessage('event-activity', async ({ data }) => {
         128: browser.runtime.getURL(`assets/icons/icon-gray-128.png`),
       },
     })
+  }
+})
+
+onMessage('event-fetch-send', async ({ data }) => {
+  const tabId = currentTabId.value!
+
+  try {
+    const response = await fetch(data.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...data.headers },
+      body: JSON.stringify(data.params),
+    })
+
+    const json = await response.json()
+
+    sendMessage('event-fetch-on', { json }, { tabId, context: 'content-script' })
+  }
+  catch {
+    sendMessage('event-fetch-on', {}, { tabId, context: 'content-script' })
   }
 })

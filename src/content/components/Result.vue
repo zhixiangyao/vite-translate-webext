@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Data } from '~/content/composables/useTranslate'
+
 interface Props {
-  result?: Record<string, string>
+  result?: Data
   loading: boolean
 }
 
@@ -10,10 +12,16 @@ defineProps<Props>()
 
 <template>
   <template v-if="loading">
-    loading...
+    <span>loading...</span>
   </template>
   <template v-else>
-    <span v-if="result">{{ JSON.stringify(result, null, 2) }}</span>
-    <span v-else>没有找到结果</span>
+    <div v-if="result">
+      <p v-for="(alternative, i) of result.alternatives" :key="i">
+        {{ alternative }}
+      </p>
+    </div>
+    <div v-else>
+      <span>没有找到结果</span>
+    </div>
   </template>
 </template>

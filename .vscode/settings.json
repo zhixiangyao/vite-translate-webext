@@ -1,5 +1,10 @@
 {
-  "cSpell.words": ["Vitesse"],
+  "cSpell.words": [
+    "deeplx",
+    "esno",
+    "kolorist",
+    "Vitesse"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {

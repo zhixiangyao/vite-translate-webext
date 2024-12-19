@@ -1,7 +1,14 @@
 import { useEventListener, useMouse } from '@vueuse/core'
 
+interface State {
+  top: string
+  left: string
+  text: string
+  open: boolean
+}
+
 export function useModalSearch() {
-  const state = reactive({
+  const state = reactive<State>({
     top: '',
     left: '',
     text: '',
