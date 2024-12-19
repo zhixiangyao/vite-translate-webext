@@ -36,19 +36,15 @@ async function handleSearch() {
 </script>
 
 <template>
-  <div
-    v-show="open"
-    class="absolute z-999 min-w-200px max-w-500px bg-white color-black rounded-sm overflow-hidden"
-    :style="{ left, top }"
-  >
-    <header class="flex justify-between items-center p-2 gap-1 bg-gray-4">
+  <div v-show="open" class="modal-translate" :style="{ left, top }">
+    <header class="header">
       <PushpinFilled v-if="pin" class="cursor-pointer" @click="pin = false" />
       <PushpinOutlined v-else class="cursor-pointer" @click="pin = true" />
       <CloseOutlined class="cursor-pointer" @click="$emit('close')" />
     </header>
 
     <main class="px-2">
-      <SearchInput v-model:value="text" placeholder="Please Input" @search="handleSearch" />
+      <WInput v-model:value="text" placeholder="Please Input" @search="handleSearch" />
 
       <div class="py-2">
         <Result :result="result" :loading="loading" />
@@ -56,3 +52,17 @@ async function handleSearch() {
     </main>
   </div>
 </template>
+
+<style scoped>
+.modal-translate {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-left-width: 0px;
+  box-shadow: rgba(0, 0, 0, 0.4) 5px 5px;
+
+  @apply absolute z-999 min-w-200px max-w-500px bg-white color-black overflow-hidden;
+
+  .header {
+    @apply flex justify-between items-center p-2 gap-1 bg-gray-4;
+  }
+}
+</style>

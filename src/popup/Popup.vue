@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Switch } from 'ant-design-vue'
+import { Switch } from 'ant-design-vue'
 
 import { storageActivityWebsiteMap } from '~/logic'
 
@@ -27,14 +27,10 @@ onMounted(updateKey)
 
 <template>
   <main class="w-[160px] p-2 text-gray-700">
-    <div v-if="key">
-      <Switch v-model:checked="storageActivityWebsiteMap[key]" />
-    </div>
+    <WButton class="mb-2 w-full" @click="openOptionsPage">
+      Open Options
+    </WButton>
 
-    <div>
-      <Button type="primary" class="mt-2 w-full" @click="openOptionsPage">
-        Open Options
-      </Button>
-    </div>
+    <Switch v-if="key" v-model:checked="storageActivityWebsiteMap[key]" />
   </main>
 </template>

@@ -10,7 +10,7 @@ interface Emits {
   search: []
 }
 
-defineOptions({ name: 'SearchInput' })
+defineOptions({ name: 'WInput' })
 defineProps<Props>()
 defineEmits<Emits>()
 
