@@ -63,6 +63,9 @@ onMessage('event-fetch-send', async ({ data }) => {
       body: JSON.stringify(data.params),
     })
 
+    if (response.status !== 200)
+      throw new Error(response.status.toString())
+
     const json = await response.json()
 
     sendMessage('event-fetch-on', { json }, { tabId, context: 'content-script' })

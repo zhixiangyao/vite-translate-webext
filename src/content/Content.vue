@@ -7,7 +7,8 @@ import { useModalTranslate } from './composables/useModalTranslate'
 defineOptions({ name: 'App' })
 
 const modalTranslate = useModalTranslate()
-const modalSearch = useModalSearch()
+const disabledSearch = computed(() => modalTranslate.state.open)
+const modalSearch = useModalSearch(disabledSearch)
 </script>
 
 <template>

@@ -15,7 +15,7 @@ defineProps<Props>()
     <span>loading...</span>
   </template>
   <template v-else>
-    <div v-if="result">
+    <div v-if="result?.alternatives.length">
       <p v-for="(alternative, i) of result.alternatives" :key="i">
         {{ alternative }}
       </p>

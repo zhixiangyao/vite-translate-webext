@@ -27,7 +27,7 @@ const text = defineModel<string>('text', { default: '' })
 const pin = defineModel<boolean>('pin', { default: false })
 
 const isWord = computed(() => {
-  const regex = /^\w+$/
+  const regex = /^[a-z]+$/i
 
   return regex.test(text.value)
 })

@@ -7,7 +7,7 @@ interface State {
   open: boolean
 }
 
-export function useModalSearch() {
+export function useModalSearch(disabled: ComputedRef<boolean>) {
   const state = reactive<State>({
     top: '',
     left: '',
@@ -33,6 +33,9 @@ export function useModalSearch() {
     const target = event!.target as HTMLElement
 
     if (target.id.includes(__NAME__))
+      return
+
+    if (disabled.value)
       return
 
     const selection = window.getSelection()
