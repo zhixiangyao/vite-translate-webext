@@ -37,20 +37,20 @@ const isWord = computed(() => {
   <div v-show="open" class="modal-translate" :style="{ left, top }">
     <header class="header">
       <div class="inline-flex gap-1">
-        <PushpinFilled v-if="pin" class="cursor-pointer" @click="pin = false" />
-        <PushpinOutlined v-else class="cursor-pointer" @click="pin = true" />
+        <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
+        <PushpinOutlined v-else class="cursor-pointer" title="点击固定" @click="pin = true" />
 
         <template v-if="isWord">
-          <HeartFilled v-if="favorite" class="cursor-pointer" @click="$emit('remove', text)" />
-          <HeartOutlined v-else class="cursor-pointer" @click="$emit('add', text)" />
+          <HeartFilled v-if="favorite" class="cursor-pointer" title="点击取消收藏" @click="$emit('remove', text)" />
+          <HeartOutlined v-else class="cursor-pointer" title="点击收藏" @click="$emit('add', text)" />
         </template>
       </div>
 
-      <CloseOutlined class="cursor-pointer" @click="$emit('close')" />
+      <CloseOutlined class="cursor-pointer" title="关闭" @click="$emit('close')" />
     </header>
 
     <main class="px-2">
-      <WInput v-model:value="text" placeholder="请输入要翻译的内容" :disabled="!text" @search="$emit('search', text)" />
+      <WSearchInput v-model:value="text" placeholder="请输入要翻译的内容" :disabled="!text" @search="$emit('search', text)" />
 
       <div class="py-2">
         <Result :result="result" :loading="loading" />

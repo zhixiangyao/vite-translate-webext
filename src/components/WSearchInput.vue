@@ -11,7 +11,7 @@ interface Emits {
   search: []
 }
 
-defineOptions({ name: 'WInput' })
+defineOptions({ name: 'WSearchInput' })
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
@@ -41,11 +41,11 @@ function search() {
     >
 
     <div class="w-4 h-4 flex items-center justify-center">
-      <CloseOutlined v-show="!!inputValue" @click="clear" />
+      <CloseOutlined v-show="!!inputValue" title="点击清除" @click="clear" />
     </div>
 
     <div class="w-4 h-4 flex items-center justify-center">
-      <SearchOutlined :class="disabled && '!cursor-not-allowed'" @click="search" />
+      <SearchOutlined :class="disabled && '!cursor-not-allowed'" title="点击搜索" @click="search" />
     </div>
   </div>
 </template>
