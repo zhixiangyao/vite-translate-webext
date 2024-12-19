@@ -38,7 +38,7 @@ export function useModalSearch() {
     const selection = window.getSelection()
 
     if (selection && selection.toString().trim().length > 0) {
-      handleShow(selection.toString(), `${mouse.x.value + 16}px`, `${mouse.y.value + 8}px`)
+      handleShow(selection.toString().trim(), `${mouse.x.value + 16}px`, `${mouse.y.value + 8}px`)
       return
     }
 

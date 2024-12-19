@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Data } from '~/content/composables/useTranslate'
-import { CloseOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
+import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import Result from './Result.vue'
 
 interface Props {
@@ -9,11 +9,14 @@ interface Props {
   open: boolean
   result?: Data
   loading: boolean
+  favorite: boolean
 }
 
 interface Emits {
   close: []
   search: [string]
+  add: [string]
+  remove: [string]
 }
 
 defineOptions({ name: 'ModalTranslate' })
@@ -22,23 +25,32 @@ defineEmits<Emits>()
 
 const text = defineModel<string>('text', { default: '' })
 const pin = defineModel<boolean>('pin', { default: false })
+
+const isWord = computed(() => {
+  const regex = /^\w+$/
+
+  return regex.test(text.value)
+})
 </script>
 
 <template>
   <div v-show="open" class="modal-translate" :style="{ left, top }">
     <header class="header">
-      <PushpinFilled v-if="pin" class="cursor-pointer" @click="pin = false" />
-      <PushpinOutlined v-else class="cursor-pointer" @click="pin = true" />
+      <div class="inline-flex gap-1">
+        <PushpinFilled v-if="pin" class="cursor-pointer" @click="pin = false" />
+        <PushpinOutlined v-else class="cursor-pointer" @click="pin = true" />
+
+        <template v-if="isWord">
+          <HeartFilled v-if="favorite" class="cursor-pointer" @click="$emit('remove', text)" />
+          <HeartOutlined v-else class="cursor-pointer" @click="$emit('add', text)" />
+        </template>
+      </div>
+
       <CloseOutlined class="cursor-pointer" @click="$emit('close')" />
     </header>
 
     <main class="px-2">
-      <WInput
-        v-model:value="text"
-        placeholder="请输入要翻译的内容"
-        :disabled="!text"
-        @search="$emit('search', text)"
-      />
+      <WInput v-model:value="text" placeholder="请输入要翻译的内容" :disabled="!text" @search="$emit('search', text)" />
 
       <div class="py-2">
         <Result :result="result" :loading="loading" />

@@ -1,4 +1,5 @@
 import { useEventListener } from '@vueuse/core'
+import { storageWordList } from '~/logic'
 import { type Data, useTranslate } from './useTranslate'
 
 interface State {
@@ -22,6 +23,12 @@ export function useModalTranslate() {
     pin: false,
     loading: false,
     result: void 0,
+  })
+  const wordList = computed(() => {
+    return storageWordList.value.map(value => value.word.toLowerCase())
+  })
+  const favorite = computed(() => {
+    return wordList.value.includes(state.text.toLowerCase())
   })
 
   function handleReset() {
@@ -57,6 +64,19 @@ export function useModalTranslate() {
     }
   }
 
+  function handleAdd(text: string) {
+    storageWordList.value?.splice(storageWordList.value.length, 0, {
+      word: text.toLowerCase(),
+    })
+  }
+
+  function handleRemove(text: string) {
+    const i = storageWordList.value
+      .map(value => value.word.toLowerCase())
+      .findIndex(word => word === text.toLowerCase())
+    storageWordList.value?.splice(i, 1)
+  }
+
   function listener(event: Event) {
     event.stopPropagation()
     event.preventDefault()
@@ -82,8 +102,11 @@ export function useModalTranslate() {
 
   return {
     state,
+    favorite,
     handleShow,
     handleHidden,
     handleSearch,
+    handleAdd,
+    handleRemove,
   }
 }
