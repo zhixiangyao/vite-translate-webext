@@ -49,9 +49,7 @@ const pin = defineModel<boolean>('pin', { default: false })
 
 <style scoped>
 .modal-translate {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-left-width: 0px;
-  box-shadow: rgba(0, 0, 0, 0.4) 5px 5px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
   @apply absolute z-999 min-w-200px max-w-500px bg-white color-black overflow-hidden;
 
