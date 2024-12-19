@@ -1,6 +1,8 @@
 <script setup lang="ts">
 interface Props {
   disabled?: boolean
+  dark?: boolean
+  align?: 'left' | 'right'
 }
 
 interface Emits {
@@ -13,7 +15,12 @@ defineEmits<Emits>()
 </script>
 
 <template>
-  <button class="w-button" :class="{ disabled }" :disabled="disabled" @click="$emit('click', $event)">
+  <button
+    class="w-button"
+    :class="{ disabled, dark, left: align === 'left', right: align === 'right' }"
+    :disabled="disabled"
+    @click="$emit('click', $event)"
+  >
     <slot name="default" />
   </button>
 </template>
@@ -24,6 +31,18 @@ defineEmits<Emits>()
 
   &.disabled {
     @apply cursor-not-allowed bg-gray-2;
+  }
+
+  &.dark {
+    @apply text-white bg-gray-700;
+  }
+
+  &.left {
+    @apply justify-start;
+  }
+
+  &.right {
+    @apply justify-end;
   }
 }
 </style>

@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { Switch } from 'ant-design-vue'
-
 import { storageActivityWebsiteMap } from '~/logic'
 
 const key = ref('')
 
-function openOptionsPage() {
+function handleOpenOptionsPage() {
   browser.runtime.openOptionsPage()
+}
+
+function handleEnable() {
+  if (!key.value || !storageActivityWebsiteMap.value)
+    return
+
+  storageActivityWebsiteMap.value[key.value] = !storageActivityWebsiteMap.value[key.value]
 }
 
 async function updateKey() {
@@ -26,11 +31,41 @@ onMounted(updateKey)
 </script>
 
 <template>
-  <main class="w-[160px] p-2 text-gray-700">
-    <WButton class="mb-2 w-full" @click="openOptionsPage">
+  <main class="popup">
+    <WButton dark align="left" class="w-full" @click="handleOpenOptionsPage">
       Open Options
     </WButton>
 
-    <Switch v-if="key" v-model:checked="storageActivityWebsiteMap[key]" />
+    <WButton
+      v-if="key"
+      dark
+      align="left"
+      class="w-full relative"
+      :class="{ activity: storageActivityWebsiteMap[key] }"
+      @click="handleEnable"
+    >
+      Enable
+    </WButton>
   </main>
 </template>
+
+<style scoped>
+main.popup {
+  @apply w-[160px] p-1 bg-black flex flex-col gap-1;
+
+  > button:nth-of-type(2) {
+    &::after {
+      content: '';
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+
+      @apply absolute w-2 h-2 bg-gray rounded-full;
+    }
+
+    &.activity::after {
+      @apply bg-green;
+    }
+  }
+}
+</style>
