@@ -32,7 +32,7 @@ function createRoot() {
 async function updatePage() {
   if (enable.value) {
     const words = storageWordList.value.map(value => value.word).filter(word => !!word)
-    debounceHighlight(words, 'color: red; font-weight: bold; cursor: pointer;')
+    debounceHighlight(words, 'color: red; cursor: pointer;')
   }
   else {
     unhighlight()

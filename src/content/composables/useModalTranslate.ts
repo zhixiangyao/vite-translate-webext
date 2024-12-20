@@ -78,8 +78,6 @@ export function useModalTranslate() {
   }
 
   function listener(event: Event) {
-    event.stopPropagation()
-    event.preventDefault()
     const target = event!.target as HTMLElement
 
     if (target.id.includes(__NAME__))
@@ -89,6 +87,9 @@ export function useModalTranslate() {
       return
 
     if (target.tagName === 'SPAN' && target.dataset.highlightedWord && target.textContent) {
+      event.stopPropagation()
+      event.preventDefault()
+
       const rect = target.getBoundingClientRect()
       handleShow(target.textContent, `${rect.x + window.scrollX}px`, `${rect.y + rect.height + window.scrollY + 8}px`)
       return

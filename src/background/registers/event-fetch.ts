@@ -1,8 +1,8 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
-import { storageCurrentTabId } from '~/logic'
+import { storageCurrentTab } from '~/logic'
 
 onMessage('event-fetch-send', async ({ data }) => {
-  const tabId = storageCurrentTabId.value!
+  const tabId = storageCurrentTab.value.id!
 
   try {
     const response = await fetch(data.url, {
