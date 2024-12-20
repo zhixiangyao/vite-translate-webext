@@ -66,7 +66,7 @@ pnpm i
 ### Folders
 
 - `src` - main source.
-  - `contentScript` - scripts and components to be injected as `content_script`
+  - `content` - scripts and components to be injected as `content_script`
   - `background` - scripts for background.
   - `components` - auto-imported Vue components that are shared in popup and options page.
   - `styles` - styles shared in popup and options page
