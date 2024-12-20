@@ -1,4 +1,4 @@
-import { useDebounceFn, useStyleTag } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
 
@@ -13,7 +13,7 @@ const enable = computed(() => {
 })
 
 /** 创建 root 节点 */
-function createRoot() {
+function createRoot(target: HTMLElement) {
   const container = document.createElement('div')
   container.id = __NAME__
   const root = document.createElement('div')
@@ -23,7 +23,7 @@ function createRoot() {
   styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
   shadowDOM.appendChild(styleEl)
   shadowDOM.appendChild(root)
-  document.body.appendChild(container)
+  target.appendChild(container)
 
   return root
 }
@@ -45,11 +45,12 @@ async function updateIcon(show: boolean) {
 }
 
 watch(() => enable.value, updateIcon, { immediate: true })
-watch(() => storageWordList.value, updatePage, { immediate: true })
+watch(() => storageWordList.value, updatePage, { deep: true })
 window.addEventListener('load', updatePage)
 
-useStyleTag(`span[data-highlighted-word] { color: #e61a1a !important; cursor: pointer; background-color: #e6e683 !important; }`)
-
+const style = document.createElement('style')
+style.innerHTML = 'span[data-highlighted-word] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }'
+document.head.appendChild(style)
 const app = createApp(App)
 setupApp(app, { context: 'content' })
-app.mount(createRoot())
+app.mount(createRoot(document.querySelector('html')!))

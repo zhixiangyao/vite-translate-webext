@@ -1,22 +1,22 @@
 import { useEventListener, useMouse } from '@vueuse/core'
 
 interface State {
-  top: string
-  left: string
+  top: number
+  left: number
   text: string
   open: boolean
 }
 
 export function useModalSearch(disabled: ComputedRef<boolean>) {
   const state = reactive<State>({
-    top: '',
-    left: '',
+    top: 0,
+    left: 0,
     text: '',
     open: false,
   })
   const mouse = useMouse()
 
-  function handleShow(text: string, left: string, top: string) {
+  function handleShow(text: string, left: number, top: number) {
     state.open = true
     state.text = text
     state.left = left
@@ -41,7 +41,7 @@ export function useModalSearch(disabled: ComputedRef<boolean>) {
     const selection = window.getSelection()
 
     if (selection && selection.toString().trim().length > 0) {
-      handleShow(selection.toString().trim(), `${mouse.x.value + 16}px`, `${mouse.y.value + 8}px`)
+      handleShow(selection.toString().trim(), mouse.x.value - window.scrollX + 16, mouse.y.value - window.scrollY + 8)
       return
     }
 

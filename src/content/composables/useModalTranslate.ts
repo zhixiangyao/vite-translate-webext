@@ -1,10 +1,11 @@
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useMouse } from '@vueuse/core'
+
 import { storageTranslateCacheMap, storageWordList } from '~/logic'
 import { type Data, useTranslate } from './useTranslate'
 
 interface State {
-  top: string
-  left: string
+  top: number
+  left: number
   text: string
   open: boolean
   pin: boolean
@@ -16,14 +17,15 @@ export function useModalTranslate() {
   const translate = useTranslate()
 
   const state = reactive<State>({
-    top: '',
-    left: '',
+    top: 0,
+    left: 0,
     text: '',
     open: false,
     pin: false,
     loading: false,
     result: void 0,
   })
+  const mouse = useMouse()
   const wordList = computed(() => {
     return storageWordList.value.map(value => value.word.toLowerCase())
   })
@@ -32,14 +34,14 @@ export function useModalTranslate() {
   })
 
   function handleReset() {
-    state.top = ''
-    state.left = ''
+    state.top = 0
+    state.left = 0
     state.text = ''
     state.loading = false
     state.result = void 0
   }
 
-  function handleShow(text: string, left: string, top: string) {
+  function handleShow(text: string, left: number, top: number) {
     state.open = true
     state.text = text
     state.left = left
@@ -96,8 +98,7 @@ export function useModalTranslate() {
       event.stopPropagation()
       event.preventDefault()
 
-      const rect = target.getBoundingClientRect()
-      handleShow(target.textContent, `${rect.x + window.scrollX}px`, `${rect.y + rect.height + window.scrollY + 8}px`)
+      handleShow(target.textContent, mouse.x.value - window.scrollX + 16, mouse.y.value - window.scrollY + 8)
       return
     }
 

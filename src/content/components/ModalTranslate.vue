@@ -6,8 +6,8 @@ import Loading from './Loading.vue'
 import Result from './Result.vue'
 
 interface Props {
-  top: string
-  left: string
+  top: number
+  left: number
   open: boolean
   result?: Data
   loading: boolean
@@ -28,6 +28,7 @@ defineEmits<Emits>()
 const text = defineModel<string>('text', { default: '' })
 const pin = defineModel<boolean>('pin', { default: false })
 
+const el = ref<HTMLElement | null>(null)
 const isWord = computed(() => {
   const regex = /^[a-z]+$/i
 
@@ -36,8 +37,8 @@ const isWord = computed(() => {
 </script>
 
 <template>
-  <div v-show="open" class="modal-translate" :style="{ left, top }">
-    <header class="header">
+  <div v-show="open" class="modal-translate" :style="`top:${top}px;left:${left}px`">
+    <header ref="el" class="header">
       <div class="inline-flex gap-1">
         <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
         <PushpinOutlined v-else class="cursor-pointer" title="点击固定" @click="pin = true" />
@@ -52,7 +53,12 @@ const isWord = computed(() => {
     </header>
 
     <main class="px-2">
-      <WSearchInput v-model:value="text" placeholder="请输入要翻译的内容" :disabled="!text" @search="$emit('search', text)" />
+      <WSearchInput
+        v-model:value="text"
+        placeholder="请输入要翻译的内容"
+        :disabled="!text"
+        @search="$emit('search', text)"
+      />
 
       <div class="py-2">
         <template v-if="loading">
@@ -73,10 +79,10 @@ const isWord = computed(() => {
 .modal-translate {
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
-  @apply absolute z-999 min-w-200px max-w-500px bg-white color-black overflow-hidden;
+  @apply fixed z-999 min-w-200px max-w-500px bg-white color-black overflow-hidden;
 
   .header {
-    @apply flex justify-between items-center p-2 gap-1 bg-gray-4;
+    @apply flex justify-between items-center p-2 gap-1 bg-gray-4 cursor-grab;
   }
 }
 </style>
