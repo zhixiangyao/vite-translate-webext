@@ -79,7 +79,7 @@ const isWord = computed(() => {
 .modal-translate {
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
-  @apply fixed z-999 min-w-200px max-w-500px bg-white color-black overflow-hidden;
+  @apply fixed z-999 w-250px bg-white color-black overflow-hidden;
 
   .header {
     @apply flex justify-between items-center p-2 gap-1 bg-gray-4 cursor-grab;

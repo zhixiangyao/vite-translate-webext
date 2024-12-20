@@ -13,5 +13,5 @@ export const storageActivityWebsiteMap = useWebExtensionStorage<Record<string, b
 export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, any>>(
   'webext-cache-map',
   {},
-  { shallow: true, deep: false, listenToStorageChanges: false },
+  { listenToStorageChanges: false },
 )
