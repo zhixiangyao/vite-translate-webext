@@ -29,7 +29,7 @@ function search() {
 </script>
 
 <template>
-  <div class="relative flex items-center gap-1 py-1">
+  <div class="v-search-input">
     <div class="absolute w-full h-1px bg-gray-4 left-0 bottom-0" />
     <input
       v-model="inputValue"
@@ -40,12 +40,26 @@ function search() {
       @keydown="e => e.key === 'Enter' && search()"
     >
 
-    <div class="w-4 h-4 flex items-center justify-center">
-      <CloseOutlined v-show="!!inputValue" title="点击清除" @click="clear" />
+    <div class="icon clear">
+      <CloseOutlined v-show="!!inputValue" class="hidden" title="点击清除" @click="clear" />
     </div>
 
-    <div class="w-4 h-4 flex items-center justify-center">
+    <div class="icon">
       <SearchOutlined :class="disabled && '!cursor-not-allowed'" title="点击搜索" @click="search" />
     </div>
   </div>
 </template>
+
+<style scoped>
+.v-search-input {
+  @apply relative flex items-center gap-1 py-1;
+
+  &:hover .clear > span {
+    display: inline;
+  }
+
+  .icon {
+    @apply w-4 h-4 flex items-center justify-center;
+  }
+}
+</style>

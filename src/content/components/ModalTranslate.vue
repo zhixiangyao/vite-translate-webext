@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Data } from '~/content/composables/useTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
+import Empty from './Empty.vue'
+import Loading from './Loading.vue'
 import Result from './Result.vue'
 
 interface Props {
@@ -53,7 +55,15 @@ const isWord = computed(() => {
       <WSearchInput v-model:value="text" placeholder="请输入要翻译的内容" :disabled="!text" @search="$emit('search', text)" />
 
       <div class="py-2">
-        <Result :result="result" :loading="loading" />
+        <template v-if="loading">
+          <Loading />
+        </template>
+        <template v-else-if="result">
+          <Result :result="result" />
+        </template>
+        <template v-else>
+          <Empty />
+        </template>
       </div>
     </main>
   </div>

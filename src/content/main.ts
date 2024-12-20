@@ -1,4 +1,4 @@
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useStyleTag } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
 
@@ -32,7 +32,7 @@ function createRoot() {
 async function updatePage() {
   if (enable.value) {
     const words = storageWordList.value.map(value => value.word).filter(word => !!word)
-    debounceHighlight(words, 'color: red; cursor: pointer;')
+    debounceHighlight(words)
   }
   else {
     unhighlight()
@@ -47,6 +47,8 @@ async function updateIcon(show: boolean) {
 watch(() => enable.value, updateIcon, { immediate: true })
 watch(() => storageWordList.value, updatePage, { immediate: true })
 window.addEventListener('load', updatePage)
+
+useStyleTag(`span[data-highlighted-word] { color: #e61a1a !important; cursor: pointer; background-color: #e6e683 !important; }`)
 
 const app = createApp(App)
 setupApp(app, { context: 'content' })

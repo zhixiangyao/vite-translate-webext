@@ -27,14 +27,14 @@ function traverseAndRestore(node: HTMLElement) {
   }
 }
 
-function highlightTextNode(node: HTMLElement, regexList: RegExp[], style: string) {
+function highlightTextNode(node: HTMLElement, regexList: RegExp[]) {
   let text = node.nodeValue!
 
   // 遍历所有的正则表达式，处理每个正则匹配的文本
   regexList.forEach((regex) => {
     text = text.replace(regex, (match) => {
       // 用 span 包裹每个匹配项，并应用样式
-      return `<span data-highlighted-word="true" style="${style}">${match}</span>`
+      return `<span data-highlighted-word="true">${match}</span>`
     })
   })
 
@@ -46,27 +46,27 @@ function highlightTextNode(node: HTMLElement, regexList: RegExp[], style: string
   }
 }
 
-function traverseAndHighlight(node: HTMLElement, regexList: RegExp[], style: string) {
+function traverseAndHighlight(node: HTMLElement, regexList: RegExp[]) {
   if (node.nodeType === 3 && node.nodeValue!.trim()) {
-    highlightTextNode(node, regexList, style)
+    highlightTextNode(node, regexList)
   }
   else if (
     node.nodeType === 1
     && node.childNodes
     && !/^(?:script|style|iframe|noscript|textarea)$/i.test(node.tagName)
   ) {
-    node.childNodes.forEach(child => traverseAndHighlight(child as HTMLElement, regexList, style))
+    node.childNodes.forEach(child => traverseAndHighlight(child as HTMLElement, regexList))
   }
 }
 
-export async function highlight(words: string[], style: string) {
+export async function highlight(words: string[]) {
   try {
     const groupRegexes = words.map(buildRegex)
 
     traverseAndRestore(document.body)
 
     requestIdleCallback(() => {
-      traverseAndHighlight(document.body, groupRegexes, style)
+      traverseAndHighlight(document.body, groupRegexes)
     })
   }
   catch (err) {

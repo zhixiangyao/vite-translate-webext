@@ -1,5 +1,5 @@
 import { useEventListener } from '@vueuse/core'
-import { storageWordList } from '~/logic'
+import { storageTranslateCacheMap, storageWordList } from '~/logic'
 import { type Data, useTranslate } from './useTranslate'
 
 interface State {
@@ -54,10 +54,16 @@ export function useModalTranslate() {
   }
 
   async function handleSearch(text: string) {
+    if (storageTranslateCacheMap.value[text]) {
+      state.result = storageTranslateCacheMap.value[text]
+      return
+    }
+
     try {
       state.loading = true
       const data = await translate.run(text, 'EN', 'ZH')
       state.result = data
+      data && (storageTranslateCacheMap.value[text] = data)
     }
     finally {
       state.loading = false
