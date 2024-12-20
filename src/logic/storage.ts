@@ -1,7 +1,7 @@
 import type { RecordType } from '~/components/BookList/type'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
 
-export const storageDemo = useWebExtensionStorage('webext-demo', 'Storage Demo')
+export const storageCurrentTabId = useWebExtensionStorage<number | undefined>('webext-current-tab-id', void 0)
 
 export const storageWordList = useWebExtensionStorage<RecordType[]>('webext-word-list', [{ word: '' }])
 

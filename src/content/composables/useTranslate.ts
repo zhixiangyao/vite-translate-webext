@@ -1,4 +1,4 @@
-import { onMessage, sendMessage } from 'webext-bridge/content-script'
+import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
 
 const url = `http://home.yaozhixiang.top:1188/translate`
 
@@ -15,22 +15,25 @@ export interface Data {
 }
 
 export function useTranslate() {
+  const fetch = useBackgroundFetch()
+
   async function run(text: string, source_lang: Lang, target_lang: Lang) {
-    const { promise, resolve } = Promise.withResolvers<object | undefined>()
+    const params = {
+      text,
+      source_lang,
+      target_lang,
+    }
 
-    sendMessage(
-      'event-fetch-send',
-      {
-        url,
-        headers: { Authorization: `Bearer ${__TRANSLATE_TOKEN__}` },
-        params: { text, source_lang, target_lang },
-      },
-      'background',
-    )
+    const headers = {
+      Authorization: `Bearer ${__TRANSLATE_TOKEN__}`,
+    }
 
-    onMessage('event-fetch-on', async ({ data }) => resolve(data.json))
+    const data = await fetch.post(url, {
+      params,
+      headers,
+    })
 
-    return promise as Promise<Data | undefined>
+    return data as Data | undefined
   }
 
   return { run }
