@@ -9,7 +9,7 @@ interface Props {
 defineOptions({ name: 'Result' })
 defineProps<Props>()
 
-const expendMap = ref<Record<number, boolean | undefined>>({})
+const expendMap = ref<Record<number, boolean | undefined>>({ 0: true })
 </script>
 
 <template>
