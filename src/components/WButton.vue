@@ -27,14 +27,14 @@ defineEmits<Emits>()
 
 <style scoped>
 .w-button {
-  @apply inline-flex items-center justify-center shadow h-6 px-2 py-1 hover:bg-gray-1;
+  @apply inline-flex items-center justify-center shadow h-6 px-2 py-1 hover:bg-gray-2;
 
   &.disabled {
     @apply cursor-not-allowed bg-gray-2;
   }
 
   &.dark {
-    @apply text-white bg-gray-700;
+    @apply text-white bg-gray-700 hover:bg-gray-800;
   }
 
   &.left {
