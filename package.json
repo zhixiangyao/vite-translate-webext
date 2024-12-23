@@ -3,7 +3,7 @@
   "displayName": "单词本",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.15.1",
   "description": "[description]",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
   "homepage": "https://github.com/zhixiangyao/vite-word-book-webext",
