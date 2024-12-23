@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Data } from '~/content/composables/useTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
-import { useDraggable, useElementSize, useWindowSize } from '@vueuse/core'
+import { useModalTranslateDraggable } from '../composables/useModalTranslateDraggable'
 import Empty from './Empty.vue'
 import Loading from './Loading.vue'
 import Result from './Result.vue'
@@ -29,55 +29,25 @@ defineEmits<Emits>()
 const text = defineModel<string>('text', { default: '' })
 const pin = defineModel<boolean>('pin', { default: false })
 
-const refHeader = ref<HTMLElement | null>(null)
-const refContainer = ref<HTMLElement | null>(null)
 const isWord = computed<boolean>(() => {
   const regex = /^[a-z]+$/i
   return regex.test(text.value)
 })
-const { position } = useDraggable(refHeader)
-const sizeWindow = useWindowSize()
-const sizeContainer = useElementSize(refContainer)
-const top = computed<number>(() => {
-  const containerTop = position.value.y || props.top
-
-  const maxHeight = sizeWindow.height.value - sizeContainer.height.value
-
-  if (containerTop < 0)
-    return 0
-
-  if (containerTop <= maxHeight)
-    return containerTop
-
-  return maxHeight
+const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDraggable({
+  x: toRef(props, 'left'),
+  y: toRef(props, 'top'),
+  open: toRef(props, 'open'),
 })
-const left = computed<number>(() => {
-  const containerLeft = position.value.x || props.left
-
-  const maxWidth = sizeWindow.width.value - sizeContainer.width.value
-
-  if (containerLeft < 0)
-    return 0
-
-  if (containerLeft <= maxWidth)
-    return containerLeft
-
-  return maxWidth
-})
-
-watch(
-  () => props.open,
-  () => {
-    if (props.open === false) {
-      position.value.x = 0
-      position.value.y = 0
-    }
-  },
-)
 </script>
 
 <template>
-  <div v-show="open" ref="refContainer" class="modal-translate" :style="`top:${top}px;left:${left}px`">
+  <div
+    v-show="open"
+    ref="refContainer"
+    class="modal-translate"
+    :class="[isDragging && 'is-dragging']"
+    :style="`top:${top}px;left:${left}px`"
+  >
     <header ref="refHeader" class="header">
       <div class="inline-flex gap-1">
         <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
@@ -118,6 +88,10 @@ watch(
 <style scoped>
 .modal-translate {
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+  &.is-dragging * {
+    @apply select-none;
+  }
 
   @apply fixed z-999 min-w-200px max-w-400px bg-white color-black overflow-hidden;
 
