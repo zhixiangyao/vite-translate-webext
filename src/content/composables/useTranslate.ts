@@ -1,6 +1,5 @@
 import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
-
-const url = `http://home.yaozhixiang.top:1188/translate`
+import { storageSettingApi } from '~/logic'
 
 type Lang = 'ZH' | 'EN'
 
@@ -25,10 +24,10 @@ export function useTranslate() {
     }
 
     const headers = {
-      Authorization: `Bearer ${__TRANSLATE_TOKEN__}`,
+      Authorization: `Bearer ${storageSettingApi.value.token}`,
     }
 
-    const data = await fetch.post(url, {
+    const data = await fetch.post(storageSettingApi.value.url, {
       params,
       headers,
     })

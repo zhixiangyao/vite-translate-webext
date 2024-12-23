@@ -15,3 +15,8 @@ export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, an
   {},
   { listenToStorageChanges: false },
 )
+
+export const storageSettingApi = useWebExtensionStorage('webext-setting-api', {
+  url: 'http://home.yaozhixiang.top:1188/translate',
+  token: 'deeplx_yzx',
+})

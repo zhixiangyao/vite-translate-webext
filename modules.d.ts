@@ -2,7 +2,7 @@ declare global {
   type Context = 'popup' | 'options' | 'content'
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     $app: {
       context: Context
