@@ -11,6 +11,9 @@ const debounceHighlight = useDebounceFn(highlight, 500)
 const enable = computed(() => {
   return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]
 })
+const words = computed(() => {
+  return storageWordList.value.map(value => value.word).filter(word => !!word)
+})
 
 /** 创建 root 节点 */
 function createRoot(target: HTMLElement) {
@@ -28,11 +31,10 @@ function createRoot(target: HTMLElement) {
   return root
 }
 
-/** 更新 page 只有首次加载完毕才会执行 */
+/** 更新 page 要实时 & 单词本更新时 & 首次加载要执行一次 */
 async function updatePage() {
   if (enable.value) {
-    const words = storageWordList.value.map(value => value.word).filter(word => !!word)
-    debounceHighlight(words)
+    debounceHighlight(words.value)
   }
   else {
     unhighlight()
@@ -45,7 +47,8 @@ async function updateIcon(show: boolean) {
 }
 
 watch(() => enable.value, updateIcon, { immediate: true })
-watch(() => storageWordList.value, updatePage, { deep: true })
+watch(() => enable.value, updatePage)
+watch(() => words.value, updatePage, { deep: true })
 window.addEventListener('load', updatePage)
 
 const style = document.createElement('style')

@@ -20,7 +20,6 @@ defineEmits<Emits>()
 <template>
   <div v-show="open" class="modal-search" :style="`left:${left}px;top:${top}px;`" @click="$emit('search')">
     <SearchOutlined />
-    Search
   </div>
 </template>
 

@@ -1,4 +1,4 @@
-import { useEventListener, useMouse } from '@vueuse/core'
+import { useDebounceFn, useEventListener, useMouse } from '@vueuse/core'
 
 interface State {
   top: number
@@ -28,8 +28,6 @@ export function useModalSearch(disabled: ComputedRef<boolean>) {
   }
 
   function listener(event: Event) {
-    event.stopPropagation()
-    event.preventDefault()
     const target = event!.target as HTMLElement
 
     if (target.id.includes(__NAME__))
@@ -48,7 +46,7 @@ export function useModalSearch(disabled: ComputedRef<boolean>) {
     handleHidden()
   }
 
-  useEventListener(document, 'mouseup', listener)
+  useEventListener(document, 'mouseup', useDebounceFn(listener, 50))
   useEventListener(document, 'keydown', e => e.key === 'Escape' && handleHidden())
 
   return {
