@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Data } from '~/content/composables/useTranslate'
+import type { useModalTranslate } from '../composables/useModalTranslate'
 import { LeftOutlined } from '@ant-design/icons-vue'
 
 interface Props {
-  result: Data
+  result: NonNullable<ReturnType<typeof useModalTranslate>['state']['result']>
 }
 
 defineOptions({ name: 'Result' })
@@ -15,14 +15,13 @@ const expendMap = ref<Record<number, boolean | undefined>>({ 0: true })
 <template>
   <div class="flex flex-col gap-1">
     <div v-for="(alternative, i) of result.alternatives" :key="i" class="item">
-      <div class="flex justify-between items-center h-5 text-sm px-2">
+      <div
+        class="flex justify-between items-center h-5 text-sm px-2 cursor-pointer select-none"
+        @click="expendMap[i] = !expendMap[i]"
+      >
         <span> 结果 {{ i + 1 }}: </span>
 
-        <LeftOutlined
-          class="transition-transform select-none cursor-pointer"
-          :class="expendMap[i] && 'expend'"
-          @click="expendMap[i] = !expendMap[i]"
-        />
+        <LeftOutlined class="transition-transform" :class="expendMap[i] && 'expend'" />
       </div>
 
       <div v-if="expendMap[i]" class="p-1 text-xs">

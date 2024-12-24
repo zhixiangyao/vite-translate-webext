@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import type { Data } from '~/content/composables/useTranslate'
+import type { useModalTranslate } from '../composables/useModalTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import { useModalTranslateDraggable } from '../composables/useModalTranslateDraggable'
 import Empty from './Empty.vue'
 import Loading from './Loading.vue'
+
 import Result from './Result.vue'
 
 interface Props {
   top: number
   left: number
   open: boolean
-  result?: Data
+  result: ReturnType<typeof useModalTranslate>['state']['result']
   loading: boolean
   favorite: boolean
 }

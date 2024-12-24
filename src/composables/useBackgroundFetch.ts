@@ -1,25 +1,43 @@
+import type { ProtocolMap } from 'webext-bridge'
+import { message } from 'ant-design-vue'
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
-
-interface Options {
-  params: Record<string, unknown>
-  headers: Record<string, string>
-}
+import { EnumResponseCode } from '~/enum'
 
 export function useBackgroundFetch() {
-  async function post(url: string, options: Options) {
-    const { promise, resolve } = Promise.withResolvers<object | undefined>()
+  async function post<T extends Record<string, any>>(
+    url: string,
+    options: Pick<ProtocolMap['event-fetch-send'], 'headers' | 'params'>,
+  ) {
+    const { promise, resolve, reject } = Promise.withResolvers<T | undefined>()
 
     sendMessage(
       'event-fetch-send',
       {
         url,
-        headers: options.headers ?? {},
-        params: options.params ?? {},
+        headers: options.headers,
+        params: options.params,
       },
       'background',
     )
 
-    onMessage('event-fetch-on', async ({ data }) => resolve(data.json))
+    onMessage('event-fetch-on', async ({ data }) => {
+      switch (data.code) {
+        case EnumResponseCode.Success: {
+          resolve(data.response as T)
+          break
+        }
+        case EnumResponseCode.Error: {
+          reject()
+          message.error('未知错误')
+          break
+        }
+        case EnumResponseCode.AbortError: {
+          reject()
+          message.error('请求超时')
+          break
+        }
+      }
+    })
 
     return promise
   }

@@ -1,7 +1,15 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
+import { EnumResponseCode } from '~/enum'
 import { storageCurrentTab } from '~/logic'
 
+const context = 'content-script'
+const timeout = 5_000
+
 onMessage('event-fetch-send', async ({ data }) => {
+  const controller = new AbortController()
+  const signal = controller.signal
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
   const tabId = storageCurrentTab.value.id!
 
   try {
@@ -9,16 +17,25 @@ onMessage('event-fetch-send', async ({ data }) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...data.headers },
       body: JSON.stringify(data.params),
+      signal,
     })
+    clearTimeout(timeoutId)
 
     if (response.status !== 200)
-      throw new Error(response.status.toString())
+      throw new Error('unknown')
 
-    const json = await response.json()
-
-    sendMessage('event-fetch-on', { json }, { tabId, context: 'content-script' })
+    sendMessage(
+      'event-fetch-on',
+      { code: EnumResponseCode.Success, response: await response.json() },
+      { tabId, context },
+    )
   }
-  catch {
-    sendMessage('event-fetch-on', {}, { tabId, context: 'content-script' })
+  catch (error) {
+    clearTimeout(timeoutId)
+    let code = EnumResponseCode.Error
+    if (error instanceof Error && error.name === 'AbortError') {
+      code = EnumResponseCode.AbortError
+    }
+    sendMessage('event-fetch-on', { code }, { tabId, context })
   }
 })

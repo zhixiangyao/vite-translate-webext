@@ -59,7 +59,7 @@ function search() {
   }
 
   .icon {
-    @apply w-4 h-4 flex items-center justify-center;
+    @apply w-4 h-4 flex items-center justify-center select-none;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 import { useEventListener, useMouse } from '@vueuse/core'
 
 import { storageTranslateCacheMap, storageWordList } from '~/logic'
-import { type Data, useTranslate } from './useTranslate'
+import { type DeeplxResponse, useTranslate } from './useTranslate'
 
 interface State {
   top: number
@@ -10,7 +10,7 @@ interface State {
   open: boolean
   pin: boolean
   loading: boolean
-  result: Data | undefined
+  result: DeeplxResponse | undefined
 }
 
 export function useModalTranslate() {
@@ -66,6 +66,9 @@ export function useModalTranslate() {
       const data = await translate.run(text, 'EN', 'ZH')
       state.result = data
       data && (storageTranslateCacheMap.value[text] = data)
+    }
+    catch {
+      state.result = void 0
     }
     finally {
       state.loading = false
