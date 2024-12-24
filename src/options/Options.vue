@@ -15,11 +15,11 @@ const params = useUrlSearchParams<{ tab: EnumTabKey }>('history', { initialValue
 
 <template>
   <main class="p-2 text-gray-700 dark:text-gray-200">
-    <Tabs v-model:active-key="params.tab">
+    <Tabs v-model:active-key="params.tab" type="card">
       <TabPane :key="EnumTabKey.BookList" tab="单词本">
         <BookList />
       </TabPane>
-      <TabPane :key="EnumTabKey.Setting" tab="Setting" force-render>
+      <TabPane :key="EnumTabKey.Setting" tab="设置" force-render>
         <Setting />
       </TabPane>
     </Tabs>

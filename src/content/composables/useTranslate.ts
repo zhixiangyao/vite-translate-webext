@@ -1,5 +1,5 @@
 import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
-import { storageSettingApi } from '~/logic'
+import { storageSetting } from '~/logic'
 
 type Lang = 'ZH' | 'EN'
 
@@ -24,10 +24,10 @@ export function useTranslate() {
     }
 
     const headers = {
-      Authorization: `Bearer ${storageSettingApi.value.token}`,
+      Authorization: `Bearer ${storageSetting.value.api.token}`,
     }
 
-    const response = await fetch.post<DeeplxResponse>(storageSettingApi.value.url, {
+    const response = await fetch.post<DeeplxResponse>(storageSetting.value.api.url, {
       params,
       headers,
     })

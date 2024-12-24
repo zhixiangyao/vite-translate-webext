@@ -1,14 +1,13 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
 import { EnumResponseCode } from '~/enum'
-import { storageCurrentTab } from '~/logic'
+import { storageCurrentTab, storageSetting } from '~/logic'
 
 const context = 'content-script'
-const timeout = 5_000
 
 onMessage('event-fetch-send', async ({ data }) => {
   const controller = new AbortController()
   const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), timeout)
+  const timeoutId = setTimeout(() => controller.abort(), storageSetting.value.api.timeout)
 
   const tabId = storageCurrentTab.value.id!
 

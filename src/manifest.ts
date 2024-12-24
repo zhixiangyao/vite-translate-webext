@@ -48,9 +48,9 @@ export async function getManifest() {
       },
     ],
     icons: {
-      16: './assets/icons/icon-gray-16.png',
-      48: './assets/icons/icon-gray-48.png',
-      128: './assets/icons/icon-gray-128.png',
+      16: './assets/icons/icon-16.png',
+      48: './assets/icons/icon-48.png',
+      128: './assets/icons/icon-128.png',
     },
     permissions: ['tabs', 'storage', 'activeTab'],
     host_permissions: ['*://*/*'],

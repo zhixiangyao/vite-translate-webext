@@ -16,7 +16,18 @@ export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, an
   { listenToStorageChanges: false },
 )
 
-export const storageSettingApi = useWebExtensionStorage('webext-setting-api', {
-  url: 'http://home.yaozhixiang.top:1188/translate',
-  token: 'deeplx_yzx',
+export const defaultStorageSetting = {
+  api: {
+    url: 'http://home.yaozhixiang.top:1188/translate',
+    token: 'deeplx_yzx',
+    timeout: 10_000,
+  },
+}
+
+export const storageSetting = useWebExtensionStorage('webext-setting', {
+  api: {
+    url: defaultStorageSetting.api.url,
+    token: defaultStorageSetting.api.token,
+    timeout: defaultStorageSetting.api.timeout,
+  },
 })
