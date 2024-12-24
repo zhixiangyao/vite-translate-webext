@@ -69,6 +69,7 @@ export default defineConfig(({ command }) => ({
     origin: `http://localhost:${port}`,
   },
   build: {
+    target: 'modules',
     watch: isDev ? {} : undefined,
     outDir: r('extension/dist'),
     emptyOutDir: false,

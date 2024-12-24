@@ -13,6 +13,7 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production'),
   },
   build: {
+    target: 'modules',
     watch: isDev ? {} : undefined,
     outDir: r('extension/dist/background'),
     cssCodeSplit: false,
