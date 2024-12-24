@@ -11,6 +11,13 @@ const formState = reactive({
   apiToken: storageSetting.value.api.token,
   apiTimeout: storageSetting.value.api.timeout / 1000,
 })
+const disabledSave = computed(() => {
+  return (
+    defaultStorageSetting.api.url === formState.apiUrl
+    && defaultStorageSetting.api.token === formState.apiToken
+    && defaultStorageSetting.api.timeout === formState.apiTimeout * 1000
+  )
+})
 
 async function handleSave() {
   await formRef.value?.validate()
@@ -54,7 +61,7 @@ async function handleReset() {
             保存
           </Button>
 
-          <Button @click="handleReset">
+          <Button :disabled="disabledSave" @click="handleReset">
             恢复默认
           </Button>
         </Space>

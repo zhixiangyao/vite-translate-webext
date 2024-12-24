@@ -4,7 +4,7 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { RecordType } from './type'
 
 export const rules = {
-  'dataSource[i].word': [{ required: true, message: '', trigger: 'change' }],
+  'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
 } satisfies Record<string, Rule[]>
 
 export const columns: ColumnsType = [

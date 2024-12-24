@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import { Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
-
+import type { RecordType } from './type'
+import { Button, Form, FormItem, Input, message, Space, Table } from 'ant-design-vue'
 import { storageWordList } from '~/logic'
 import { columns, rules } from './constant'
 
@@ -12,20 +12,34 @@ const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 const formRef = ref<FormInstance | null>(null)
 const formState = reactive({
-  dataSource: storageWordList,
+  wordList: [] as RecordType[],
 })
 
 async function handleAdd(i: number) {
   await formRef.value?.validate()
-  formState.dataSource?.splice(i + 1, 0, {
+  formState.wordList?.splice(i + 1, 0, {
     word: '',
   })
 }
 
 function handleDelete(i: number) {
-  formState.dataSource?.splice(i, 1)
+  formState.wordList?.splice(i, 1)
   formRef.value?.clearValidate()
 }
+
+async function handleSave() {
+  await formRef.value?.validate()
+  storageWordList.value = formState.wordList
+  message.success('保存成功')
+}
+
+watch(
+  storageWordList,
+  (wordList) => {
+    formState.wordList = JSON.parse(JSON.stringify(wordList))
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -38,19 +52,12 @@ function handleDelete(i: number) {
       :rules="rules"
       :wrapper-col="wrapperCol"
     >
-      <Table
-        bordered
-
-        :columns="columns"
-        :data-source="formState.dataSource"
-        :pagination="false"
-        size="small"
-      >
+      <Table bordered :columns="columns" :data-source="formState.wordList" :pagination="false" size="small">
         <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
           <template v-if="column.key === 'word'">
-            <FormItem :name="['dataSource', i, 'word']" :rules="rules['dataSource[i].word']">
+            <FormItem :name="['wordList', i, 'word']" :rules="rules['wordList[i].word']">
               <Input
-                v-model:value.trim="formState.dataSource![i].word"
+                v-model:value.trim="formState.wordList![i].word"
                 :maxlength="100"
                 placeholder="请输入"
                 show-count
@@ -66,7 +73,7 @@ function handleDelete(i: number) {
               </Button>
 
               <Button
-                v-if="!(formState.dataSource?.length === 1 && i === 0)"
+                v-if="!(formState.wordList?.length === 1 && i === 0)"
                 class="!px-0"
                 danger
                 size="small"
@@ -79,6 +86,12 @@ function handleDelete(i: number) {
           </template>
         </template>
       </Table>
+
+      <Space class="mt-6">
+        <Button type="primary" @click="handleSave">
+          保存
+        </Button>
+      </Space>
     </Form>
   </div>
 </template>
