@@ -6,7 +6,7 @@ import { Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
 import { storageWordList } from '~/logic'
 import { columns, rules } from './constant'
 
-defineOptions({ name: 'TabBookList' })
+defineOptions({ name: 'BookList' })
 
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
@@ -29,7 +29,7 @@ function handleDelete(i: number) {
 </script>
 
 <template>
-  <div class="tab-book-list">
+  <div class="book-list">
     <Form
       ref="formRef"
       autocomplete="off"
@@ -84,7 +84,7 @@ function handleDelete(i: number) {
 </template>
 
 <style scoped>
-.tab-book-list :deep(.ant-form-item) {
+.book-list :deep(.ant-form-item) {
   margin-bottom: 0;
 }
 </style>

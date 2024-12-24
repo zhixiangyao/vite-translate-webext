@@ -3,6 +3,8 @@ import type { FormInstance } from 'ant-design-vue'
 import { Button, Form, FormItem, Input, InputNumber, message, Space } from 'ant-design-vue'
 import { defaultStorageSetting, storageSetting } from '~/logic'
 
+defineOptions({ name: 'Settings' })
+
 const formRef = ref<FormInstance | null>(null)
 const formState = reactive({
   apiUrl: storageSetting.value.api.url,

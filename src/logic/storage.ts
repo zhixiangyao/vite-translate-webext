@@ -1,4 +1,4 @@
-import type { RecordType } from '~/options/components/TabBookList/type'
+import type { RecordType } from '~/options/views/BookList/type'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
 
 export const storageCurrentTab = useWebExtensionStorage<{ id?: number }>('webext-current-tab', { id: void 0 })
