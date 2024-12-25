@@ -1,7 +1,6 @@
 {
   "name": "vite-word-book-webext",
   "displayName": "翻译",
-  "type": "module",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@9.15.1",
