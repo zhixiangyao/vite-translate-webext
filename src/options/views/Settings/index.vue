@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'ant-design-vue'
-import { Button, Form, FormItem, Input, InputNumber, message, Space } from 'ant-design-vue'
+import { App, Button, Form, FormItem, Input, InputNumber, Space } from 'ant-design-vue'
 import { defaultStorageSetting, storageSetting } from '~/logic'
 
 defineOptions({ name: 'Settings' })
@@ -18,6 +18,7 @@ const disabledSave = computed(() => {
     && defaultStorageSetting.api.timeout === formState.apiTimeout * 1000
   )
 })
+const { message } = App.useApp()
 
 async function handleSave() {
   await formRef.value?.validate()
@@ -41,31 +42,29 @@ async function handleReset() {
 </script>
 
 <template>
-  <div class="p-4">
-    <Form ref="formRef" label-align="left" :model="formState">
-      <FormItem label="Url" name="apiUrl" required>
-        <Input v-model:value="formState.apiUrl" />
-      </FormItem>
+  <Form ref="formRef" label-align="left" :model="formState">
+    <FormItem label="Url" name="apiUrl" required>
+      <Input v-model:value="formState.apiUrl" />
+    </FormItem>
 
-      <FormItem label="Token" name="apiToken" required>
-        <Input v-model:value="formState.apiToken" />
-      </FormItem>
+    <FormItem label="Token" name="apiToken" required>
+      <Input v-model:value="formState.apiToken" />
+    </FormItem>
 
-      <FormItem label="Timeout" name="apiTimeout" required>
-        <InputNumber v-model:value="formState.apiTimeout" :min="1" :max="60" :precision="0" />
-      </FormItem>
+    <FormItem label="Timeout" name="apiTimeout" required>
+      <InputNumber v-model:value="formState.apiTimeout" :min="1" :max="60" :precision="0" />
+    </FormItem>
 
-      <FormItem>
-        <Space>
-          <Button type="primary" @click="handleSave">
-            保存
-          </Button>
+    <FormItem>
+      <Space>
+        <Button type="primary" @click="handleSave">
+          保存
+        </Button>
 
-          <Button :disabled="disabledSave" @click="handleReset">
-            恢复默认
-          </Button>
-        </Space>
-      </FormItem>
-    </Form>
-  </div>
+        <Button :disabled="disabledSave" @click="handleReset">
+          恢复默认
+        </Button>
+      </Space>
+    </FormItem>
+  </Form>
 </template>

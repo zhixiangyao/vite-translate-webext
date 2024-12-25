@@ -1,9 +1,18 @@
-<template>
-  <router-view />
-</template>
+<script setup lang="ts">
+import type { ConfigProviderProps } from 'ant-design-vue'
+import { App, ConfigProvider } from 'ant-design-vue'
 
-<style>
-* {
-  @apply !rounded-none;
+const theme: ConfigProviderProps['theme'] = {
+  token: {
+    borderRadius: 0,
+  },
 }
-</style>
+</script>
+
+<template>
+  <ConfigProvider :theme="theme">
+    <App>
+      <router-view />
+    </App>
+  </ConfigProvider>
+</template>

@@ -2,7 +2,7 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { RecordType } from './type'
-import { Button, Form, FormItem, Input, message, Space, Table } from 'ant-design-vue'
+import { App, Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
 import { storageWordList } from '~/logic'
 import { columns, rules } from './constant'
 
@@ -14,6 +14,7 @@ const formRef = ref<FormInstance | null>(null)
 const formState = reactive({
   wordList: [] as RecordType[],
 })
+const { message } = App.useApp()
 
 async function handleAdd(i: number) {
   await formRef.value?.validate()
