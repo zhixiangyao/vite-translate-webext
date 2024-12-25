@@ -3,8 +3,7 @@ import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
 
 import App from './Content.vue'
-import '@unocss/reset/tailwind.css'
-import 'virtual:uno.css'
+import '~/styles'
 
 const debounceHighlight = useDebounceFn(highlight, 500)
 
