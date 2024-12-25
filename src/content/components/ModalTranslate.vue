@@ -3,7 +3,6 @@ import type { useModalTranslate } from '../composables/useModalTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import { useModalTranslateDraggable } from '../composables/useModalTranslateDraggable'
 import Empty from './Empty.vue'
-import Loading from './Loading.vue'
 
 import Result from './Result.vue'
 
@@ -73,7 +72,7 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
 
       <div class="py-2">
         <template v-if="loading">
-          <Loading />
+          <WLoading />
         </template>
         <template v-else-if="result">
           <Result :result="result" />

@@ -1,6 +1,6 @@
 import { useDebounceFn } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
-import { highlight, setupApp, storageActivityWebsiteMap, storageWordList, unhighlight } from '~/logic'
+import { highlight, setupApp, storageActivityWebsiteMap, storageSetting, storageWordList, unhighlight } from '~/logic'
 
 import App from './Content.vue'
 import '~/styles'
@@ -45,14 +45,23 @@ async function updateIcon(show: boolean) {
   sendMessage('event-activity', { show }, 'background')
 }
 
+function updateStyle(highlight: typeof storageSetting.value.highlight) {
+  const id = `style-${__NAME__}`
+  const oldStyle = document.head.querySelector(id)
+  oldStyle && document.head.removeChild(oldStyle)
+
+  const style = document.createElement('style')
+  style.id = id
+  style.innerHTML = highlight.style
+  document.head.appendChild(style)
+}
+
 watch(() => enable.value, updateIcon, { immediate: true })
 watch(() => enable.value, updatePage)
 watch(() => words.value, updatePage, { deep: true })
+watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
 window.addEventListener('load', updatePage)
 
-const style = document.createElement('style')
-style.innerHTML = 'span[data-highlighted-word] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }'
-document.head.appendChild(style)
 const app = createApp(App)
 setupApp(app, { context: 'content' })
 app.mount(createRoot(document.querySelector('html')!))

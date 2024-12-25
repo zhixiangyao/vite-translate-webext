@@ -53,7 +53,7 @@ export const sharedConfig: UserConfig = {
     },
   ],
   optimizeDeps: {
-    include: ['vue', '@vueuse/core', 'webextension-polyfill', 'ant-design-vue', '@ant-design/icons-vue'],
+    include: ['vue', '@vueuse/core', 'webextension-polyfill', 'ant-design-vue', '@ant-design/icons-vue', 'monaco-editor', 'js-beautify'],
     exclude: [],
   },
 }

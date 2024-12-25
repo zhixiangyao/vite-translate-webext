@@ -22,6 +22,9 @@ export const defaultStorageSetting = {
     token: 'deeplx_yzx',
     timeout: 10_000,
   },
+  highlight: {
+    style: 'span[data-highlighted-word] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }',
+  },
 }
 
 export const storageSetting = useWebExtensionStorage('webext-setting', {
@@ -29,5 +32,8 @@ export const storageSetting = useWebExtensionStorage('webext-setting', {
     url: defaultStorageSetting.api.url,
     token: defaultStorageSetting.api.token,
     timeout: defaultStorageSetting.api.timeout,
+  },
+  highlight: {
+    style: defaultStorageSetting.highlight.style,
   },
 })
