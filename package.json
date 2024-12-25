@@ -1,6 +1,6 @@
 {
   "name": "vite-word-book-webext",
-  "displayName": "单词本",
+  "displayName": "翻译",
   "type": "module",
   "version": "0.0.1",
   "private": true,
