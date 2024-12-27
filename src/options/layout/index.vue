@@ -62,7 +62,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
 
   > main {
     @apply grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3;
-    @apply overflow-auto p-1;
+    @apply overflow-auto p-1 min-w-7xl;
   }
 }
 </style>
