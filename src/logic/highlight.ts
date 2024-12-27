@@ -1,8 +1,21 @@
-function buildRegex(word: string) {
+enum EnumDataSet {
+  highlightedWord = 'data-highlighted-word',
+}
+
+enum EnumNodeType {
+  element = 1,
+  text = 3,
+}
+
+type Callback = (regexList: RegExp[]) => void
+
+const excludeRegex = /^(?:script|style|iframe|noscript|textarea)$/i
+
+function genWordRule(word: string) {
   const forms = [
     word,
-    `${word}s?`,
-    `${word.replace(/y$/, 'i')}es?`,
+    `${word}s`,
+    `${word.replace(/y$/, 'i')}es`,
     `${word}ed`,
     `${word.replace(/e$/, '')}ing`,
     `${word}ing`,
@@ -14,71 +27,84 @@ function buildRegex(word: string) {
     word.replace(/ic$/, 'ically'),
     word.replace(/le$/, 'ly'),
   ]
-  return new RegExp(`\\b(${forms.join('|')})\\b`, 'gi')
+  return forms.join('|')
 }
 
-function traverseAndRestore(node: HTMLElement) {
-  if (node.nodeType === 1) {
-    const spans = node.querySelectorAll('span[data-highlighted]')
-    spans.forEach((span) => {
-      const text = span.textContent!
-      span.replaceWith(document.createTextNode(text))
-    })
-  }
+function unhighlightTextNode(ruleList: string[]) {
+  const isClearAll = ruleList.length === 0
+
+  // 找出句子里的 word
+  const wordSpans = document.body.querySelectorAll(`span[${EnumDataSet.highlightedWord}]`)
+
+  wordSpans.forEach((wordSpan) => {
+    const wordText = wordSpan.textContent
+
+    if (!wordText)
+      return
+
+    if (!ruleList.some(rule => rule.toLowerCase().includes(wordText.toLowerCase())) || isClearAll) {
+      wordSpan.replaceWith(document.createTextNode(wordText))
+    }
+  })
 }
 
-function highlightTextNode(node: HTMLElement, regexList: RegExp[]) {
-  let text = node.nodeValue!
+function highlightTextNode(nodeValue: string, parentNode: HTMLElement, regexList: RegExp[]) {
+  let text = nodeValue
 
   // 遍历所有的正则表达式，处理每个正则匹配的文本
   regexList.forEach((regex) => {
     text = text.replace(regex, (match) => {
       // 用 span 包裹每个匹配项，并应用样式
-      return `<span data-highlighted-word="true">${match}</span>`
+      return `<span ${EnumDataSet.highlightedWord}="true">${match}</span>`
     })
   })
 
-  if (text !== node.nodeValue) {
-    const span = document.createElement('span')
-    span.setAttribute('data-highlighted', 'true')
-    span.innerHTML = text
-    node.replaceWith(span)
+  if (text !== nodeValue) {
+    parentNode.innerHTML = parentNode.innerHTML.replace(nodeValue, text)
   }
 }
 
-function traverseAndHighlight(node: HTMLElement, regexList: RegExp[]) {
-  if (node.nodeType === 3 && node.nodeValue!.trim()) {
-    highlightTextNode(node, regexList)
-  }
-  else if (
-    node.nodeType === 1
-    && node.childNodes
-    && !/^(?:script|style|iframe|noscript|textarea)$/i.test(node.tagName)
-  ) {
-    node.childNodes.forEach(child => traverseAndHighlight(child as HTMLElement, regexList))
+function traverseAndHighlight(node: HTMLElement, parentNode: HTMLElement, callbackList: Callback[]) {
+  switch (node.nodeType) {
+    case EnumNodeType.text: {
+      const nodeValue = node.nodeValue
+
+      if (nodeValue && nodeValue.trim()) {
+        callbackList.push(regexList => highlightTextNode(nodeValue, parentNode, regexList))
+      }
+
+      break
+    }
+
+    case EnumNodeType.element: {
+      if (node.childNodes && !excludeRegex.test(node.tagName) && !node.dataset?.highlightedWord) {
+        node.childNodes.forEach(child => traverseAndHighlight(child as HTMLElement, node, callbackList))
+      }
+
+      break
+    }
   }
 }
 
-export async function highlight(words: string[]) {
+export function highlight(words: string[]) {
   try {
-    const groupRegexes = words.map(buildRegex)
+    const ruleList = words.map(genWordRule)
+    const html = document.querySelector('html')!
+    const regexList = ruleList.map(rule => new RegExp(`\\b(${rule})\\b`, 'gi'))
+    const callbackList: Callback[] = []
 
-    traverseAndRestore(document.body)
-
-    requestIdleCallback(() => {
-      traverseAndHighlight(document.body, groupRegexes)
-    })
+    requestIdleCallback(() => traverseAndHighlight(document.body, html, callbackList))
+    requestIdleCallback(() => callbackList.forEach(callback => callback(regexList)))
+    requestIdleCallback(() => unhighlightTextNode(ruleList))
   }
   catch (err) {
     console.error('Error during execution:', err)
   }
 }
 
-export async function unhighlight() {
+export function unhighlight() {
   try {
-    requestIdleCallback(() => {
-      traverseAndRestore(document.body)
-    })
+    unhighlightTextNode([])
   }
   catch (err) {
     console.error('Error during execution:', err)
