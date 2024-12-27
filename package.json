@@ -1,15 +1,15 @@
 {
-  "name": "vite-word-book-webext",
+  "name": "vite-translate-webext",
   "displayName": "翻译",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@9.15.1",
   "description": "[description]",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
-  "homepage": "https://github.com/zhixiangyao/vite-word-book-webext",
+  "homepage": "https://github.com/zhixiangyao/vite-translate-webext",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhixiangyao/vite-word-book-webext.git"
+    "url": "git+https://github.com/zhixiangyao/vite-translate-webext.git"
   },
   "engines": {
     "node": ">=22",

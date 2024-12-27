@@ -1,4 +1,4 @@
-# Vite Word Book WebExt
+# Vite Translate WebExt
 
 > Forked from [vitesse-webext](https://github.com/antfu/vitesse-webext)
 
@@ -56,8 +56,8 @@ A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.c
 > If you don't have pnpm installed, run: npm install -g pnpm
 
 ```bash
-git clone https://github.com/zhixiangyao/vite-word-book-webext.git
-cd vite-word-book-webext
+git clone https://github.com/zhixiangyao/vite-translate-webext.git
+cd vite-translate-webext
 pnpm i
 ```
 
