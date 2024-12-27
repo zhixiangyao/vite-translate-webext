@@ -60,7 +60,7 @@ watch(
 </script>
 
 <template>
-  <Row :gutter="10">
+  <Row>
     <Col :span="14">
       <Form ref="formRef" label-align="left" :model="formState" :label-col="{ span: 4 }">
         <FormItem label="请求 URL" name="apiUrl" required>
@@ -98,6 +98,7 @@ watch(
         </FormItem>
       </Form>
     </Col>
+
     <Col :span="10">
       <Preview />
     </Col>
