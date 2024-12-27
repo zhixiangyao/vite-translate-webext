@@ -5,10 +5,16 @@ import { useModalSearch } from './composables/useModalSearch'
 import { useModalTranslate } from './composables/useModalTranslate'
 
 defineOptions({ name: 'App' })
+defineProps<{ root?: HTMLElement }>()
 
 const modalTranslate = useModalTranslate()
 const disabledSearch = computed(() => modalTranslate.state.open)
 const modalSearch = useModalSearch(disabledSearch)
+
+function search() {
+  modalSearch.handleHidden()
+  modalTranslate.handleShow(modalSearch.state.text, modalSearch.state.left, modalSearch.state.top)
+}
 </script>
 
 <template>
@@ -21,6 +27,7 @@ const modalSearch = useModalSearch(disabledSearch)
     :result="modalTranslate.state.result"
     :loading="modalTranslate.state.loading"
     :favorite="modalTranslate.favorite.value"
+    :root="root"
     @search="modalTranslate.handleSearch"
     @close="modalTranslate.handleHidden"
     @add="modalTranslate.handleAdd"
@@ -31,11 +38,6 @@ const modalSearch = useModalSearch(disabledSearch)
     :text="modalSearch.state.text"
     :left="modalSearch.state.left"
     :top="modalSearch.state.top"
-    @search="
-      () => {
-        modalSearch.handleHidden()
-        modalTranslate.handleShow(modalSearch.state.text, modalSearch.state.left, modalSearch.state.top)
-      }
-    "
+    @search="search"
   />
 </template>

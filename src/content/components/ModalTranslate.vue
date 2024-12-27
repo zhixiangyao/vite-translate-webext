@@ -13,6 +13,7 @@ interface Props {
   result: ReturnType<typeof useModalTranslate>['state']['result']
   loading: boolean
   favorite: boolean
+  root?: HTMLElement
 }
 
 interface Emits {
@@ -37,6 +38,7 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
   x: toRef(props, 'left'),
   y: toRef(props, 'top'),
   open: toRef(props, 'open'),
+  root: props.root,
 })
 </script>
 

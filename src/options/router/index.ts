@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { FileWordOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import { EyeOutlined, FileWordOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 export const views = [
@@ -9,6 +9,13 @@ export const views = [
     title: '单词本',
     icon: () => h(FileWordOutlined),
     component: () => import('~/options/views/BookList/index.vue'),
+  },
+  {
+    path: 'preview',
+    name: 'Preview',
+    title: '预览',
+    icon: () => h(EyeOutlined),
+    component: () => import('~/options/views/Preview/index.vue'),
   },
   {
     path: 'settings',

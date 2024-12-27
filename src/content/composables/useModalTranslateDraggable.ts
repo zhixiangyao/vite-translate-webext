@@ -4,21 +4,22 @@ interface Params {
   x: Ref<number>
   y: Ref<number>
   open: Ref<boolean>
+  root?: HTMLElement
 }
 
 export function useModalTranslateDraggable(params: Params) {
-  const { x, y, open } = params
+  const { x, y, open, root } = params
 
   const refHeader = ref<HTMLElement | null>(null)
   const refContainer = ref<HTMLElement | null>(null)
 
   const { position, isDragging } = useDraggable(refHeader)
-  const sizeWindow = useWindowSize()
+  const sizeRoot = root ? useElementSize(root) : useWindowSize() // TODO
   const sizeContainer = useElementSize(refContainer)
   const top = computed<number>(() => {
     const containerTop = position.value.y || y.value
 
-    const maxHeight = sizeWindow.height.value - sizeContainer.height.value
+    const maxHeight = sizeRoot.height.value - sizeContainer.height.value
 
     if (containerTop < 0)
       return 0
@@ -31,7 +32,7 @@ export function useModalTranslateDraggable(params: Params) {
   const left = computed<number>(() => {
     const containerLeft = position.value.x || x.value
 
-    const maxWidth = sizeWindow.width.value - sizeContainer.width.value
+    const maxWidth = sizeRoot.width.value - sizeContainer.width.value
 
     if (containerLeft < 0)
       return 0
