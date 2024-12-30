@@ -52,16 +52,22 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
   >
     <header ref="refHeader" class="header">
       <div class="inline-flex gap-1">
-        <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
-        <PushpinOutlined v-else class="cursor-pointer" title="点击固定" @click="pin = true" />
+        <WIconWrapper>
+          <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
+          <PushpinOutlined v-else class="cursor-pointer" title="点击固定" @click="pin = true" />
+        </WIconWrapper>
 
         <template v-if="isWord">
-          <HeartFilled v-if="favorite" class="cursor-pointer" title="点击取消收藏" @click="$emit('remove', text)" />
-          <HeartOutlined v-else class="cursor-pointer" title="点击收藏" @click="$emit('add', text)" />
+          <WIconWrapper>
+            <HeartFilled v-if="favorite" class="cursor-pointer" title="点击取消收藏" @click="$emit('remove', text)" />
+            <HeartOutlined v-else class="cursor-pointer" title="点击收藏" @click="$emit('add', text)" />
+          </WIconWrapper>
         </template>
       </div>
 
-      <CloseOutlined class="cursor-pointer" title="关闭" @click="$emit('close')" />
+      <WIconWrapper>
+        <CloseOutlined class="cursor-pointer" title="关闭" @click="$emit('close')" />
+      </WIconWrapper>
     </header>
 
     <main class="px-2">
@@ -90,12 +96,11 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
 <style scoped>
 .modal-translate {
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  @apply fixed z-999 min-w-300px max-w-500px bg-white color-black overflow-hidden;
 
   &.is-dragging * {
     @apply select-none;
   }
-
-  @apply fixed z-999 min-w-200px max-w-400px bg-white color-black overflow-hidden;
 
   .header {
     @apply flex justify-between items-center p-2 gap-1 bg-gray-4 cursor-grab;

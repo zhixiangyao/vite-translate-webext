@@ -13,18 +13,20 @@ const expendMap = ref<Record<number, boolean | undefined>>({ 0: true })
 </script>
 
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-2">
     <div v-for="(alternative, i) of result.alternatives" :key="i" class="item">
       <div
-        class="flex justify-between items-center h-5 text-sm px-2 cursor-pointer select-none"
+        class="flex justify-between items-center h-5 text-sm pl-2 cursor-pointer select-none"
         @click="expendMap[i] = !expendMap[i]"
       >
-        <span> 结果 {{ i + 1 }}: </span>
+        <span class="font-bold">{{ i + 1 }}</span>
 
-        <LeftOutlined class="transition-transform" :class="expendMap[i] && 'expend'" />
+        <WIconWrapper>
+          <LeftOutlined class="transition-transform" :class="expendMap[i] && 'expend'" />
+        </WIconWrapper>
       </div>
 
-      <div v-if="expendMap[i]" class="p-1 text-xs">
+      <div v-if="expendMap[i]" class="pt-2">
         {{ alternative }}
       </div>
     </div>

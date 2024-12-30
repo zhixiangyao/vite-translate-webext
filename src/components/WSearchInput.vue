@@ -40,13 +40,13 @@ function search() {
       @keydown="e => e.key === 'Enter' && search()"
     >
 
-    <div class="icon clear">
-      <CloseOutlined v-show="!!inputValue" class="hidden" title="点击清除" @click="clear" />
-    </div>
+    <WIconWrapper v-if="!!inputValue" class="clear invisible">
+      <CloseOutlined title="点击清除" @click="clear" />
+    </WIconWrapper>
 
-    <div class="icon">
+    <WIconWrapper>
       <SearchOutlined :class="disabled && '!cursor-not-allowed'" title="点击搜索" @click="search" />
-    </div>
+    </WIconWrapper>
   </div>
 </template>
 
@@ -54,12 +54,8 @@ function search() {
 .v-search-input {
   @apply relative flex items-center gap-1 py-1;
 
-  &:hover .clear > span {
-    display: inline;
-  }
-
-  .icon {
-    @apply w-4 h-4 flex items-center justify-center select-none;
+  &:hover > .clear {
+    @apply visible;
   }
 }
 </style>
