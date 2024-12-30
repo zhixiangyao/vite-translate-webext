@@ -1,38 +1,15 @@
 <script lang="ts" setup>
 import { useStyleTag } from '@vueuse/core'
-import Content from '~/content/Content.vue'
 import { highlight, storageSetting, storageWordList } from '~/logic'
+import ShadowHost from './components/ShadowHost.vue'
 
 defineOptions({ name: 'Preview' })
 
-const shadowHost = useTemplateRef('shadowHost')
 const previewContainer = useTemplateRef('previewContainer')
 const { css } = useStyleTag(storageSetting.value.highlight.style)
 const words = computed(() => {
   return storageWordList.value.map(value => value.word).filter(word => !!word)
 })
-const id = __NAME__
-
-function init() {
-  const shadowRoot = shadowHost.value!.attachShadow({ mode: __DEV__ ? 'open' : 'closed' })
-
-  const content = document.createElement('div')
-  const styleEl = document.createElement('link')
-
-  styleEl.setAttribute('rel', 'stylesheet')
-  styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
-
-  shadowRoot.appendChild(styleEl)
-  shadowRoot.appendChild(content)
-  const app = createApp(
-    h(Content, {
-      root: previewContainer.value!,
-    }),
-  )
-  app.mount(content)
-}
-
-onMounted(() => init())
 
 watch(
   () => storageSetting.value.highlight.style,
@@ -43,7 +20,7 @@ watch(() => words.value, highlight, { deep: true, immediate: true })
 </script>
 
 <template>
-  <div :id="id" ref="shadowHost" />
+  <ShadowHost :root="previewContainer" />
 
   <div
     ref="previewContainer"
