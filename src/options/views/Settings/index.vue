@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'ant-design-vue'
-import { App, Button, Form, FormItem, Input, InputNumber, Space } from 'ant-design-vue'
+import { App, Button, Form, FormItem, Input, InputNumber } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { defaultStorageSetting, storageSetting } from '~/logic'
 
@@ -76,7 +76,7 @@ async function handleReset() {
     </FormItem>
 
     <FormItem>
-      <Space>
+      <div class="flex gap-2">
         <Button type="primary" @click="handleSave">
           保存
         </Button>
@@ -84,7 +84,7 @@ async function handleReset() {
         <Button :disabled="disabledSave" @click="handleReset">
           恢复默认
         </Button>
-      </Space>
+      </div>
     </FormItem>
   </Form>
 </template>

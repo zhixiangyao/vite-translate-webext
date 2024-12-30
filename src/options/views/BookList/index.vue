@@ -2,7 +2,7 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { RecordType } from './type'
-import { App, Button, Form, FormItem, Input, Space, Table } from 'ant-design-vue'
+import { App, Button, Form, FormItem, Input, Table } from 'ant-design-vue'
 import { storageWordList } from '~/logic'
 import { columns, rules } from './constant'
 
@@ -68,7 +68,7 @@ watch(
           </template>
 
           <template v-if="column.key === 'operation'">
-            <Space>
+            <div class="flex gap-2">
               <Button class="!px-0" size="small" type="link" @click="() => handleAdd(i)">
                 新增
               </Button>
@@ -83,16 +83,14 @@ watch(
               >
                 删除
               </Button>
-            </Space>
+            </div>
           </template>
         </template>
       </Table>
 
-      <Space class="mt-6">
-        <Button type="primary" @click="handleSave">
-          保存
-        </Button>
-      </Space>
+      <Button class="mt-2" type="primary" @click="handleSave">
+        保存
+      </Button>
     </Form>
   </div>
 </template>

@@ -34,7 +34,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
       />
     </nav>
 
-    <header />
+    <header>{{ route.name }}</header>
 
     <main>
       <router-view />
@@ -57,7 +57,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
 
   > header {
     @apply grid-col-start-2 grid-col-end-3 grid-row-start-1 grid-row-end-2;
-    @apply bg-gray-100 p-1;
+    @apply flex items-center font-500 p-1;
   }
 
   > main {
