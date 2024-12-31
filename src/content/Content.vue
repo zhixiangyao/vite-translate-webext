@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ModalSearch from './components/ModalSearch.vue'
-import ModalTranslate from './components/ModalTranslate.vue'
-import { useModalSearch } from './composables/useModalSearch'
-import { useModalTranslate } from './composables/useModalTranslate'
+import { useModalSearch } from './components/ModalSearch/composables/useModalSearch'
+import ModalSearch from './components/ModalSearch/index.vue'
+import { useModalTranslate } from './components/ModalTranslate/composables/useModalTranslate'
+import ModalTranslate from './components/ModalTranslate/index.vue'
 
 defineOptions({ name: 'App' })
 defineProps<{ root?: HTMLElement }>()

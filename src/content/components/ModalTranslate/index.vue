@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { useModalTranslate } from '../composables/useModalTranslate'
+import type { useModalTranslate } from './composables/useModalTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
-import { useModalTranslateDraggable } from '../composables/useModalTranslateDraggable'
-import Empty from './Empty.vue'
-
-import Result from './Result.vue'
+import Empty from './components/Empty.vue'
+import Result from './components/Result.vue'
+import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
 
 interface Props {
   top: number
