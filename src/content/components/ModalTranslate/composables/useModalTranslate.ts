@@ -4,6 +4,20 @@ import { EnumTranslateLang } from '~/constant/enum'
 import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
 
+function isFiftyPercentLetters(str: string) {
+  str = str.replaceAll(' ', '')
+
+  let letterCount = 0
+
+  for (let i = 0; i < str.length; i++) {
+    if (/[a-z]/i.test(str[i])) {
+      letterCount++
+    }
+  }
+
+  return letterCount / str.length >= 0.5
+}
+
 interface State {
   top: number
   left: number
@@ -62,9 +76,15 @@ export function useModalTranslate(root?: HTMLElement) {
       return
     }
 
+    const isEnglish = isFiftyPercentLetters(text)
+
     try {
       state.loading = true
-      const data = await translate.run(text, EnumTranslateLang.EN, EnumTranslateLang.ZH)
+      const data = await translate.run(
+        text,
+        isEnglish ? EnumTranslateLang.EN : EnumTranslateLang.ZH,
+        isEnglish ? EnumTranslateLang.ZH : EnumTranslateLang.EN,
+      )
       state.result = data
       data && (storageTranslateCacheMap.value[text] = data)
     }
