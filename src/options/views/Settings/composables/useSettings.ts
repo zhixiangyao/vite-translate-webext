@@ -2,7 +2,8 @@ import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { App } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
-import { defaultStorageSetting, storageSetting } from '~/logic'
+import { DEFAULT_SETTING } from '~/constant/settings'
+import { storageSetting } from '~/logic'
 
 interface FormType {
   apiUrl: string
@@ -29,10 +30,10 @@ export function useSettings() {
   })
   const disabledSave = computed(() => {
     return (
-      defaultStorageSetting.api.url === formState.apiUrl
-      && defaultStorageSetting.api.token === formState.apiToken
-      && defaultStorageSetting.api.timeout === formState.apiTimeout * 1000
-      && cssBeautify(defaultStorageSetting.highlight.style) === formState.highlightStyle
+      DEFAULT_SETTING.api.url === formState.apiUrl
+      && DEFAULT_SETTING.api.token === formState.apiToken
+      && DEFAULT_SETTING.api.timeout === formState.apiTimeout * 1000
+      && cssBeautify(DEFAULT_SETTING.highlight.style) === formState.highlightStyle
     )
   })
 
@@ -49,15 +50,15 @@ export function useSettings() {
   async function handleReset() {
     formRef.value?.clearValidate()
 
-    formState.apiUrl = defaultStorageSetting.api.url
-    formState.apiToken = defaultStorageSetting.api.token
-    formState.apiTimeout = defaultStorageSetting.api.timeout / 1000
-    formState.highlightStyle = cssBeautify(defaultStorageSetting.highlight.style)
+    formState.apiUrl = DEFAULT_SETTING.api.url
+    formState.apiToken = DEFAULT_SETTING.api.token
+    formState.apiTimeout = DEFAULT_SETTING.api.timeout / 1000
+    formState.highlightStyle = cssBeautify(DEFAULT_SETTING.highlight.style)
 
-    storageSetting.value.api.url = defaultStorageSetting.api.url
-    storageSetting.value.api.token = defaultStorageSetting.api.token
-    storageSetting.value.api.timeout = defaultStorageSetting.api.timeout
-    storageSetting.value.highlight.style = defaultStorageSetting.highlight.style
+    storageSetting.value.api.url = DEFAULT_SETTING.api.url
+    storageSetting.value.api.token = DEFAULT_SETTING.api.token
+    storageSetting.value.api.timeout = DEFAULT_SETTING.api.timeout
+    storageSetting.value.highlight.style = DEFAULT_SETTING.highlight.style
     message.success('恢复默认成功')
   }
 

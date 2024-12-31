@@ -1,6 +1,6 @@
 import { useDebounceFn } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
-import { highlight, setupApp, storageActivityWebsiteMap, storageSetting, storageWordList, unhighlight } from '~/logic'
+import { highlight, storageActivityWebsiteMap, storageSetting, storageWordList, unhighlight } from '~/logic'
 
 import App from './Content.vue'
 import '~/styles'
@@ -63,5 +63,4 @@ watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
 window.addEventListener('load', updatePage)
 
 const app = createApp(App)
-setupApp(app, { context: 'content' })
 app.mount(createRoot(document.querySelector('html')!))

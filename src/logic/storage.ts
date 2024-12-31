@@ -1,5 +1,6 @@
 import type { RecordType } from '~/options/views/BookList/composables/useBookList'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
+import { DEFAULT_SETTING } from '~/constant/settings'
 
 /** 当前 Tab 信息 */
 export const storageCurrentTab = useWebExtensionStorage<{ id?: number }>('webext-current-tab', { id: void 0 })
@@ -20,25 +21,14 @@ export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, an
   { listenToStorageChanges: false },
 )
 
-export const defaultStorageSetting = {
-  api: {
-    url: 'http://home.yaozhixiang.top:1188/translate',
-    token: 'deeplx_yzx',
-    timeout: 10_000,
-  },
-  highlight: {
-    style: 'span[data-highlighted-word] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }',
-  },
-}
-
 /** 设置 */
 export const storageSetting = useWebExtensionStorage('webext-setting', {
   api: {
-    url: defaultStorageSetting.api.url,
-    token: defaultStorageSetting.api.token,
-    timeout: defaultStorageSetting.api.timeout,
+    url: DEFAULT_SETTING.api.url,
+    token: DEFAULT_SETTING.api.token,
+    timeout: DEFAULT_SETTING.api.timeout,
   },
   highlight: {
-    style: defaultStorageSetting.highlight.style,
+    style: DEFAULT_SETTING.highlight.style,
   },
 })
