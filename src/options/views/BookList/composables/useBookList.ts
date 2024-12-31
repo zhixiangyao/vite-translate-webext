@@ -1,7 +1,6 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { ColumnsType } from 'ant-design-vue/es/table'
-
 import { App } from 'ant-design-vue'
 import { storageWordList } from '~/logic/storage'
 

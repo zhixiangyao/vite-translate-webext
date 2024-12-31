@@ -3,7 +3,7 @@ import { storageActivityWebsiteMap } from '~/logic/storage'
 
 const key = ref('')
 
-function handleOpenOptionsPage() {
+function handleOpenDashboard() {
   browser.runtime.openOptionsPage()
 }
 
@@ -32,8 +32,8 @@ onMounted(updateKey)
 
 <template>
   <main class="popup">
-    <WButton dark align="left" class="w-full" @click="handleOpenOptionsPage">
-      Open Options
+    <WButton dark align="left" class="w-full" @click="handleOpenDashboard">
+      Dashboard
     </WButton>
 
     <WButton
