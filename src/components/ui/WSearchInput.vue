@@ -44,8 +44,8 @@ function search() {
       <CloseOutlined title="点击清除" @click="clear" />
     </WIconWrapper>
 
-    <WIconWrapper>
-      <SearchOutlined :class="disabled && '!cursor-not-allowed'" title="点击搜索" @click="search" />
+    <WIconWrapper :disabled="disabled">
+      <SearchOutlined title="点击搜索" @click="search" />
     </WIconWrapper>
   </div>
 </template>

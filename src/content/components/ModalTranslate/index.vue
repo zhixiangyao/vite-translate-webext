@@ -50,22 +50,22 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
     :style="`top:${top}px;left:${left}px`"
   >
     <header ref="refHeader" class="header">
-      <div class="inline-flex gap-1">
+      <div class="inline-flex gap-[2px]">
         <WIconWrapper>
-          <PushpinFilled v-if="pin" class="cursor-pointer" title="点击取消固定" @click="pin = false" />
-          <PushpinOutlined v-else class="cursor-pointer" title="点击固定" @click="pin = true" />
+          <PushpinFilled v-if="pin" title="点击取消固定" @click="pin = false" />
+          <PushpinOutlined v-else title="点击固定" @click="pin = true" />
         </WIconWrapper>
 
-        <template v-if="isWord">
-          <WIconWrapper>
-            <HeartFilled v-if="favorite" class="cursor-pointer" title="点击取消收藏" @click="$emit('remove', text)" />
-            <HeartOutlined v-else class="cursor-pointer" title="点击收藏" @click="$emit('add', text)" />
-          </WIconWrapper>
-        </template>
+        <WIconWrapper :show="!isWord">
+          <template v-if="isWord">
+            <HeartFilled v-if="favorite" title="点击取消收藏" @click="$emit('remove', text)" />
+            <HeartOutlined v-else title="点击收藏" @click="$emit('add', text)" />
+          </template>
+        </WIconWrapper>
       </div>
 
       <WIconWrapper>
-        <CloseOutlined class="cursor-pointer" title="关闭" @click="$emit('close')" />
+        <CloseOutlined title="关闭" @click="$emit('close')" />
       </WIconWrapper>
     </header>
 
