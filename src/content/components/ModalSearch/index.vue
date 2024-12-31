@@ -26,8 +26,7 @@ defineEmits<Emits>()
 <style scoped>
 .modal-search {
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-
-  @apply fixed z-999 bg-white p-1 cursor-pointer;
+  @apply fixed z-100000000000000000000 bg-white p-1 cursor-pointer;
   @apply color-black text-sm font-bold;
   @apply flex items-center gap-1;
 }

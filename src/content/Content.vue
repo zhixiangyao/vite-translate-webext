@@ -4,11 +4,10 @@ import ModalSearch from './components/ModalSearch/index.vue'
 import { useModalTranslate } from './components/ModalTranslate/composables/useModalTranslate'
 import ModalTranslate from './components/ModalTranslate/index.vue'
 
-defineProps<{ root?: HTMLElement }>()
+const props = defineProps<{ root?: HTMLElement }>()
 
-const modalTranslate = useModalTranslate()
-const disabledSearch = computed(() => modalTranslate.state.open)
-const modalSearch = useModalSearch(disabledSearch)
+const modalTranslate = useModalTranslate(props.root)
+const modalSearch = useModalSearch(computed(() => modalTranslate.state.open))
 
 function search() {
   modalSearch.handleHidden()

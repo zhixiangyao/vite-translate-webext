@@ -13,7 +13,7 @@ interface State {
   result: DeeplxResponse | undefined
 }
 
-export function useModalTranslate() {
+export function useModalTranslate(root?: HTMLElement) {
   const translate = useTranslate()
 
   const state = reactive<State>({
@@ -108,7 +108,7 @@ export function useModalTranslate() {
     !state.pin && handleHidden()
   }
 
-  useEventListener(document, 'click', listener)
+  useEventListener(root ?? document, 'click', listener)
   useEventListener(document, 'keydown', e => e.key === 'Escape' && handleHidden())
 
   return {
