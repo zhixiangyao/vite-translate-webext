@@ -1,7 +1,7 @@
 import type { ProtocolMap } from 'webext-bridge'
 import { message } from 'ant-design-vue'
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
-import { EnumResponseCode } from '~/enum'
+import { EnumResponseCode } from '~/constant/enum'
 
 export function useBackgroundFetch() {
   async function post<T extends Record<string, any>>(
