@@ -3,6 +3,7 @@
 import type { UserConfig } from 'vite'
 import { dirname, relative } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -24,6 +25,15 @@ export const sharedConfig: UserConfig = {
   },
   plugins: [
     Vue(),
+
+    vueJsx({
+      /**
+       * options are passed on to @vue/babel-plugin-jsx
+       * https://github.com/vuejs/jsx-next/blob/dev/packages/babel-plugin-jsx/README-zh_CN.md
+       */
+      optimize: true,
+      enableObjectSlots: true,
+    }),
 
     AutoImport({
       imports: ['vue', { 'webextension-polyfill': [['=', 'browser']] }],
