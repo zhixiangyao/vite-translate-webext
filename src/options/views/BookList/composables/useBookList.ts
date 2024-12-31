@@ -5,7 +5,7 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import { App } from 'ant-design-vue'
 import { storageWordList } from '~/logic'
 
-interface RecordType {
+export interface RecordType {
   word: string
 }
 

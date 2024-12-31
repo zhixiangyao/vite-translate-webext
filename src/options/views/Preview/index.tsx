@@ -24,7 +24,7 @@ export default defineComponent({
 
         <div
           ref={previewContainer}
-          class="p-4 items-center h-full border border-dashed border-red-6 rounded-sm text-size-3xl"
+          class="p-4 items-center h-full border border-dashed border-red-6 rounded-sm text-size-base md:text-size-xl lg:text-size-2xl xl:text-size-3xl"
         >
           If you directly open the above index.html in your browser, you will find that it throws an error because ES
           modules cannot work over the file:// protocol, which is the protocol the browser uses when you open a local

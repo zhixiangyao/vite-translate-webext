@@ -47,6 +47,8 @@ export function useSettings() {
   }
 
   async function handleReset() {
+    formRef.value?.clearValidate()
+
     formState.apiUrl = defaultStorageSetting.api.url
     formState.apiToken = defaultStorageSetting.api.token
     formState.apiTimeout = defaultStorageSetting.api.timeout / 1000
