@@ -15,7 +15,7 @@ export const views = [
     name: 'Preview',
     title: '预览',
     icon: () => h(EyeOutlined),
-    component: () => import('~/options/views/Preview/index.vue'),
+    component: () => import('~/options/views/Preview/index'),
   },
   {
     path: 'settings',

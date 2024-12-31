@@ -4,7 +4,6 @@ import ModalSearch from './components/ModalSearch/index.vue'
 import { useModalTranslate } from './components/ModalTranslate/composables/useModalTranslate'
 import ModalTranslate from './components/ModalTranslate/index.vue'
 
-defineOptions({ name: 'App' })
 defineProps<{ root?: HTMLElement }>()
 
 const modalTranslate = useModalTranslate()
@@ -33,6 +32,7 @@ function search() {
     @add="modalTranslate.handleAdd"
     @remove="modalTranslate.handleRemove"
   />
+
   <ModalSearch
     :open="modalSearch.state.open"
     :text="modalSearch.state.text"

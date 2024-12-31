@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-defineOptions({ name: 'ShadowHost' })
+interface Props {
+  root?: HTMLElement
+}
 
-const props = defineProps<{ root?: HTMLElement | null }>()
+defineOptions({ name: 'ShadowHost' })
+const props = defineProps<Props>()
 
 const Content = defineAsyncComponent({
   loader: () => import('~/content/Content.vue'),
@@ -11,7 +14,7 @@ const ref = useTemplateRef('ref')
 
 const id = __NAME__
 
-function init(root: HTMLElement) {
+function init(root: Props['root']) {
   const shadowRoot = ref.value!.attachShadow({ mode: __DEV__ ? 'open' : 'closed' })
 
   const content = document.createElement('div')
@@ -26,16 +29,7 @@ function init(root: HTMLElement) {
   app.mount(content)
 }
 
-const { stop } = watch(
-  () => props.root,
-  (root) => {
-    if (root) {
-      stop()
-      init(root)
-    }
-  },
-  { immediate: true },
-)
+onMounted(() => init(props.root))
 </script>
 
 <template>
