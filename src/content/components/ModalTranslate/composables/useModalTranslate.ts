@@ -1,6 +1,7 @@
 import { useEventListener, useMouse } from '@vueuse/core'
 
-import { storageTranslateCacheMap, storageWordList } from '~/logic'
+import { EnumTranslateLang } from '~/constant/enum'
+import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
 
 interface State {
@@ -63,7 +64,7 @@ export function useModalTranslate(root?: HTMLElement) {
 
     try {
       state.loading = true
-      const data = await translate.run(text, 'EN', 'ZH')
+      const data = await translate.run(text, EnumTranslateLang.EN, EnumTranslateLang.ZH)
       state.result = data
       data && (storageTranslateCacheMap.value[text] = data)
     }

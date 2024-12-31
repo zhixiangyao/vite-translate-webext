@@ -1,5 +1,5 @@
 import type { Tabs } from 'webextension-polyfill'
-import { storageCurrentTab } from '~/logic'
+import { storageCurrentTab } from '~/logic/storage'
 
 import('./hmr') // only on dev mode
 import('./registers/event-activity')

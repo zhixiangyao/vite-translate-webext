@@ -3,3 +3,8 @@ export enum EnumResponseCode {
   AbortError,
   Success,
 }
+
+export enum EnumTranslateLang {
+  ZH = 'ZH',
+  EN = 'EN',
+}

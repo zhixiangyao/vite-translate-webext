@@ -2,8 +2,8 @@ import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { App } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
-import { DEFAULT_SETTING } from '~/constant/settings'
-import { storageSetting } from '~/logic'
+import { DEFAULT_SETTING } from '~/constant/map'
+import { storageSetting } from '~/logic/storage'
 
 interface FormType {
   apiUrl: string

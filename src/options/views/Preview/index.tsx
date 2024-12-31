@@ -1,5 +1,6 @@
 import { useStyleTag } from '@vueuse/core'
-import { highlight, storageSetting, storageWordList } from '~/logic'
+import { highlight } from '~/logic/highlight'
+import { storageSetting, storageWordList } from '~/logic/storage'
 import ShadowHost from './components/ShadowHost.vue'
 
 export default defineComponent({

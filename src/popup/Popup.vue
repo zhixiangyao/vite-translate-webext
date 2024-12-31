@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { storageActivityWebsiteMap } from '~/logic'
+import { storageActivityWebsiteMap } from '~/logic/storage'
 
 const key = ref('')
 

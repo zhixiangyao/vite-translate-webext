@@ -1,6 +1,6 @@
 import type { RecordType } from '~/options/views/BookList/composables/useBookList'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
-import { DEFAULT_SETTING } from '~/constant/settings'
+import { DEFAULT_SETTING } from '~/constant/map'
 
 /** 当前 Tab 信息 */
 export const storageCurrentTab = useWebExtensionStorage<{ id?: number }>('webext-current-tab', { id: void 0 })

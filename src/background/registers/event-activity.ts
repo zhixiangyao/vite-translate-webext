@@ -1,5 +1,5 @@
 import { onMessage } from 'webext-bridge/background'
-import { storageCurrentTab } from '~/logic'
+import { storageCurrentTab } from '~/logic/storage'
 
 onMessage('event-activity', async ({ data }) => {
   const tabId = storageCurrentTab.value.id

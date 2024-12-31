@@ -1,7 +1,6 @@
+import type { EnumTranslateLang } from '~/constant/enum'
 import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
-import { storageSetting } from '~/logic'
-
-type Lang = 'ZH' | 'EN'
+import { storageSetting } from '~/logic/storage'
 
 export interface DeeplxResponse {
   alternatives: string[]
@@ -9,14 +8,14 @@ export interface DeeplxResponse {
   data: string
   id: number
   method: 'Free'
-  source_lang: Lang
-  target_lang: Lang
+  source_lang: EnumTranslateLang
+  target_lang: EnumTranslateLang
 }
 
 export function useTranslate() {
   const fetch = useBackgroundFetch()
 
-  async function run(text: string, source_lang: Lang, target_lang: Lang) {
+  async function run(text: string, source_lang: EnumTranslateLang, target_lang: EnumTranslateLang) {
     const params = {
       text,
       source_lang,

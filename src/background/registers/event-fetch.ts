@@ -1,6 +1,6 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
 import { EnumResponseCode } from '~/constant/enum'
-import { storageCurrentTab, storageSetting } from '~/logic'
+import { storageCurrentTab, storageSetting } from '~/logic/storage'
 
 const context = 'content-script'
 

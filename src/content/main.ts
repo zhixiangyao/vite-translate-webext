@@ -1,6 +1,7 @@
 import { useDebounceFn } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
-import { highlight, storageActivityWebsiteMap, storageSetting, storageWordList, unhighlight } from '~/logic'
+import { highlight, unhighlight } from '~/logic/highlight'
+import { storageActivityWebsiteMap, storageSetting, storageWordList } from '~/logic/storage'
 
 import App from './Content.vue'
 import '~/styles'
