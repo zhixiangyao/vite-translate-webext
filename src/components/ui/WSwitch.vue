@@ -32,7 +32,7 @@ const checked = defineModel<boolean>('checked', { default: false })
   }
 
   > .dot {
-    @apply absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition;
+    @apply absolute left-1 top-1 bg-white w-4 h-4 rounded-full;
   }
 }
 </style>

@@ -4,10 +4,11 @@ interface Props {
   height?: string
   show?: boolean
   disabled?: boolean
+  color?: string
 }
 
 defineOptions({ name: 'WIconWrapper' })
-withDefaults(defineProps<Props>(), { width: '20px', height: '20px' })
+withDefaults(defineProps<Props>(), { width: '20px', height: '20px', color: '#000' })
 </script>
 
 <template>
@@ -20,6 +21,7 @@ withDefaults(defineProps<Props>(), { width: '20px', height: '20px' })
 .w-icon-wrapper {
   @apply flex justify-center items-center rounded-sm select-none cursor-pointer;
   transition: background-color 400ms ease-out;
+  color: v-bind(color);
 
   &:not(.show) {
     @apply hover:bg-gray-3;
