@@ -18,16 +18,17 @@ defineEmits<Emits>()
 </script>
 
 <template>
-  <div v-show="open" class="modal-search" :style="`left:${left}px;top:${top}px;`" @click="$emit('search')">
-    <SearchOutlined /> Search
+  <div v-show="open" class="modal-search" :style="`left:${left}px;top:${top}px;`">
+    <WIconWrapper @click="$emit('search')">
+      <SearchOutlined />
+    </WIconWrapper>
   </div>
 </template>
 
 <style scoped>
 .modal-search {
-  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  @apply fixed z-100000000000000000000 bg-white p-1 cursor-pointer;
-  @apply color-black text-sm font-bold;
-  @apply flex items-center gap-1;
+  box-shadow: 2px 3px 7px 2px rgba(0, 0, 0, 0.3);
+  @apply fixed z-100000000000000000000 bg-white cursor-pointer rounded-sm;
+  @apply flex items-center;
 }
 </style>

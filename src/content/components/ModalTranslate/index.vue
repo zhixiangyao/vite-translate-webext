@@ -94,8 +94,8 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
 
 <style scoped>
 .modal-translate {
-  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  @apply fixed z-100000000000000000000 min-w-300px max-w-500px bg-white color-black overflow-hidden;
+  box-shadow: 2px 3px 7px 2px rgba(0, 0, 0, 0.3);
+  @apply fixed z-100000000000000000000 min-w-300px max-w-500px bg-white color-black overflow-hidden rounded-sm;
 
   &.is-dragging * {
     @apply select-none;

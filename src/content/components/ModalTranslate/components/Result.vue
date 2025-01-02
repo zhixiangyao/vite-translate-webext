@@ -36,8 +36,10 @@ function handleCopy(text: string, i: number) {
         class="flex justify-between items-center h-5 text-sm pl-2 cursor-pointer select-none"
         @click="expendMap[i] = !expendMap[i]"
       >
-        <CopyOutlined v-if="copiedIndex !== i" title="复制" @click.prevent.stop="() => handleCopy(alternative, i)" />
-        <CheckOutlined v-else />
+        <WIconWrapper>
+          <CopyOutlined v-if="copiedIndex !== i" title="复制" @click.prevent.stop="() => handleCopy(alternative, i)" />
+          <CheckOutlined v-else />
+        </WIconWrapper>
 
         <WIconWrapper>
           <LeftOutlined class="transition-transform" :class="expendMap[i] && 'expend'" />

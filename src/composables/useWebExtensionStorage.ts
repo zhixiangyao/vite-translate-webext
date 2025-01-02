@@ -8,7 +8,6 @@ import type { Storage } from 'webextension-polyfill'
 import { StorageSerializers } from '@vueuse/core'
 import { pausableWatch, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue'
-import { storage } from 'webextension-polyfill'
 
 export type WebExtensionStorageOptions<T> = UseStorageAsyncOptions<T>
 
@@ -33,17 +32,18 @@ export function guessSerializerType(rawInit: unknown) {
                   : 'number'
 }
 
+// https://developer.chrome.com/docs/extensions/reference/api/storage
 const storageInterface: StorageLikeAsync = {
   removeItem(key: string) {
-    return storage.local.remove(key)
+    return browser.storage.local.remove(key)
   },
 
   setItem(key: string, value: string) {
-    return storage.local.set({ [key]: value })
+    return browser.storage.local.set({ [key]: value })
   },
 
   async getItem(key: string) {
-    const storedData = await storage.local.get(key)
+    const storedData = await browser.storage.local.get(key)
 
     return storedData[key] as string
   },
@@ -78,6 +78,8 @@ export function useWebExtensionStorage<T>(
   const type = guessSerializerType(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
+  // https://github.com/vueuse/vueuse/blob/302be9a1b92908aeef4ed1a5a094291aa9071130/packages/core/useStorage/index.ts#L21
+  // https://vueuse.org/core/useStorage/#custom-serialization
   const serializer = options.serializer ?? StorageSerializers[type]
 
   async function read(event?: { key: string, newValue: string | null }) {
@@ -149,10 +151,10 @@ export function useWebExtensionStorage<T>(
       }
     }
 
-    storage.onChanged.addListener(listener)
+    browser.storage.onChanged.addListener(listener)
 
     tryOnScopeDispose(() => {
-      storage.onChanged.removeListener(listener)
+      browser.storage.onChanged.removeListener(listener)
     })
   }
 
