@@ -1,68 +1,26 @@
 <script lang="ts" setup>
-import type { ItemType, MenuProps } from 'ant-design-vue'
-import { Menu } from 'ant-design-vue'
-import { useRoute, useRouter } from 'vue-router'
-import { views } from '../router'
+import LayoutHeader from './components/LayoutHeader.vue'
+import LayoutMain from './components/LayoutMain.vue'
+import LayoutNav from './components/LayoutNav.vue'
 
-const items = views.map<ItemType>(view => ({
-  key: view.name,
-  icon: view.icon,
-  label: view.title,
-  title: view.title,
-}))
-
-const route = useRoute()
-const router = useRouter()
-const state = reactive({
-  selectedKeys: [route.name!.toString()],
-})
-
-const handleClick: MenuProps['onClick'] = (menuInfo) => {
-  router.push({ name: menuInfo.key.toString() })
-}
+defineOptions({ name: 'Layout' })
 </script>
 
 <template>
   <div class="layout">
-    <nav>
-      <Menu
-        v-model:selected-keys="state.selectedKeys"
-        class="h-full bg-#f0f0f0 !border-none"
-        mode="vertical"
-        :items="items"
-        @click="handleClick"
-      />
-    </nav>
+    <LayoutNav />
 
-    <header>{{ route.name }}</header>
+    <LayoutHeader />
 
-    <main>
-      <router-view />
-    </main>
+    <LayoutMain />
   </div>
 </template>
 
 <style scoped>
 .layout {
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 48px 1fr;
-
   @apply h-screen w-screen;
   @apply grid gap-1;
-
-  > nav {
-    @apply grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-3;
-    @apply flex flex-col justify-between flex-shrink-0;
-  }
-
-  > header {
-    @apply grid-col-start-2 grid-col-end-3 grid-row-start-1 grid-row-end-2;
-    @apply flex items-center font-500 p-1;
-  }
-
-  > main {
-    @apply grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3;
-    @apply p-1 overflow-auto;
-  }
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 48px 1fr;
 }
 </style>

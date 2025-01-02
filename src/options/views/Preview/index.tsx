@@ -1,4 +1,5 @@
 import { useStyleTag } from '@vueuse/core'
+import { theme } from 'ant-design-vue'
 import { highlight } from '~/logic/highlight'
 import { storageSetting, storageWordList } from '~/logic/storage'
 import ShadowHost from './components/ShadowHost.vue'
@@ -6,6 +7,7 @@ import ShadowHost from './components/ShadowHost.vue'
 export default defineComponent({
   name: 'Preview',
   setup() {
+    const { token } = theme.useToken()
     const previewContainer = ref<HTMLElement>()
     const { css } = useStyleTag(storageSetting.value.highlight.style)
     const words = computed(() => {
@@ -25,7 +27,8 @@ export default defineComponent({
 
         <div
           ref={previewContainer}
-          class="p-4 items-center h-full border border-dashed border-red-6 rounded-sm text-size-base md:text-size-xl lg:text-size-2xl xl:text-size-3xl"
+          class="p-4 items-center h-full border border-dashed rounded-sm text-size-base md:text-size-xl lg:text-size-2xl xl:text-size-3xl"
+          style={{ borderColor: token.value.colorPrimary }}
         >
           If you directly open the above index.html in your browser, you will find that it throws an error because ES
           modules cannot work over the file:// protocol, which is the protocol the browser uses when you open a local
