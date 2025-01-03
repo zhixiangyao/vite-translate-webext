@@ -1,16 +1,16 @@
 /// <reference types="vitest" />
 
-import { dirname, relative } from 'node:path'
 import type { UserConfig } from 'vite'
-import { defineConfig } from 'vite'
+import { dirname, relative } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
-import { isDev, port, r } from './scripts/utils'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
+
 import packageJson from './package.json'
+import { isDev, port, r } from './scripts/utils'
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -26,16 +26,19 @@ export const sharedConfig: UserConfig = {
   plugins: [
     Vue(),
 
+    vueJsx({
+      /**
+       * options are passed on to @vue/babel-plugin-jsx
+       * https://github.com/vuejs/jsx-next/blob/dev/packages/babel-plugin-jsx/README-zh_CN.md
+       */
+      optimize: true,
+      enableObjectSlots: true,
+    }),
+
     AutoImport({
-      imports: [
-        'vue',
-        {
-          'webextension-polyfill': [
-            ['=', 'browser'],
-          ],
-        },
-      ],
+      imports: ['vue', { 'webextension-polyfill': [['=', 'browser']] }],
       dts: r('src/auto-imports.d.ts'),
+      resolvers: [],
     }),
 
     // https://github.com/antfu/unplugin-vue-components
@@ -43,16 +46,8 @@ export const sharedConfig: UserConfig = {
       dirs: [r('src/components')],
       // generate `components.d.ts` for ts support with Volar
       dts: r('src/components.d.ts'),
-      resolvers: [
-        // auto import icons
-        IconsResolver({
-          prefix: '',
-        }),
-      ],
+      resolvers: [],
     }),
-
-    // https://github.com/antfu/unplugin-icons
-    Icons(),
 
     // https://github.com/unocss/unocss
     UnoCSS(),
@@ -68,14 +63,8 @@ export const sharedConfig: UserConfig = {
     },
   ],
   optimizeDeps: {
-    include: [
-      'vue',
-      '@vueuse/core',
-      'webextension-polyfill',
-    ],
-    exclude: [
-      'vue-demi',
-    ],
+    include: ['vue', '@vueuse/core', 'webextension-polyfill', 'ant-design-vue', '@ant-design/icons-vue', 'monaco-editor', 'js-beautify'],
+    exclude: [],
   },
 }
 
@@ -90,9 +79,8 @@ export default defineConfig(({ command }) => ({
     origin: `http://localhost:${port}`,
   },
   build: {
-    watch: isDev
-      ? {}
-      : undefined,
+    target: 'modules',
+    watch: isDev ? {} : undefined,
     outDir: r('extension/dist'),
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
@@ -104,7 +92,6 @@ export default defineConfig(({ command }) => ({
       input: {
         options: r('src/options/index.html'),
         popup: r('src/popup/index.html'),
-        sidepanel: r('src/sidepanel/index.html'),
       },
     },
   },

@@ -1,12 +1,17 @@
 {
-  "cSpell.words": ["Vitesse"],
+  "cSpell.words": [
+    "deeplx",
+    "esno",
+    "kolorist",
+    "Vitesse"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "vite.autoStart": false,
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
+  "css.customData": [".vscode/unocss.json"],
   "files.associations": {
-    "*.css": "postcss"
+    "*.css": "tailwindcss"
   }
 }

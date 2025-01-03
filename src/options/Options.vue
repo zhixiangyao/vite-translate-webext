@@ -1,18 +1,45 @@
 <script setup lang="ts">
-import logo from '~/assets/logo.svg'
-import { storageDemo } from '~/logic/storage'
+import type { ConfigProviderProps } from 'ant-design-vue'
+import type { SeedToken } from 'ant-design-vue/es/theme/internal'
+import { useDark } from '@vueuse/core'
+import { App, ConfigProvider, theme } from 'ant-design-vue'
+
+const tokenDark = theme.darkAlgorithm({
+  ...theme.defaultSeed,
+  borderRadius: 2,
+  colorPrimary: '#A0D911',
+} satisfies SeedToken)
+const tokenLight = theme.defaultAlgorithm({
+  ...theme.defaultSeed,
+  borderRadius: 2,
+  colorPrimary: '#A0D911',
+} satisfies SeedToken)
+
+const isDark = useDark()
+const defaultTheme = computed<ConfigProviderProps['theme']>(() => ({
+  token: isDark.value ? tokenDark : tokenLight,
+}))
 </script>
 
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200">
-    <img :src="logo" class="icon-btn mx-2 text-2xl" alt="extension icon">
-    <div>Options</div>
-    <SharedSubtitle />
-
-    <input v-model="storageDemo" class="border border-gray-400 rounded px-2 py-1 mt-2">
-
-    <div class="mt-4">
-      Powered by Vite <pixelarticons-zap class="align-middle inline-block" />
-    </div>
-  </main>
+  <ConfigProvider :theme="defaultTheme">
+    <App>
+      <router-view />
+    </App>
+  </ConfigProvider>
 </template>
+
+<style>
+html {
+  --dark-bg-color: #000;
+  --light-bg-color: #f5f5f5;
+
+  #app {
+    background-color: var(--light-bg-color);
+  }
+
+  &.dark #app {
+    background-color: var(--dark-bg-color);
+  }
+}
+</style>

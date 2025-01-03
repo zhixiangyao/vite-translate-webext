@@ -1,65 +1,31 @@
-import { onMessage, sendMessage } from 'webext-bridge/background'
 import type { Tabs } from 'webextension-polyfill'
+import { storageCurrentTab } from '~/logic/storage'
 
-// only on dev mode
-if (import.meta.hot) {
-  // @ts-expect-error for background HMR
-  import('/@vite/client')
-  // load latest content script
-  import('./contentScriptHMR')
+import('./hmr') // only on dev mode
+import('./registers/event-activity')
+import('./registers/event-fetch')
+
+async function getCurrentTab(): Promise<Tabs.Tab | null> {
+  const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
+
+  return tab ?? null
 }
 
-// remove or turn this off if you don't use side panel
-const USE_SIDE_PANEL = true
-
-// to toggle the sidepanel with the action button in chromium:
-if (USE_SIDE_PANEL) {
-  // @ts-expect-error missing types
-  browser.sidePanel
-    .setPanelBehavior({ openPanelOnActionClick: true })
-    .catch((error: unknown) => console.error(error))
-}
-
-browser.runtime.onInstalled.addListener((): void => {
-  // eslint-disable-next-line no-console
-  console.log('Extension installed')
+/** 扩展加载时获取当前 tabId */
+browser.runtime.onInstalled.addListener(async () => {
+  const tab = await getCurrentTab()
+  storageCurrentTab.value.id = tab?.id
 })
 
-let previousTabId = 0
-
-// communication example: send previous tab title from background page
-// see shim.d.ts for type declaration
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  if (!previousTabId) {
-    previousTabId = tabId
-    return
-  }
-
-  let tab: Tabs.Tab
-
-  try {
-    tab = await browser.tabs.get(previousTabId)
-    previousTabId = tabId
-  }
-  catch {
-    return
-  }
-
-  // eslint-disable-next-line no-console
-  console.log('previous tab', tab)
-  sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId })
+/** 监听 tab 激活时获取当前 tabId */
+browser.tabs.onActivated.addListener(({ tabId }) => {
+  storageCurrentTab.value.id = tabId
 })
 
-onMessage('get-current-tab', async () => {
-  try {
-    const tab = await browser.tabs.get(previousTabId)
-    return {
-      title: tab?.title,
-    }
-  }
-  catch {
-    return {
-      title: undefined,
-    }
-  }
+/** 监听窗口切换时获取当前 tabId */
+browser.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId === browser.windows.WINDOW_ID_NONE)
+    return // 没有窗口获得焦点
+  const tab = await getCurrentTab()
+  storageCurrentTab.value.id = tab?.id
 })

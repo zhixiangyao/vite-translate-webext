@@ -1,0 +1,50 @@
+<script lang="ts" setup>
+import { Button, Form, FormItem, Input, InputNumber } from 'ant-design-vue'
+import { useSettings } from './composables/useSettings'
+
+defineOptions({ name: 'Settings' })
+
+const CodeEditor = defineAsyncComponent({
+  loader: () => import('~/options/components/CodeEditor.vue'),
+})
+
+const { rules, formRef, formState, disabledSave, handleSave, handleReset } = useSettings()
+</script>
+
+<template>
+  <Form ref="formRef" class="w-200" label-align="left" :model="formState" :label-col="{ span: 4 }">
+    <FormItem label="请求 URL" name="apiUrl" :rules="rules.apiUrl">
+      <Input v-model:value="formState.apiUrl" />
+    </FormItem>
+
+    <FormItem label="请求 Token" name="apiToken" :rules="rules.apiToken">
+      <Input v-model:value="formState.apiToken" />
+    </FormItem>
+
+    <FormItem label="请求 Timeout" name="apiTimeout" :rules="rules.apiTimeout">
+      <InputNumber v-model:value="formState.apiTimeout" :min="1" :max="60" :precision="0" />
+    </FormItem>
+
+    <FormItem label="Highlight Style" name="highlightStyle" :rules="rules.highlightStyle">
+      <Suspense>
+        <CodeEditor v-model:code="formState.highlightStyle" language="css" />
+
+        <template #fallback>
+          <WLoading />
+        </template>
+      </Suspense>
+    </FormItem>
+
+    <FormItem>
+      <div class="flex gap-2">
+        <Button type="primary" @click="handleSave">
+          保存
+        </Button>
+
+        <Button :disabled="disabledSave" @click="handleReset">
+          恢复默认
+        </Button>
+      </div>
+    </FormItem>
+  </Form>
+</template>

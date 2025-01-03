@@ -1,22 +1,71 @@
 <script setup lang="ts">
-import { storageDemo } from '~/logic/storage'
+import { storageActivityWebsiteMap } from '~/logic/storage'
 
-function openOptionsPage() {
+const key = ref('')
+
+function handleOpenDashboard() {
   browser.runtime.openOptionsPage()
 }
+
+function handleEnable() {
+  if (!key.value || !storageActivityWebsiteMap.value)
+    return
+
+  storageActivityWebsiteMap.value[key.value] = !storageActivityWebsiteMap.value[key.value]
+}
+
+async function updateKey() {
+  const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
+
+  if (!tab.url)
+    return
+
+  const { host, protocol } = new URL(tab.url)
+
+  if (protocol.includes('http')) {
+    key.value = host
+  }
+}
+
+onMounted(updateKey)
 </script>
 
 <template>
-  <main class="w-[300px] px-4 py-5 text-center text-gray-700">
-    <Logo />
-    <div>Popup</div>
-    <SharedSubtitle />
+  <main class="popup">
+    <WButton dark align="left" class="w-full" @click="handleOpenDashboard">
+      Dashboard
+    </WButton>
 
-    <button class="btn mt-2" @click="openOptionsPage">
-      Open Options
-    </button>
-    <div class="mt-2">
-      <span class="opacity-50">Storage:</span> {{ storageDemo }}
-    </div>
+    <WButton
+      v-if="key"
+      dark
+      align="left"
+      class="w-full relative"
+      :class="{ activity: storageActivityWebsiteMap[key] }"
+      @click="handleEnable"
+    >
+      Enable
+    </WButton>
   </main>
 </template>
+
+<style scoped>
+main.popup {
+  @apply w-[160px] p-1 bg-black flex flex-col gap-1;
+
+  > button:nth-of-type(2) {
+    &::after {
+      content: '';
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+
+      @apply absolute w-2 h-2 bg-gray rounded-full;
+    }
+
+    &.activity::after {
+      @apply bg-green;
+    }
+  }
+}
+</style>
