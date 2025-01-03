@@ -32,7 +32,7 @@ const defaultTheme = computed<ConfigProviderProps['theme']>(() => ({
 <style>
 html {
   --dark-bg-color: #000;
-  --light-bg-color: #fafafa;
+  --light-bg-color: #f5f5f5;
 
   #app {
     background-color: var(--light-bg-color);

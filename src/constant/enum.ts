@@ -1,3 +1,7 @@
+export enum EnumDataSet {
+  highlightedWord = 'data-highlighted-word',
+}
+
 export enum EnumResponseCode {
   Error,
   AbortError,

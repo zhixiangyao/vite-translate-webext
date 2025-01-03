@@ -1,6 +1,4 @@
-enum EnumDataSet {
-  highlightedWord = 'data-highlighted-word',
-}
+import { EnumDataSet } from '~/constant/enum'
 
 enum EnumNodeType {
   element = 1,

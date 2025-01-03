@@ -1,3 +1,5 @@
+import { EnumDataSet } from './enum'
+
 export const DEFAULT_SETTING = {
   api: {
     url: 'http://home.yaozhixiang.top:1188/translate',
@@ -5,6 +7,6 @@ export const DEFAULT_SETTING = {
     timeout: 10_000,
   },
   highlight: {
-    style: 'span[data-highlighted-word] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }',
+    style: `span[${EnumDataSet.highlightedWord}] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }`,
   },
 }
