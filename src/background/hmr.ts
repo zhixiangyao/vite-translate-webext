@@ -18,7 +18,7 @@ if (import.meta.hot) {
     // inject the latest scripts
     browser.tabs
       .executeScript(tabId, {
-        file: `${isFirefox ? '' : '.'}/dist/contentScripts/index.global.js`,
+        file: `${isFirefox ? '' : '.'}/dist/contentScripts/index.mjs`,
         runAt: 'document_end',
       })
       .catch(error => console.error(error))
