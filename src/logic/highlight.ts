@@ -50,24 +50,26 @@ function highlightTextNode(nodeValue: string, parentNode: HTMLElement, regexList
   let text = nodeValue
 
   // 遍历所有的正则表达式，处理每个正则匹配的文本
-  regexList.forEach((regex) => {
-    text = text.replace(regex, (match) => {
+  for (let i = 0; i < regexList.length; i++) {
+    text = text.replace(regexList[i], (match) => {
       // 用 span 包裹每个匹配项，并应用样式
       return `<span ${EnumDataSet.highlightedWord}="true">${match}</span>`
     })
-  })
+  }
 
   if (text !== nodeValue) {
     parentNode.innerHTML = parentNode.innerHTML.replace(nodeValue, text)
   }
 }
 
-function traverseAndHighlight(node: HTMLElement, parentNode: HTMLElement, callbackList: Callback[]) {
+function traverseAndHighlight(node: HTMLElement, parentNode: HTMLElement) {
+  const callbackList: Callback[] = []
+
   switch (node.nodeType) {
     case EnumNodeType.text: {
-      const nodeValue = node.nodeValue
+      const nodeValue = node.nodeValue?.trim()
 
-      if (nodeValue && nodeValue.trim()) {
+      if (nodeValue) {
         callbackList.push(regexList => highlightTextNode(nodeValue, parentNode, regexList))
       }
 
@@ -76,12 +78,17 @@ function traverseAndHighlight(node: HTMLElement, parentNode: HTMLElement, callba
 
     case EnumNodeType.element: {
       if (node.childNodes && !excludeRegex.test(node.tagName) && !node.dataset?.highlightedWord) {
-        node.childNodes.forEach(child => traverseAndHighlight(child as HTMLElement, node, callbackList))
+        const childNodes = node.childNodes
+        for (let i = 0; i < childNodes.length; i++) {
+          callbackList.push(...traverseAndHighlight(childNodes[i] as HTMLElement, node))
+        }
       }
 
       break
     }
   }
+
+  return callbackList
 }
 
 export function highlight(words: string[]) {
@@ -89,10 +96,9 @@ export function highlight(words: string[]) {
     const ruleList = words.map(genWordRule)
     const html = document.querySelector('html')!
     const regexList = ruleList.map(rule => new RegExp(`\\b(${rule})\\b`, 'gi'))
-    const callbackList: Callback[] = []
 
-    requestIdleCallback(() => traverseAndHighlight(document.body, html, callbackList))
-    requestIdleCallback(() => callbackList.forEach(callback => callback(regexList)))
+    const callbackList = traverseAndHighlight(document.body, html)
+    callbackList.forEach(callback => requestIdleCallback(() => callback(regexList)))
     requestIdleCallback(() => unhighlightTextNode(ruleList))
   }
   catch (err) {

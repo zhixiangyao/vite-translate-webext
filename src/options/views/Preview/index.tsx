@@ -1,8 +1,10 @@
-import { useStyleTag } from '@vueuse/core'
+import { useDebounceFn, useStyleTag } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
 import { highlight } from '~/logic/highlight'
 import { storageSetting, storageWordList } from '~/logic/storage'
 import ShadowHost from './components/ShadowHost.vue'
+
+const debounceHighlight = useDebounceFn(highlight, 50)
 
 export default defineComponent({
   name: 'Preview',
@@ -19,7 +21,7 @@ export default defineComponent({
       value => (css.value = value),
     )
 
-    watch(() => words.value, highlight, { deep: true, immediate: true })
+    watch(() => words.value, debounceHighlight, { deep: true, immediate: true })
 
     return () => (
       <>

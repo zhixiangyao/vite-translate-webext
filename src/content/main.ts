@@ -18,12 +18,15 @@ const words = computed(() => {
 /** 创建 root 节点 */
 function createRoot(target: HTMLElement) {
   const container = document.createElement('div')
-  container.id = __NAME__
   const root = document.createElement('div')
   const styleEl = document.createElement('link')
   const shadowDOM = container.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || container
+
+  container.setAttribute('id', __NAME__)
+  container.setAttribute('style', 'display: unset; padding: unset; margin: unset;')
   styleEl.setAttribute('rel', 'stylesheet')
   styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
+
   shadowDOM.appendChild(styleEl)
   shadowDOM.appendChild(root)
   target.appendChild(container)
@@ -46,6 +49,7 @@ async function updateIcon(show: boolean) {
   sendMessage('event-activity', { show }, 'background')
 }
 
+/** 更新 style 要实时 */
 function updateStyle(highlight: typeof storageSetting.value.highlight) {
   const id = `style-${__NAME__}`
   const oldStyle = document.head.querySelector(id)
@@ -58,10 +62,9 @@ function updateStyle(highlight: typeof storageSetting.value.highlight) {
 }
 
 watch(() => enable.value, updateIcon, { immediate: true })
-watch(() => enable.value, updatePage)
+watch(() => enable.value, updatePage, { immediate: true })
 watch(() => words.value, updatePage, { deep: true })
 watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
-window.addEventListener('load', updatePage)
 
 const app = createApp(App)
 app.mount(createRoot(document.querySelector('html')!))
