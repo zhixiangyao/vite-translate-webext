@@ -1,40 +1,18 @@
 <script setup lang="ts">
-import ModalSearch, { useModalSearch } from '~/components/ModalSearch/index.vue'
-import ModalTranslate, { useModalTranslate } from '~/components/ModalTranslate/index.vue'
+import ModalSearch from '~/components/ModalSearch/index.vue'
+import ModalTranslate from '~/components/ModalTranslate/index.vue'
 
-const props = defineProps<{ root?: HTMLElement }>()
+defineProps<{ root?: HTMLElement }>()
 
-const modalTranslate = useModalTranslate(props.root)
-const modalSearch = useModalSearch(computed(() => modalTranslate.state.open))
+const ref = useTemplateRef('modal-translate')
 
-function search() {
-  modalSearch.handleHidden()
-  modalTranslate.handleShow(modalSearch.state.text, modalSearch.state.left, modalSearch.state.top)
+function search(text: string, left: number, top: number) {
+  ref.value?.show(text, left, top)
 }
 </script>
 
 <template>
-  <ModalTranslate
-    v-model:text="modalTranslate.state.text"
-    v-model:pin="modalTranslate.state.pin"
-    :open="modalTranslate.state.open"
-    :left="modalTranslate.state.left"
-    :top="modalTranslate.state.top"
-    :result="modalTranslate.state.result"
-    :loading="modalTranslate.state.loading"
-    :favorite="modalTranslate.favorite.value"
-    :root="root"
-    @search="modalTranslate.handleSearch"
-    @close="modalTranslate.handleHidden"
-    @add="modalTranslate.handleAdd"
-    @remove="modalTranslate.handleRemove"
-  />
+  <ModalTranslate ref="modal-translate" :root="root" />
 
-  <ModalSearch
-    :open="modalSearch.state.open"
-    :text="modalSearch.state.text"
-    :left="modalSearch.state.left"
-    :top="modalSearch.state.top"
-    @search="search"
-  />
+  <ModalSearch :disabled="!!ref?.state.open" @search="search" />
 </template>

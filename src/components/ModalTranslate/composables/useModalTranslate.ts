@@ -40,12 +40,6 @@ export function useModalTranslate(root?: HTMLElement) {
     result: void 0,
   })
   const mouse = useMouse()
-  const wordList = computed(() => {
-    return storageWordList.value.map(value => value.word.toLowerCase())
-  })
-  const favorite = computed(() => {
-    return wordList.value.includes(state.text.toLowerCase())
-  })
 
   function handleReset() {
     state.top = 0
@@ -61,7 +55,7 @@ export function useModalTranslate(root?: HTMLElement) {
     state.left = left
     state.top = top
 
-    handleSearch(text)
+    handleSearch()
   }
 
   function handleHidden() {
@@ -69,23 +63,23 @@ export function useModalTranslate(root?: HTMLElement) {
     handleReset()
   }
 
-  async function handleSearch(text: string) {
-    if (storageTranslateCacheMap.value[text]) {
-      state.result = storageTranslateCacheMap.value[text]
+  async function handleSearch() {
+    if (storageTranslateCacheMap.value[state.text]) {
+      state.result = storageTranslateCacheMap.value[state.text]
       return
     }
 
-    const isEnglish = isFiftyPercentLetters(text)
+    const isEnglish = isFiftyPercentLetters(state.text)
 
     try {
       state.loading = true
       const data = await translate.run(
-        text,
+        state.text,
         isEnglish ? EnumTranslateLang.EN : EnumTranslateLang.ZH,
         isEnglish ? EnumTranslateLang.ZH : EnumTranslateLang.EN,
       )
       state.result = data
-      data && (storageTranslateCacheMap.value[text] = data)
+      data && (storageTranslateCacheMap.value[state.text] = data)
     }
     catch {
       state.result = void 0
@@ -95,16 +89,16 @@ export function useModalTranslate(root?: HTMLElement) {
     }
   }
 
-  function handleAdd(text: string) {
+  function handleAdd() {
     storageWordList.value?.splice(storageWordList.value.length, 0, {
-      word: text.toLowerCase(),
+      word: state.text.toLowerCase(),
     })
   }
 
-  function handleRemove(text: string) {
+  function handleRemove() {
     const i = storageWordList.value
       .map(value => value.word.toLowerCase())
-      .findIndex(word => word === text.toLowerCase())
+      .findIndex(word => word === state.text.toLowerCase())
     storageWordList.value?.splice(i, 1)
   }
 
@@ -133,7 +127,6 @@ export function useModalTranslate(root?: HTMLElement) {
 
   return {
     state,
-    favorite,
     handleShow,
     handleHidden,
     handleSearch,

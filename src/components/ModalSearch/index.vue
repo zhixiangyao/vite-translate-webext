@@ -1,29 +1,30 @@
 <script setup lang="ts">
 import { SearchOutlined } from '@ant-design/icons-vue'
-
-interface Props {
-  top: number
-  left: number
-  text: string
-  open: boolean
-}
+import { useModalSearch } from './composables/useModalSearch'
 
 interface Emits {
-  search: []
+  search: [text: string, left: number, top: number]
 }
 
 defineOptions({ name: 'ModalSearch' })
-defineProps<Props>()
-defineEmits<Emits>()
-</script>
+const props = defineProps<{ disabled?: boolean }>()
+const emit = defineEmits<Emits>()
 
-<script lang="ts">
-export { useModalSearch } from './composables/useModalSearch'
+const modalSearch = useModalSearch(computed(() => props.disabled))
+
+function handle() {
+  modalSearch.handleHidden()
+  emit('search', modalSearch.state.text, modalSearch.state.left, modalSearch.state.top)
+}
 </script>
 
 <template>
-  <div v-show="open" class="modal-search" :style="`left:${left}px;top:${top}px;`">
-    <WIconWrapper @click="$emit('search')">
+  <div
+    v-show="modalSearch.state.open"
+    class="modal-search"
+    :style="`left:${modalSearch.state.left}px;top:${modalSearch.state.top}px;`"
+  >
+    <WIconWrapper @click="handle">
       <SearchOutlined />
     </WIconWrapper>
   </div>

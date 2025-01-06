@@ -1,53 +1,41 @@
 <script setup lang="ts">
-import type { useModalTranslate } from './composables/useModalTranslate'
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
+import { storageWordList } from '~/logic/storage'
 import Empty from './components/Empty.vue'
 import Result from './components/Result.vue'
+import { useModalTranslate } from './composables/useModalTranslate'
 import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
 
-interface Props {
-  top: number
-  left: number
-  open: boolean
-  result: ReturnType<typeof useModalTranslate>['state']['result']
-  loading: boolean
-  favorite: boolean
-  root?: HTMLElement
-}
-
-interface Emits {
-  close: []
-  search: [string]
-  add: [string]
-  remove: [string]
-}
-
 defineOptions({ name: 'ModalTranslate' })
-const props = defineProps<Props>()
-defineEmits<Emits>()
+const props = defineProps<{ root?: HTMLElement }>()
 
-const text = defineModel<string>('text', { default: '' })
-const pin = defineModel<boolean>('pin', { default: false })
-
-const isWord = computed<boolean>(() => {
-  const regex = /^[a-z]+$/i
-  return regex.test(text.value)
-})
+const modalTranslate = useModalTranslate(props.root)
 const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDraggable({
-  x: toRef(props, 'left'),
-  y: toRef(props, 'top'),
-  open: toRef(props, 'open'),
+  x: toRef(modalTranslate.state, 'left'),
+  y: toRef(modalTranslate.state, 'top'),
+  open: toRef(modalTranslate.state, 'open'),
   root: props.root,
 })
-</script>
+const wordList = computed(() => {
+  return storageWordList.value.map(value => value.word.toLowerCase())
+})
+const favorite = computed(() => {
+  return wordList.value.includes(modalTranslate.state.text.toLowerCase())
+})
+const isWord = computed<boolean>(() => {
+  const regex = /^[a-z]+$/i
+  return regex.test(modalTranslate.state.text)
+})
 
-<script lang="ts">
-export { useModalTranslate } from './composables/useModalTranslate'
+defineExpose({
+  show: modalTranslate.handleShow,
+  state: modalTranslate.state,
+})
 </script>
 
 <template>
   <div
-    v-show="open"
+    v-show="modalTranslate.state.open"
     ref="refContainer"
     class="modal-translate"
     :class="[isDragging && 'is-dragging']"
@@ -56,37 +44,41 @@ export { useModalTranslate } from './composables/useModalTranslate'
     <header ref="refHeader" class="header">
       <div class="inline-flex gap-[2px]">
         <WIconWrapper>
-          <PushpinFilled v-if="pin" title="点击取消固定" @click="pin = false" />
-          <PushpinOutlined v-else title="点击固定" @click="pin = true" />
+          <PushpinFilled
+            v-if="modalTranslate.state.pin"
+            title="点击取消固定"
+            @click="modalTranslate.state.pin = false"
+          />
+          <PushpinOutlined v-else title="点击固定" @click="modalTranslate.state.pin = true" />
         </WIconWrapper>
 
         <WIconWrapper :show="!isWord">
           <template v-if="isWord">
-            <HeartFilled v-if="favorite" title="点击取消收藏" @click="$emit('remove', text)" />
-            <HeartOutlined v-else title="点击收藏" @click="$emit('add', text)" />
+            <HeartFilled v-if="favorite" title="点击取消收藏" @click="modalTranslate.handleRemove" />
+            <HeartOutlined v-else title="点击收藏" @click="modalTranslate.handleAdd" />
           </template>
         </WIconWrapper>
       </div>
 
       <WIconWrapper>
-        <CloseOutlined title="关闭" @click="$emit('close')" />
+        <CloseOutlined title="关闭" @click="modalTranslate.handleHidden" />
       </WIconWrapper>
     </header>
 
     <main class="px-2">
       <WSearchInput
-        v-model:value="text"
+        v-model:value="modalTranslate.state.text"
         placeholder="请输入要翻译的内容"
-        :disabled="!text"
-        @search="$emit('search', text)"
+        :disabled="!modalTranslate.state.text"
+        @search="modalTranslate.handleSearch"
       />
 
       <div class="py-2">
-        <template v-if="loading">
+        <template v-if="modalTranslate.state.loading">
           <WLoading />
         </template>
-        <template v-else-if="result">
-          <Result :result="result" />
+        <template v-else-if="modalTranslate.state.result">
+          <Result :result="modalTranslate.state.result" />
         </template>
         <template v-else>
           <Empty />
