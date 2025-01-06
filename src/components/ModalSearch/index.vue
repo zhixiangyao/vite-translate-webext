@@ -17,6 +17,10 @@ defineProps<Props>()
 defineEmits<Emits>()
 </script>
 
+<script lang="ts">
+export { useModalSearch } from './composables/useModalSearch'
+</script>
+
 <template>
   <div v-show="open" class="modal-search" :style="`left:${left}px;top:${top}px;`">
     <WIconWrapper @click="$emit('search')">

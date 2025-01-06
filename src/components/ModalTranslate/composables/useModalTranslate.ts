@@ -1,5 +1,4 @@
 import { useEventListener, useMouse } from '@vueuse/core'
-
 import { EnumTranslateLang } from '~/constant/enum'
 import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'

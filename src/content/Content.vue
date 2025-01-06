@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useModalSearch } from './components/ModalSearch/composables/useModalSearch'
-import ModalSearch from './components/ModalSearch/index.vue'
-import { useModalTranslate } from './components/ModalTranslate/composables/useModalTranslate'
-import ModalTranslate from './components/ModalTranslate/index.vue'
+import ModalSearch, { useModalSearch } from '~/components/ModalSearch/index.vue'
+import ModalTranslate, { useModalTranslate } from '~/components/ModalTranslate/index.vue'
 
 const props = defineProps<{ root?: HTMLElement }>()
 

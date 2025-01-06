@@ -41,6 +41,10 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
 })
 </script>
 
+<script lang="ts">
+export { useModalTranslate } from './composables/useModalTranslate'
+</script>
+
 <template>
   <div
     v-show="open"
