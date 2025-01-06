@@ -46,6 +46,7 @@ async function updateIcon(show: boolean) {
   sendMessage('event-activity', { show }, 'background')
 }
 
+/** 更新 style 要实时 */
 function updateStyle(highlight: typeof storageSetting.value.highlight) {
   const id = `style-${__NAME__}`
   const oldStyle = document.head.querySelector(id)
@@ -58,10 +59,9 @@ function updateStyle(highlight: typeof storageSetting.value.highlight) {
 }
 
 watch(() => enable.value, updateIcon, { immediate: true })
-watch(() => enable.value, updatePage)
+watch(() => enable.value, updatePage, { immediate: true })
 watch(() => words.value, updatePage, { deep: true })
 watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
-window.addEventListener('load', updatePage)
 
 const app = createApp(App)
 app.mount(createRoot(document.querySelector('html')!))
