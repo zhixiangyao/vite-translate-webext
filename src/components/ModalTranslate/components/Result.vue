@@ -42,7 +42,7 @@ function handleCopy(text: string, i: number) {
         </WIconWrapper>
 
         <WIconWrapper>
-          <LeftOutlined class="transition-transform" :class="expendMap[i] && 'expend'" />
+          <LeftOutlined class="transition-transform" :class="expendMap[i] && '-rotate-90'" />
         </WIconWrapper>
       </div>
 
@@ -57,9 +57,5 @@ function handleCopy(text: string, i: number) {
 .item {
   @apply relative;
   @apply before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-5 before:bg-gray-4;
-
-  .expend {
-    transform: rotate(-90deg);
-  }
 }
 </style>

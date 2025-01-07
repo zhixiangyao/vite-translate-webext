@@ -17,19 +17,22 @@ const words = computed(() => {
 
 /** 创建 root 节点 */
 function createRoot(target: HTMLElement) {
-  const container = document.createElement('div')
+  const div = document.createElement('div')
+  const divShadowRoot = div.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || div
+  const link = document.createElement('link')
+  const style = document.createElement('style')
   const root = document.createElement('div')
-  const styleEl = document.createElement('link')
-  const shadowDOM = container.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || container
 
-  container.setAttribute('id', __NAME__)
-  container.setAttribute('style', 'display: unset; padding: unset; margin: unset;')
-  styleEl.setAttribute('rel', 'stylesheet')
-  styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
+  div.setAttribute('id', __NAME__)
+  div.setAttribute('style', 'display: unset; padding: unset; margin: unset;')
+  link.setAttribute('rel', 'stylesheet')
+  link.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
+  style.textContent = ':host { font-size: 14px; }'
 
-  shadowDOM.appendChild(styleEl)
-  shadowDOM.appendChild(root)
-  target.appendChild(container)
+  divShadowRoot.appendChild(style)
+  divShadowRoot.appendChild(link)
+  divShadowRoot.appendChild(root)
+  target.appendChild(div)
 
   return root
 }
