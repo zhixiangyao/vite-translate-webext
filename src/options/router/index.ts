@@ -1,14 +1,21 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { EyeOutlined, FileWordOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import { EyeOutlined, FileWordOutlined, SettingOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 export const views = [
   {
     path: 'book-list',
     name: 'BookList',
-    title: '单词本',
+    title: '单词列表',
     icon: () => h(FileWordOutlined),
     component: () => import('~/options/views/BookList/index.vue'),
+  },
+  {
+    path: 'allow-list',
+    name: 'AllowList',
+    title: '许可列表',
+    icon: () => h(UnorderedListOutlined),
+    component: () => import('~/options/views/AllowList/index.vue'),
   },
   {
     path: 'preview',

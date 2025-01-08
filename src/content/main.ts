@@ -1,4 +1,4 @@
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useWindowFocus } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, unhighlight } from '~/logic/highlight'
 import { storageActivityWebsiteMap, storageSetting, storageWordList } from '~/logic/storage'
@@ -8,6 +8,7 @@ import '~/styles'
 
 const debounceHighlight = useDebounceFn(highlight, 500)
 
+const focused = useWindowFocus()
 const enable = computed(() => {
   return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]
 })
@@ -37,8 +38,12 @@ function createRoot(target: HTMLElement) {
   return root
 }
 
-/** 更新 page 要实时 & 单词本更新时 & 首次加载要执行一次 */
+/** 更新 page 要实时 & 单词本更新时 & 首次加载要执行一次, 可见时有效 */
 async function updatePage() {
+  if (!focused.value) {
+    return
+  }
+
   if (enable.value) {
     debounceHighlight(words.value)
   }
@@ -47,9 +52,13 @@ async function updatePage() {
   }
 }
 
-/** 更新 icon 要实时 */
-async function updateIcon(show: boolean) {
-  sendMessage('event-activity', { show }, 'background')
+/** 更新 icon 要实时, 可见时有效 */
+async function updateIcon() {
+  if (!focused.value) {
+    return
+  }
+
+  sendMessage('event-activity', { show: enable.value }, 'background')
 }
 
 /** 更新 style 要实时 */
@@ -64,9 +73,9 @@ function updateStyle(highlight: typeof storageSetting.value.highlight) {
   document.head.appendChild(style)
 }
 
-watch(() => enable.value, updateIcon, { immediate: true })
-watch(() => enable.value, updatePage, { immediate: true })
-watch(() => words.value, updatePage, { deep: true })
+watch([enable, focused], updateIcon, { immediate: true })
+watch([enable, focused], updatePage, { immediate: true })
+watch([words, focused], updatePage, { deep: true })
 watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
 
 const app = createApp(App)
