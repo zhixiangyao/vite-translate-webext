@@ -1,95 +1,47 @@
+import type { UseSpeechSynthesisReturn } from '@vueuse/core'
 import type { EnumSpeakerLang } from '~/constant/enum'
+import { useSpeechSynthesis } from '@vueuse/core'
 
-function genChunksOfText(text: string) {
-  const maxLength = 190
-  const speechChunks = []
+const speechList: UseSpeechSynthesisReturn[] = []
 
-  // Split the text into chunks of maximum length maxLength without breaking words
-  while (text.length > 0) {
-    if (text.length <= maxLength) {
-      speechChunks.push(text)
-      break
-    }
-
-    const chunk = text.substring(0, maxLength + 1)
-
-    const lastSpaceIndex = chunk.lastIndexOf(' ')
-    if (lastSpaceIndex !== -1) {
-      speechChunks.push(text.substring(0, lastSpaceIndex))
-      text = text.substring(lastSpaceIndex + 1)
-    }
-    else {
-      // If there are no spaces in the chunk, split at the maxLength
-      speechChunks.push(text.substring(0, maxLength))
-      text = text.substring(maxLength)
-    }
-  }
-
-  return speechChunks
-}
-
-const voices = ref<SpeechSynthesisVoice[]>([])
-const controller = ref(new AbortController())
-
-export function useSpeaker() {
+export function useSpeaker(params: { text: ComputedRef<string>, lang: EnumSpeakerLang }) {
   const loading = ref(false)
+  const speech = useSpeechSynthesis(params.text, {
+    lang: params.lang,
+  })
 
-  async function stop() {
-    loading.value = false
-    controller.value.abort()
-    window.speechSynthesis.cancel()
-    await new Promise(r => setTimeout(r, 10))
-    controller.value = new AbortController()
+  function play() {
+    if (loading.value)
+      return
+
+    loading.value = true
+    // stop all
+    speechList.forEach((speech) => {
+      speech.stop()
+    })
+
+    speech.speak()
   }
 
-  async function speaker(text: string, lang: EnumSpeakerLang) {
-    try {
-      await stop()
-
-      // 如果当前实例重复点击, 则是退出播放
-      if (loading.value) {
-        return
-      }
-
-      loading.value = true
-
-      const americanVoice = voices.value.find(voice => voice.lang === lang)
-      const speechChunks = genChunksOfText(text)
-
-      for (let i = 0; i < speechChunks.length; i++) {
-        if (controller.value.signal.aborted)
-          return
-
-        await new Promise<void>((resolve) => {
-          window.speechSynthesis.cancel()
-
-          const ssu = new SpeechSynthesisUtterance(speechChunks[i])
-          ssu.onend = () => resolve()
-          ssu.onerror = () => resolve()
-          ssu.voice = americanVoice ?? null
-
-          window.speechSynthesis.speak(ssu)
-        })
-      }
-    }
-    finally {
+  watch(speech.isPlaying, (isPlaying) => {
+    if (isPlaying) {
       loading.value = false
     }
-  }
+  })
 
-  function handleGetVoices() {
-    if (voices.value.length !== 0)
-      return
-    voices.value = window.speechSynthesis.getVoices()
-  }
+  onMounted(() => {
+    speechList.push(speech)
+  })
 
-  onMounted(() => window.speechSynthesis.addEventListener('voiceschanged', handleGetVoices))
-
-  onUnmounted(() => stop())
+  onUnmounted(() => {
+    speech.stop()
+    const index = speechList.findIndex(item => item === speech)
+    speechList.splice(index, 1)
+  })
 
   return {
-    loading: computed(() => loading.value),
-    speaker,
-    stop,
+    loading,
+    isPlaying: speech.isPlaying,
+    play,
   }
 }
