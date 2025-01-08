@@ -8,7 +8,7 @@ const CodeEditor = defineAsyncComponent({
   loader: () => import('~/options/components/CodeEditor.vue'),
 })
 
-const { rules, formRef, formState, disabledSave, handleSave, handleReset } = useSettings()
+const { rules, formRef, formState, disabledReset, handleSave, handleReset } = useSettings()
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const { rules, formRef, formState, disabledSave, handleSave, handleReset } = use
           保存
         </Button>
 
-        <Button :disabled="disabledSave" @click="handleReset">
+        <Button :disabled="disabledReset" @click="handleReset">
           恢复默认
         </Button>
       </div>

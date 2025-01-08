@@ -8,7 +8,7 @@ defineOptions({ name: 'AllowList' })
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 
-const { columns, formRef, formState, handleDelete, handleSave } = useAllowList()
+const { columns, formRef, formState, disabledCancel, handleDelete, handleSave, handleCancel } = useAllowList()
 </script>
 
 <template>
@@ -44,9 +44,15 @@ const { columns, formRef, formState, handleDelete, handleSave } = useAllowList()
       </template>
     </Table>
 
-    <Button class="mt-2" type="primary" @click="handleSave">
-      保存
-    </Button>
+    <div class="mt-2 flex gap-2">
+      <Button type="primary" @click="handleSave">
+        保存
+      </Button>
+
+      <Button :disabled="disabledCancel" @click="handleCancel">
+        取消
+      </Button>
+    </div>
   </Form>
 </template>
 

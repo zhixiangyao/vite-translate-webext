@@ -28,7 +28,7 @@ export function useSettings() {
     apiTimeout: storageSetting.value.api.timeout / 1000,
     highlightStyle: cssBeautify(storageSetting.value.highlight.style),
   })
-  const disabledSave = computed(() => {
+  const disabledReset = computed(() => {
     return (
       DEFAULT_SETTING.api.url === formState.apiUrl
       && DEFAULT_SETTING.api.token === formState.apiToken
@@ -66,7 +66,7 @@ export function useSettings() {
     rules,
     formRef,
     formState,
-    disabledSave,
+    disabledReset,
 
     handleSave,
     handleReset,

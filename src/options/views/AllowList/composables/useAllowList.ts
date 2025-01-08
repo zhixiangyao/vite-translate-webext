@@ -31,6 +31,17 @@ export function useAllowList() {
   const formState = reactive({
     allowList: [] as RecordType[],
   })
+  const _allowList = computed(() => {
+    const temp: Record<string, boolean> = JSON.parse(JSON.stringify(storageActivityWebsiteMap.value))
+
+    return Object.entries(temp).map(([url, enable]) => ({
+      url,
+      enable,
+    }))
+  })
+  const disabledCancel = computed(() => {
+    return JSON.stringify(formState.allowList) === JSON.stringify(_allowList.value)
+  })
   const { message } = App.useApp()
 
   function handleDelete(i: number) {
@@ -47,25 +58,21 @@ export function useAllowList() {
     message.success('保存成功')
   }
 
-  watch(
-    storageActivityWebsiteMap,
-    (allowMap) => {
-      const temp: Record<string, boolean> = JSON.parse(JSON.stringify(allowMap))
+  async function handleCancel() {
+    formRef.value?.clearValidate()
+    formState.allowList = JSON.parse(JSON.stringify(_allowList.value))
+  }
 
-      formState.allowList = Object.entries(temp).map(([url, enable]) => ({
-        url,
-        enable,
-      }))
-    },
-    { immediate: true },
-  )
+  watch(_allowList, handleCancel, { immediate: true })
 
   return {
     columns,
     formRef,
     formState,
+    disabledCancel,
 
     handleDelete,
     handleSave,
+    handleCancel,
   }
 }
