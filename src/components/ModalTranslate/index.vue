@@ -41,9 +41,9 @@ defineExpose({
           <PushpinOutlined v-else title="点击固定" @click="modalTranslate.state.pin = true" />
         </WIconWrapper>
 
-        <WIconWrapper :show="!modalTranslate.isWord">
-          <template v-if="modalTranslate.isWord">
-            <HeartFilled v-if="modalTranslate.favorite" title="点击取消收藏" @click="modalTranslate.handleRemove" />
+        <WIconWrapper :show="!modalTranslate.isWord.value">
+          <template v-if="modalTranslate.isWord.value">
+            <HeartFilled v-if="modalTranslate.favorite.value" title="点击取消收藏" @click="modalTranslate.handleRemove" />
             <HeartOutlined v-else title="点击收藏" @click="modalTranslate.handleAdd" />
           </template>
         </WIconWrapper>
