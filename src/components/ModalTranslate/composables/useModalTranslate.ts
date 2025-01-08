@@ -40,6 +40,16 @@ export function useModalTranslate(root?: HTMLElement) {
     result: void 0,
   })
   const mouse = useMouse()
+  const wordList = computed(() => {
+    return storageWordList.value.map(value => value.word.toLowerCase())
+  })
+  const favorite = computed(() => {
+    return wordList.value.includes(state.text.toLowerCase())
+  })
+  const isWord = computed<boolean>(() => {
+    const regex = /^[a-z]+$/i
+    return regex.test(state.text)
+  })
 
   function handleReset() {
     state.top = 0
@@ -127,6 +137,9 @@ export function useModalTranslate(root?: HTMLElement) {
 
   return {
     state,
+    favorite,
+    isWord,
+
     handleShow,
     handleHidden,
     handleSearch,

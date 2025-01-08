@@ -11,43 +11,58 @@ interface Props {
 defineOptions({ name: 'Result' })
 defineProps<Props>()
 
-const expendMap = ref<Record<number, boolean | undefined>>({ 0: true })
 const { copy } = useClipboard()
-const copiedIndex = ref(-1)
+const expend = ref(true)
+const copied = ref(false)
+const selectedIdx = ref(0)
 const timer = ref<NodeJS.Timeout>()
 
-function handleCopy(text: string, i: number) {
+function handleCopy(text: string) {
   clearTimeout(timer.value)
 
-  copiedIndex.value = i
+  copied.value = true
   copy(text)
   message?.success('复制成功')
 
   timer.value = setTimeout(() => {
-    copiedIndex.value = -1
+    copied.value = false
   }, 400)
 }
 </script>
 
 <template>
   <div class="flex flex-col gap-2">
-    <div v-for="(alternative, i) of result.alternatives" :key="i" class="item">
-      <div
-        class="flex justify-between items-center h-5 text-sm pl-2 cursor-pointer select-none"
-        @click="expendMap[i] = !expendMap[i]"
-      >
-        <WIconWrapper>
-          <CopyOutlined v-if="copiedIndex !== i" title="复制" @click.prevent.stop="() => handleCopy(alternative, i)" />
-          <CheckOutlined v-else />
-        </WIconWrapper>
+    <div class="item">
+      <div class="flex justify-between items-center h-5 text-sm pl-2 select-none">
+        <div class="flex items-center gap-1">
+          <span class="color-gray-4 font-bold">Deeplx</span>
 
-        <WIconWrapper>
-          <LeftOutlined class="transition-transform" :class="expendMap[i] && '-rotate-90'" />
+          <WIconWrapper>
+            <CopyOutlined
+              v-if="!copied"
+              title="复制"
+              @click.prevent.stop="() => handleCopy(result.alternatives[selectedIdx])"
+            />
+            <CheckOutlined v-else />
+          </WIconWrapper>
+
+          <WIconWrapper
+            v-for="(_, i) of result.alternatives"
+            :key="i"
+            :selected="i === selectedIdx"
+            @click.prevent.stop="() => (selectedIdx = i)"
+          >
+            {{ i + 1 }}
+          </WIconWrapper>
+        </div>
+
+        <WIconWrapper @click="expend = !expend">
+          <LeftOutlined class="transition-transform" :class="expend && '-rotate-90'" />
         </WIconWrapper>
       </div>
 
-      <div v-if="expendMap[i]" class="pt-2">
-        {{ alternative }}
+      <div v-if="expend" class="pt-2">
+        {{ result.alternatives[selectedIdx] }}
       </div>
     </div>
   </div>
