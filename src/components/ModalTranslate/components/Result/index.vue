@@ -1,33 +1,20 @@
 <script setup lang="ts">
-import type { useModalTranslate } from '../composables/useModalTranslate'
-import { CheckOutlined, CopyOutlined, LeftOutlined } from '@ant-design/icons-vue'
-import { useClipboard } from '@vueuse/core'
-import { message } from 'ant-design-vue'
+import type { useModalTranslate } from '../../composables/useModalTranslate'
+import { LeftOutlined } from '@ant-design/icons-vue'
+import { EnumSpeakerLang } from '~/constant/enum'
+import ButtonCopy from './components/ButtonCopy.vue'
+import ButtonSpeaker from './components/ButtonSpeaker.vue'
 
 interface Props {
   result: NonNullable<ReturnType<typeof useModalTranslate>['state']['result']>
 }
 
 defineOptions({ name: 'Result' })
-defineProps<Props>()
+const props = defineProps<Props>()
 
-const { copy } = useClipboard()
 const expend = ref(true)
-const copied = ref(false)
 const selectedIdx = ref(0)
-const timer = ref<NodeJS.Timeout>()
-
-function handleCopy(text: string) {
-  clearTimeout(timer.value)
-
-  copied.value = true
-  copy(text)
-  message?.success('复制成功')
-
-  timer.value = setTimeout(() => {
-    copied.value = false
-  }, 400)
-}
+const text = computed(() => props.result.alternatives[selectedIdx.value])
 </script>
 
 <template>
@@ -37,14 +24,7 @@ function handleCopy(text: string) {
         <div class="flex items-center gap-1">
           <span class="color-gray-4 font-bold">Deeplx</span>
 
-          <WIconWrapper>
-            <CopyOutlined
-              v-if="!copied"
-              title="复制"
-              @click.prevent.stop="() => handleCopy(result.alternatives[selectedIdx])"
-            />
-            <CheckOutlined v-else />
-          </WIconWrapper>
+          <ButtonCopy :text="text" />
 
           <WIconWrapper
             v-for="(_, i) of result.alternatives"
@@ -61,8 +41,15 @@ function handleCopy(text: string) {
         </WIconWrapper>
       </div>
 
+      <div v-if="expend" class="pt-2 flex gap-2">
+        <ButtonSpeaker :lang="EnumSpeakerLang.en_GB" :text="text" />
+        <ButtonSpeaker :lang="EnumSpeakerLang.en_US" :text="text" />
+        <ButtonSpeaker :lang="EnumSpeakerLang.zh_CN" :text="text" />
+        <ButtonSpeaker :lang="EnumSpeakerLang.zh_HK" :text="text" />
+      </div>
+
       <div v-if="expend" class="pt-2">
-        {{ result.alternatives[selectedIdx] }}
+        {{ text }}
       </div>
     </div>
   </div>

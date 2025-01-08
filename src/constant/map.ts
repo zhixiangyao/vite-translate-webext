@@ -1,4 +1,4 @@
-import { EnumDataSet } from './enum'
+import { EnumDataSet, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_SETTING = {
   api: {
@@ -9,4 +9,11 @@ export const DEFAULT_SETTING = {
   highlight: {
     style: `span[${EnumDataSet.highlightedWord}] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }`,
   },
+}
+
+export const SPEAKER_LANG_MAP: Record<EnumSpeakerLang, string> = {
+  [EnumSpeakerLang.zh_CN]: '中',
+  [EnumSpeakerLang.zh_HK]: '粤',
+  [EnumSpeakerLang.en_US]: '美',
+  [EnumSpeakerLang.en_GB]: '英',
 }

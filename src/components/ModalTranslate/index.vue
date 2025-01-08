@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import Empty from './components/Empty.vue'
-import Result from './components/Result.vue'
+import Result from './components/Result/index.vue'
 import { useModalTranslate } from './composables/useModalTranslate'
 import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
 
