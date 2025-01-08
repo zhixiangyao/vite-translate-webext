@@ -32,3 +32,5 @@ export const storageSetting = useWebExtensionStorage('webext-setting', {
     style: DEFAULT_SETTING.highlight.style,
   },
 })
+
+export const storageVoices = ref<SpeechSynthesisVoice[]>([])
