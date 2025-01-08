@@ -47,14 +47,7 @@ const { columns, rules, formRef, formState, handleAdd, handleDelete, handleSave 
               新增
             </Button>
 
-            <Button
-              v-if="!(formState.wordList?.length === 1 && i === 0)"
-              class="!px-0"
-              danger
-              size="small"
-              type="link"
-              @click="() => handleDelete(i)"
-            >
+            <Button class="!px-0" danger size="small" type="link" @click="() => handleDelete(i)">
               删除
             </Button>
           </div>
