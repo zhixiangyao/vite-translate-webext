@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue'
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
 import { EnumResponseCode } from '~/constant/enum'
 
-export function useBackgroundFetch() {
+export function useBackgroundFetch(params?: { silent: boolean }) {
   async function post<T extends Record<string, any>>(
     url: string,
     options: Pick<ProtocolMap['event-fetch-send'], 'headers' | 'params'>,
@@ -27,13 +27,13 @@ export function useBackgroundFetch() {
           break
         }
         case EnumResponseCode.Error: {
-          reject()
-          message.error('未知错误')
+          reject(EnumResponseCode.Error)
+          !params?.silent && message.error('未知错误')
           break
         }
         case EnumResponseCode.AbortError: {
-          reject()
-          message.error('请求超时')
+          reject(EnumResponseCode.Error)
+          !params?.silent && message.error('请求超时')
           break
         }
       }

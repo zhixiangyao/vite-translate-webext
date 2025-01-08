@@ -1,3 +1,4 @@
+import type { EnumResponseCode } from '~/constant/enum'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { EnumTranslateLang } from '~/constant/enum'
 import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
@@ -25,6 +26,7 @@ interface State {
   pin: boolean
   loading: boolean
   result: DeeplxResponse | undefined
+  error: EnumResponseCode | undefined
 }
 
 export function useModalTranslate(root?: HTMLElement) {
@@ -38,6 +40,7 @@ export function useModalTranslate(root?: HTMLElement) {
     pin: false,
     loading: false,
     result: void 0,
+    error: void 0,
   })
   const mouse = useMouse()
   const wordList = computed(() => {
@@ -57,6 +60,7 @@ export function useModalTranslate(root?: HTMLElement) {
     state.text = ''
     state.loading = false
     state.result = void 0
+    state.error = void 0
   }
 
   function handleShow(text: string, left: number, top: number) {
@@ -74,6 +78,8 @@ export function useModalTranslate(root?: HTMLElement) {
   }
 
   async function handleSearch() {
+    state.error = void 0
+
     if (storageTranslateCacheMap.value[state.text]) {
       state.result = storageTranslateCacheMap.value[state.text]
       return
@@ -91,8 +97,9 @@ export function useModalTranslate(root?: HTMLElement) {
       state.result = data
       data && (storageTranslateCacheMap.value[state.text] = data)
     }
-    catch {
+    catch (error) {
       state.result = void 0
+      state.error = error as EnumResponseCode
     }
     finally {
       state.loading = false

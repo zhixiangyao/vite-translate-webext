@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
 import Empty from './components/Empty.vue'
+import Error from './components/Error.vue'
 import Result from './components/Result/index.vue'
 import { useModalTranslate } from './composables/useModalTranslate'
 import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
@@ -68,6 +69,9 @@ defineExpose({
         </template>
         <template v-else-if="modalTranslate.state.result">
           <Result :result="modalTranslate.state.result" />
+        </template>
+        <template v-else-if="modalTranslate.state.error !== void 0">
+          <Error :code="modalTranslate.state.error" />
         </template>
         <template v-else>
           <Empty />

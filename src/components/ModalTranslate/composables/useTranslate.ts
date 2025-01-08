@@ -13,7 +13,7 @@ export interface DeeplxResponse {
 }
 
 export function useTranslate() {
-  const fetch = useBackgroundFetch()
+  const fetch = useBackgroundFetch({ silent: true })
 
   async function run(text: string, sourceLang: EnumTranslateLang, targetLang: EnumTranslateLang) {
     const params = {
