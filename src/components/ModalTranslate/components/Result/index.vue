@@ -26,14 +26,16 @@ const text = computed(() => props.result.alternatives[selectedIdx.value])
 
           <ButtonCopy :text="text" />
 
-          <WIconWrapper
-            v-for="(_, i) of result.alternatives"
-            :key="i"
-            :selected="i === selectedIdx"
-            @click.prevent.stop="() => (selectedIdx = i)"
-          >
-            {{ i + 1 }}
-          </WIconWrapper>
+          <template v-if="result.alternatives.length > 1">
+            <WIconWrapper
+              v-for="(_, i) of result.alternatives"
+              :key="i"
+              :selected="i === selectedIdx"
+              @click.prevent.stop="() => (selectedIdx = i)"
+            >
+              {{ i + 1 }}
+            </WIconWrapper>
+          </template>
         </div>
 
         <WIconWrapper @click="expend = !expend">
