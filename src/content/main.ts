@@ -84,7 +84,7 @@ function updateStyle() {
 watch([enable, focused], updateIcon, { immediate: true })
 watch([enable, focused], updatePage, { immediate: true })
 watch([words, focused], updatePage, { deep: true })
-watch([storageSetting.value.highlight, focused], updateStyle, { immediate: true })
+watch([() => storageSetting.value.highlight, focused], updateStyle, { immediate: true })
 
 const app = createApp(App)
 app.mount(createRoot(document.querySelector('html')!))
