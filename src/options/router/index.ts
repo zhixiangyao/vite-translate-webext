@@ -38,6 +38,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Home',
       component: () => import('~/options/layout/index.vue'),
       redirect: () => ({ name: 'BookList' }),
       children: views.map<RouteRecordRaw>(view => ({
@@ -45,6 +46,11 @@ const router = createRouter({
         name: view.name,
         component: view.component,
       })),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('~/options/views/NotFound.vue'),
     },
   ],
 })

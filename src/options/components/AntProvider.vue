@@ -25,7 +25,7 @@ const defaultTheme = computed<ConfigProviderProps['theme']>(() => ({
 
 <template>
   <ConfigProvider :theme="defaultTheme">
-    <App>
+    <App class="min-h-screen min-w-screen">
       <slot />
     </App>
   </ConfigProvider>
