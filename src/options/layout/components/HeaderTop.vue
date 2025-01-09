@@ -3,10 +3,11 @@ import { useAnimate } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
 
 defineOptions({ name: 'HeaderTop' })
+const props = defineProps<{ collapsed: boolean }>()
 
 const { token } = theme.useToken()
 const textRef = ref<HTMLElement>()
-const { play, playState } = useAnimate(
+const { play, finish, playState } = useAnimate(
   textRef,
   [
     { clipPath: 'circle(20% at 0% 30%)' },
@@ -20,22 +21,33 @@ const { play, playState } = useAnimate(
     easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
   },
 )
+const enabled = computed(() => playState.value === 'finished' && props.collapsed === false)
 
 function handlePlay() {
-  if (playState.value === 'finished') {
+  if (enabled.value) {
     play()
   }
 }
+
+watch(
+  () => props.collapsed,
+  (collapsed) => {
+    if (collapsed) {
+      finish()
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <p
     ref="textRef"
-    class="text-4xl! font-800 text-center select-none"
-    :class="playState === 'finished' && 'cursor-pointer'"
+    class="text-4xl! font-800 text-center select-none mb-2"
+    :class="enabled && 'cursor-pointer'"
     :style="{ color: token.colorPrimary }"
     @click="handlePlay"
   >
-    Translate
+    {{ collapsed ? 'T' : 'Translate' }}
   </p>
 </template>

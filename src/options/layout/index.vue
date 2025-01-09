@@ -1,17 +1,23 @@
 <script lang="ts" setup>
+import HeaderBottom from './components/HeaderBottom.vue'
 import HeaderTop from './components/HeaderTop.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutMain from './components/LayoutMain.vue'
 import LayoutNav from './components/LayoutNav.vue'
 
 defineOptions({ name: 'Layout' })
+
+const collapsed = ref(false)
 </script>
 
 <template>
   <div class="layout">
-    <LayoutNav>
+    <LayoutNav :collapsed="collapsed">
       <template #top>
-        <HeaderTop />
+        <HeaderTop :collapsed="collapsed" />
+      </template>
+      <template #bottom>
+        <HeaderBottom v-model:collapsed="collapsed" />
       </template>
     </LayoutNav>
 
@@ -25,7 +31,8 @@ defineOptions({ name: 'Layout' })
 .layout {
   @apply h-screen w-screen;
   @apply grid gap-1;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: v-bind('`${collapsed ? 80 : 200}px 1fr`');
+
   grid-template-rows: 48px 1fr;
 }
 </style>

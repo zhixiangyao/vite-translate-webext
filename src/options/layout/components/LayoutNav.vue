@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { views } from '~/options/router'
 
 defineOptions({ name: 'LayoutNav' })
+defineProps<{ collapsed?: boolean }>()
 
 const items = views.map<ItemType>(view => ({
   key: view.name,
@@ -33,6 +34,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
       class="!border-none"
       mode="vertical"
       :items="items"
+      :inline-collapsed="collapsed"
       @click="handleClick"
     />
     <slot name="bottom" />
