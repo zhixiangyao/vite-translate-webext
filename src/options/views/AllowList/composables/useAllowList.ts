@@ -1,9 +1,9 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { App } from 'ant-design-vue'
-import { storageActivityWebsiteMap } from '~/logic/storage'
+import { storageWebsiteList } from '~/logic/storage'
 
-export interface RecordType {
+export interface TRecordWebsite {
   url: string
   enable: boolean
 }
@@ -11,13 +11,13 @@ export interface RecordType {
 const columns: ColumnsType = [
   {
     title: '网址',
-    dataIndex: 'url' satisfies keyof RecordType,
-    key: 'url' satisfies keyof RecordType,
+    dataIndex: 'url' satisfies keyof TRecordWebsite,
+    key: 'url' satisfies keyof TRecordWebsite,
   },
   {
     title: '启用',
-    dataIndex: 'enable' satisfies keyof RecordType,
-    key: 'enable' satisfies keyof RecordType,
+    dataIndex: 'enable' satisfies keyof TRecordWebsite,
+    key: 'enable' satisfies keyof TRecordWebsite,
   },
   {
     title: '操作',
@@ -29,41 +29,36 @@ const columns: ColumnsType = [
 export function useAllowList() {
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive({
-    allowList: [] as RecordType[],
-  })
-  const _allowList = computed(() => {
-    const temp: Record<string, boolean> = JSON.parse(JSON.stringify(storageActivityWebsiteMap.value))
-
-    return Object.entries(temp).map(([url, enable]) => ({
-      url,
-      enable,
-    }))
+    websiteList: [] as TRecordWebsite[],
   })
   const disabledCancel = computed(() => {
-    return JSON.stringify(formState.allowList) === JSON.stringify(_allowList.value)
+    return JSON.stringify(formState.websiteList) === JSON.stringify(storageWebsiteList.value)
   })
   const { message } = App.useApp()
 
   function handleDelete(i: number) {
-    formState.allowList?.splice(i, 1)
+    formState.websiteList?.splice(i, 1)
     formRef.value?.clearValidate()
   }
 
   async function handleSave() {
     await formRef.value?.validate()
-    storageActivityWebsiteMap.value = formState.allowList.reduce<Record<string, boolean>>((acc, cur) => {
-      acc[cur.url] = cur.enable
-      return acc
-    }, {})
+    storageWebsiteList.value = toRaw(formState.websiteList)
     message.success('保存成功')
   }
 
   async function handleCancel() {
     formRef.value?.clearValidate()
-    formState.allowList = JSON.parse(JSON.stringify(_allowList.value))
+    formState.websiteList = toRaw(storageWebsiteList.value)
   }
 
-  watch(_allowList, handleCancel, { immediate: true })
+  watch(
+    storageWebsiteList,
+    (websiteList) => {
+      formState.websiteList = toRaw(websiteList)
+    },
+    { immediate: true },
+  )
 
   return {
     columns,

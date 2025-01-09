@@ -1,18 +1,16 @@
-import type { RecordType } from '~/options/views/BookList/composables/useBookList'
+import type { TRecordWebsite } from '~/options/views/AllowList/composables/useAllowList'
+import type { TRecordWord } from '~/options/views/BookList/composables/useBookList'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
 import { DEFAULT_SETTING } from '~/constant/map'
 
 /** 当前 Tab 信息 */
 export const storageCurrentTab = useWebExtensionStorage<{ id?: number }>('webext-current-tab', { id: void 0 })
 
-/** 单词本 */
-export const storageWordList = useWebExtensionStorage<RecordType[]>('webext-word-list', [{ word: 'demo' }])
+/** 单词 list */
+export const storageWordList = useWebExtensionStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo' }])
 
-/** 启用的网站 */
-export const storageActivityWebsiteMap = useWebExtensionStorage<Record<string, boolean>>(
-  'webext-activity-website-map',
-  {},
-)
+/** 网站 list */
+export const storageWebsiteList = useWebExtensionStorage<TRecordWebsite[]>('webext-website-list', [])
 
 /** 搜索结果缓存 */
 export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, any>>(

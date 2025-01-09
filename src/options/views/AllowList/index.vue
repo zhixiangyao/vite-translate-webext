@@ -12,25 +12,19 @@ const { columns, formRef, formState, disabledCancel, handleDelete, handleSave, h
 </script>
 
 <template>
-  <Form
-    ref="formRef"
-    autocomplete="off"
-    :label-col="labelCol"
-    :model="formState"
-    :wrapper-col="wrapperCol"
-  >
+  <Form ref="formRef" autocomplete="off" :label-col="labelCol" :model="formState" :wrapper-col="wrapperCol">
     <Table
       class="allow-list-table"
       bordered
       :columns="columns"
-      :data-source="formState.allowList"
+      :data-source="formState.websiteList"
       :pagination="false"
       size="small"
     >
       <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
         <template v-if="column.key === 'enable'">
-          <FormItem :name="['allowList', i, 'enable']">
-            <Switch v-model:checked="formState.allowList![i].enable" size="small" />
+          <FormItem :name="['websiteList', i, 'enable']">
+            <Switch v-model:checked="formState.websiteList![i].enable" size="small" />
           </FormItem>
         </template>
 

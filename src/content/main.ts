@@ -1,7 +1,7 @@
 import { useDebounceFn, useWindowFocus } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, unhighlight } from '~/logic/highlight'
-import { storageActivityWebsiteMap, storageSetting, storageWordList } from '~/logic/storage'
+import { storageSetting, storageWebsiteList, storageWordList } from '~/logic/storage'
 
 import App from './Content.vue'
 import '~/styles'
@@ -10,7 +10,11 @@ const debounceHighlight = useDebounceFn(highlight, 500)
 
 const focused = useWindowFocus()
 const enable = computed(() => {
-  return location.protocol.includes('http') && !!storageActivityWebsiteMap.value[location.host]
+  if (!location.protocol.includes('http'))
+    return false
+  const website = storageWebsiteList.value.find(item => item.url === location.host)
+
+  return website?.enable ?? false
 })
 const words = computed(() => {
   return storageWordList.value.map(value => value.word).filter(word => !!word)

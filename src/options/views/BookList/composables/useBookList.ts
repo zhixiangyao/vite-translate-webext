@@ -4,19 +4,19 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import { App } from 'ant-design-vue'
 import { storageWordList } from '~/logic/storage'
 
-export interface RecordType {
+export interface TRecordWord {
   word: string
 }
 
 const rules = {
   'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
-} satisfies Record<`wordList[i].${keyof RecordType}`, Rule[]>
+} satisfies Record<`wordList[i].${keyof TRecordWord}`, Rule[]>
 
 const columns: ColumnsType = [
   {
     title: '单词',
-    dataIndex: 'word' satisfies keyof RecordType,
-    key: 'word' satisfies keyof RecordType,
+    dataIndex: 'word' satisfies keyof TRecordWord,
+    key: 'word' satisfies keyof TRecordWord,
   },
   {
     title: '操作',
@@ -28,7 +28,7 @@ const columns: ColumnsType = [
 export function useBookList() {
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive({
-    wordList: [] as RecordType[],
+    wordList: [] as TRecordWord[],
   })
   const { message } = App.useApp()
 
@@ -46,14 +46,14 @@ export function useBookList() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    storageWordList.value = formState.wordList
+    storageWordList.value = toRaw(formState.wordList)
     message.success('保存成功')
   }
 
   watch(
     storageWordList,
     (wordList) => {
-      formState.wordList = JSON.parse(JSON.stringify(wordList))
+      formState.wordList = toRaw(wordList)
     },
     { immediate: true },
   )
