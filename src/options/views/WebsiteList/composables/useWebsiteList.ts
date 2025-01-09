@@ -26,7 +26,7 @@ const columns: ColumnsType = [
   },
 ]
 
-export function useAllowList() {
+export function useWebsiteList() {
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive({
     websiteList: [] as TRecordWebsite[],

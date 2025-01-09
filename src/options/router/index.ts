@@ -11,11 +11,11 @@ export const views = [
     component: () => import('~/options/views/BookList/index.vue'),
   },
   {
-    path: 'allow-list',
-    name: 'AllowList',
-    title: '许可列表',
+    path: 'website-list',
+    name: 'WebsiteList',
+    title: '网站列表',
     icon: () => h(UnorderedListOutlined),
-    component: () => import('~/options/views/AllowList/index.vue'),
+    component: () => import('~/options/views/WebsiteList/index.vue'),
   },
   {
     path: 'preview',
