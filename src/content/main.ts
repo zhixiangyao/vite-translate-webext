@@ -42,7 +42,7 @@ function createRoot(target: HTMLElement) {
   return root
 }
 
-/** 更新 page 要实时 & 单词本更新时 & 首次加载要执行一次, 可见时有效 */
+/** 更新 page 要实时 */
 async function updatePage() {
   if (!focused.value) {
     return
@@ -56,7 +56,7 @@ async function updatePage() {
   }
 }
 
-/** 更新 icon 要实时, 可见时有效 */
+/** 更新 icon 要实时 */
 async function updateIcon() {
   if (!focused.value) {
     return
@@ -66,21 +66,25 @@ async function updateIcon() {
 }
 
 /** 更新 style 要实时 */
-function updateStyle(highlight: typeof storageSetting.value.highlight) {
+function updateStyle() {
+  if (!focused.value) {
+    return
+  }
+
   const id = `style-${__NAME__}`
   const oldStyle = document.head.querySelector(`#${id}`)
   oldStyle && document.head.removeChild(oldStyle)
 
   const style = document.createElement('style')
   style.id = id
-  style.innerHTML = highlight.style
+  style.innerHTML = storageSetting.value.highlight.style
   document.head.appendChild(style)
 }
 
 watch([enable, focused], updateIcon, { immediate: true })
 watch([enable, focused], updatePage, { immediate: true })
 watch([words, focused], updatePage, { deep: true })
-watch(() => storageSetting.value.highlight, updateStyle, { immediate: true })
+watch([storageSetting.value.highlight, focused], updateStyle, { immediate: true })
 
 const app = createApp(App)
 app.mount(createRoot(document.querySelector('html')!))
