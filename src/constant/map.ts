@@ -18,7 +18,12 @@ export const DEFAULT_SETTING: TSetting = {
     timeout: 10_000,
   },
   highlight: {
-    style: `span[${EnumDataSet.highlightedWord}] { color: #e61a1a; cursor: pointer; background-color: #e6e683; }`,
+    style: `span[${EnumDataSet.highlightedWord}] { 
+      color: #e61a1a;
+      cursor: pointer;
+      background-color:rgb(222, 222, 197); 
+      -webkit-text-fill-color: #e61a1a;
+    }`,
   },
 }
 

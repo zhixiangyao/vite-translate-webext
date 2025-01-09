@@ -68,7 +68,7 @@ async function updateIcon() {
 /** 更新 style 要实时 */
 function updateStyle(highlight: typeof storageSetting.value.highlight) {
   const id = `style-${__NAME__}`
-  const oldStyle = document.head.querySelector(id)
+  const oldStyle = document.head.querySelector(`#${id}`)
   oldStyle && document.head.removeChild(oldStyle)
 
   const style = document.createElement('style')
