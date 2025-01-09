@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useUrlSearchParams } from '@vueuse/core'
 import HeaderBottom from './components/HeaderBottom.vue'
 import HeaderTop from './components/HeaderTop.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
@@ -7,7 +8,15 @@ import LayoutNav from './components/LayoutNav.vue'
 
 defineOptions({ name: 'Layout' })
 
-const collapsed = ref(false)
+const params = useUrlSearchParams<{ collapsed: 'true' | 'false' }>('hash', { initialValue: { collapsed: 'false' } })
+const collapsed = computed<boolean>({
+  get() {
+    return params.collapsed === 'true'
+  },
+  set(bool) {
+    params.collapsed = bool ? 'true' : 'false'
+  },
+})
 </script>
 
 <template>
@@ -16,6 +25,7 @@ const collapsed = ref(false)
       <template #top>
         <HeaderTop :collapsed="collapsed" />
       </template>
+
       <template #bottom>
         <HeaderBottom v-model:collapsed="collapsed" />
       </template>

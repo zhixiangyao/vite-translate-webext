@@ -29,15 +29,11 @@ function handlePlay() {
   }
 }
 
-watch(
-  () => props.collapsed,
-  (collapsed) => {
-    if (collapsed) {
-      finish()
-    }
-  },
-  { immediate: true },
-)
+watch([() => props.collapsed, playState], () => {
+  if (props.collapsed) {
+    finish()
+  }
+})
 </script>
 
 <template>
