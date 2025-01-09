@@ -1,3 +1,4 @@
+import type { ListGridType } from 'ant-design-vue/es/list'
 import { clone } from '~/logic/clone'
 import { storageWordList } from '~/logic/storage'
 
@@ -9,6 +10,15 @@ export interface Group {
   name: string
   count: number
   list: string[]
+}
+
+export const listGrid: ListGridType = {
+  xs: 1,
+  sm: 1,
+  md: 2,
+  lg: 3,
+  xl: 4,
+  xxl: 5,
 }
 
 function genGroups(wordList: typeof storageWordList.value) {

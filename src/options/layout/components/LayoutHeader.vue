@@ -10,11 +10,19 @@ const route = useRoute()
 const isDark = useDark()
 </script>
 
+<script lang="ts">
+export const layoutHeaderRightSlotRef = ref<HTMLDivElement>()
+</script>
+
 <template>
   <header>
-    {{ route.name }}
+    <div>{{ route.name }}</div>
 
-    <WSwitch v-model:checked="isDark" :color="token.colorPrimary" />
+    <div class="flex gap-4 items-center">
+      <div ref="layoutHeaderRightSlotRef" />
+
+      <WSwitch v-model:checked="isDark" :color="token.colorPrimary" />
+    </div>
   </header>
 </template>
 

@@ -21,7 +21,7 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
 </script>
 
 <template>
-  <Drawer v-model:open="open" destroy-on-close title="编辑" placement="right" width="70%">
+  <Drawer v-model:open="open" destroy-on-close title="编辑单词列表" placement="right" width="70%">
     <div ref="containerRef" class="h-full">
       <Form
         ref="formRef"

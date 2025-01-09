@@ -34,6 +34,9 @@ export function useDrawerWordList() {
     wordList: [] as TRecordWord[],
   })
   const disabledAdd = computed(() => {
+    if (!open.value)
+      return true
+
     return JSON.stringify(formState.wordList) === JSON.stringify(storageWordList.value)
   })
   const { message } = App.useApp()
@@ -57,13 +60,13 @@ export function useDrawerWordList() {
     message.success('保存成功')
   }
 
-  watch(
-    storageWordList,
-    (wordList) => {
-      formState.wordList = clone(wordList)
-    },
-    { immediate: true },
-  )
+  function handleOpen() {
+    formState.wordList = []
+    open.value = true
+    const wordList = clone(storageWordList.value)
+
+    setTimeout(() => formState.wordList = wordList, 300)
+  }
 
   return {
     open,
@@ -73,6 +76,7 @@ export function useDrawerWordList() {
     formState,
     disabledAdd,
 
+    handleOpen,
     handleAdd,
     handleDelete,
     handleSave,
