@@ -8,7 +8,7 @@ defineOptions({ name: 'BookList' })
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 
-const { columns, rules, formRef, formState, handleAdd, handleDelete, handleSave } = useBookList()
+const { columns, rules, formRef, formState, disabledAdd, handleAdd, handleDelete, handleSave } = useBookList()
 </script>
 
 <template>
@@ -43,10 +43,6 @@ const { columns, rules, formRef, formState, handleAdd, handleDelete, handleSave 
 
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
-            <Button class="!px-0" size="small" type="link" @click="() => handleAdd(i)">
-              新增
-            </Button>
-
             <Button class="!px-0" danger size="small" type="link" @click="() => handleDelete(i)">
               删除
             </Button>
@@ -55,9 +51,15 @@ const { columns, rules, formRef, formState, handleAdd, handleDelete, handleSave 
       </template>
     </Table>
 
-    <Button class="mt-2" type="primary" @click="handleSave">
-      保存
-    </Button>
+    <div class="mt-2 flex gap-2">
+      <Button type="primary" :disabled="disabledAdd" @click="handleSave">
+        保存
+      </Button>
+
+      <Button @click="() => handleAdd(formState.wordList.length)">
+        新增
+      </Button>
+    </div>
   </Form>
 </template>
 

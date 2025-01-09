@@ -8,7 +8,7 @@ defineOptions({ name: 'WebsiteList' })
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 
-const { columns, formRef, formState, disabledCancel, handleDelete, handleSave, handleCancel } = useWebsiteList()
+const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, handleCancel } = useWebsiteList()
 </script>
 
 <template>
@@ -39,11 +39,11 @@ const { columns, formRef, formState, disabledCancel, handleDelete, handleSave, h
     </Table>
 
     <div class="mt-2 flex gap-2">
-      <Button type="primary" @click="handleSave">
+      <Button type="primary" :disabled="disabledAdd" @click="handleSave">
         保存
       </Button>
 
-      <Button :disabled="disabledCancel" @click="handleCancel">
+      <Button type="dashed" :disabled="disabledAdd" @click="handleCancel">
         取消
       </Button>
     </div>

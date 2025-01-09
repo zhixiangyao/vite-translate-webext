@@ -39,11 +39,10 @@ export function useSettings() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    const data = toRaw(formState)
-    storageSetting.value.api.url = data.apiUrl
-    storageSetting.value.api.token = data.apiToken
-    storageSetting.value.api.timeout = data.apiTimeout * 1000
-    storageSetting.value.highlight.style = data.highlightStyle
+    storageSetting.value.api.url = formState.apiUrl
+    storageSetting.value.api.token = formState.apiToken
+    storageSetting.value.api.timeout = formState.apiTimeout * 1000
+    storageSetting.value.highlight.style = formState.highlightStyle
     message.success('保存成功')
   }
 

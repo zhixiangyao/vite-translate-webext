@@ -1,6 +1,7 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { App } from 'ant-design-vue'
+import { clone } from '~/logic/clone'
 import { storageWebsiteList } from '~/logic/storage'
 
 export interface TRecordWebsite {
@@ -31,7 +32,7 @@ export function useWebsiteList() {
   const formState = reactive({
     websiteList: [] as TRecordWebsite[],
   })
-  const disabledCancel = computed(() => {
+  const disabledAdd = computed(() => {
     return JSON.stringify(formState.websiteList) === JSON.stringify(storageWebsiteList.value)
   })
   const { message } = App.useApp()
@@ -43,19 +44,19 @@ export function useWebsiteList() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    storageWebsiteList.value = toRaw(formState.websiteList)
+    storageWebsiteList.value = clone(formState.websiteList)
     message.success('保存成功')
   }
 
   async function handleCancel() {
     formRef.value?.clearValidate()
-    formState.websiteList = toRaw(storageWebsiteList.value)
+    formState.websiteList = clone(storageWebsiteList.value)
   }
 
   watch(
     storageWebsiteList,
     (websiteList) => {
-      formState.websiteList = toRaw(websiteList)
+      formState.websiteList = clone(websiteList)
     },
     { immediate: true },
   )
@@ -64,7 +65,7 @@ export function useWebsiteList() {
     columns,
     formRef,
     formState,
-    disabledCancel,
+    disabledAdd,
 
     handleDelete,
     handleSave,

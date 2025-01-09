@@ -2,6 +2,7 @@ import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { App } from 'ant-design-vue'
+import { clone } from '~/logic/clone'
 import { storageWordList } from '~/logic/storage'
 
 export interface TRecordWord {
@@ -10,7 +11,7 @@ export interface TRecordWord {
 
 const rules = {
   'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
-} satisfies Record<`wordList[i].${keyof TRecordWord}`, Rule[]>
+} satisfies Record<`wordList[i].${keyof Pick<TRecordWord, 'word'>}`, Rule[]>
 
 const columns: ColumnsType = [
   {
@@ -30,11 +31,14 @@ export function useBookList() {
   const formState = reactive({
     wordList: [] as TRecordWord[],
   })
+  const disabledAdd = computed(() => {
+    return JSON.stringify(formState.wordList) === JSON.stringify(storageWordList.value)
+  })
   const { message } = App.useApp()
 
   async function handleAdd(i: number) {
     await formRef.value?.validate()
-    formState.wordList?.splice(i + 1, 0, {
+    formState.wordList?.splice(i, 0, {
       word: '',
     })
   }
@@ -46,14 +50,14 @@ export function useBookList() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    storageWordList.value = toRaw(formState.wordList)
+    storageWordList.value = clone(formState.wordList)
     message.success('保存成功')
   }
 
   watch(
     storageWordList,
     (wordList) => {
-      formState.wordList = toRaw(wordList)
+      formState.wordList = clone(wordList)
     },
     { immediate: true },
   )
@@ -63,6 +67,7 @@ export function useBookList() {
     columns,
     formRef,
     formState,
+    disabledAdd,
 
     handleAdd,
     handleDelete,
