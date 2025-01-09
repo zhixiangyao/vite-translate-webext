@@ -1,6 +1,6 @@
 import type { TSetting } from '~/constant/map'
-import type { TRecordWebsite } from '~/options/views/AllowList/composables/useAllowList'
-import type { TRecordWord } from '~/options/views/BookList/composables/useBookList'
+import type { TRecordWord } from '~/options/views/BookList/composables/useDrawerWordList'
+import type { TRecordWebsite } from '~/options/views/WebsiteList/composables/useWebsiteList'
 import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
 import { DEFAULT_SETTING } from '~/constant/map'
 
@@ -18,7 +18,7 @@ const DO_NOT_LISTEN = { listenToStorageChanges: false }
 export const storageCurrentTab = useWebExtensionStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
 /** 单词 list */
-export const storageWordList = useWebExtensionStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo' }])
+export const storageWordList = useWebExtensionStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo', group: [] }])
 
 /** 网站 list */
 export const storageWebsiteList = useWebExtensionStorage<TRecordWebsite[]>('webext-website-list', [])
