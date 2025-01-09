@@ -64,8 +64,7 @@ export function useDrawerWordList() {
     formState.wordList = []
     open.value = true
     const wordList = clone(storageWordList.value)
-
-    setTimeout(() => formState.wordList = wordList, 300)
+    formState.wordList = wordList
   }
 
   return {

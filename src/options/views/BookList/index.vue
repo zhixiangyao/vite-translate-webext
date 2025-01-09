@@ -13,7 +13,9 @@ const { groups } = useBookList()
 
 <template>
   <Teleport v-if="layoutHeaderRightSlotRef" :to="layoutHeaderRightSlotRef">
-    <Button type="primary" @click="drawerWordList.handleOpen">
+    <Button> 添加组 </Button>
+
+    <Button @click="drawerWordList.handleOpen">
       编辑单词列表
     </Button>
   </Teleport>

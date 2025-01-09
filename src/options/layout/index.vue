@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import HeaderTop from './components/HeaderTop.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutMain from './components/LayoutMain.vue'
 import LayoutNav from './components/LayoutNav.vue'
@@ -8,7 +9,11 @@ defineOptions({ name: 'Layout' })
 
 <template>
   <div class="layout">
-    <LayoutNav />
+    <LayoutNav>
+      <template #top>
+        <HeaderTop />
+      </template>
+    </LayoutNav>
 
     <LayoutHeader />
 

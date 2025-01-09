@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { ItemType, MenuProps } from 'ant-design-vue'
-import { Menu } from 'ant-design-vue'
+import { Menu, theme } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { views } from '../../router'
+import { views } from '~/options/router'
 
 defineOptions({ name: 'LayoutNav' })
 
@@ -13,6 +13,7 @@ const items = views.map<ItemType>(view => ({
   title: view.title,
 }))
 
+const { token } = theme.useToken()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
@@ -25,20 +26,22 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
 </script>
 
 <template>
-  <nav>
+  <nav :style="{ backgroundColor: token.colorBgContainer }">
+    <slot name="top" />
     <Menu
       v-model:selected-keys="state.selectedKeys"
-      class="h-full !border-none"
+      class="!border-none"
       mode="vertical"
       :items="items"
       @click="handleClick"
     />
+    <slot name="bottom" />
   </nav>
 </template>
 
 <style scoped>
 nav {
   @apply grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-3;
-  @apply flex flex-col justify-between flex-shrink-0;
+  @apply flex flex-col flex-shrink-0;
 }
 </style>
