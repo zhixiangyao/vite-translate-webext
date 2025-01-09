@@ -23,10 +23,10 @@ export function useSettings() {
   const { message } = App.useApp()
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive<FormType>({
-    apiUrl: storageSetting.value.api.url,
-    apiToken: storageSetting.value.api.token,
-    apiTimeout: storageSetting.value.api.timeout / 1000,
-    highlightStyle: cssBeautify(storageSetting.value.highlight.style),
+    apiUrl: '',
+    apiToken: '',
+    apiTimeout: 0,
+    highlightStyle: '',
   })
   const disabledReset = computed(() => {
     return (
@@ -61,6 +61,17 @@ export function useSettings() {
     storageSetting.value.highlight.style = DEFAULT_SETTING.highlight.style
     message.success('恢复默认成功')
   }
+
+  watch(
+    storageSetting,
+    (setting) => {
+      formState.apiUrl = setting.api.url
+      formState.apiToken = setting.api.token
+      formState.apiTimeout = setting.api.timeout / 1000
+      formState.highlightStyle = cssBeautify(setting.highlight.style)
+    },
+    { immediate: true },
+  )
 
   return {
     rules,

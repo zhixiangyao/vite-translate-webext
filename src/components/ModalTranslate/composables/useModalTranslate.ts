@@ -1,7 +1,7 @@
 import type { EnumResponseCode } from '~/constant/enum'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { EnumTranslateLang } from '~/constant/enum'
-import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
+import { storageCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
 
 function isFiftyPercentLetters(str: string) {
@@ -80,8 +80,8 @@ export function useModalTranslate(root?: HTMLElement) {
   async function handleSearch() {
     state.error = void 0
 
-    if (storageTranslateCacheMap.value[state.text]) {
-      state.result = storageTranslateCacheMap.value[state.text]
+    if (storageCacheMap.value[state.text]) {
+      state.result = storageCacheMap.value[state.text]
       return
     }
 
@@ -95,7 +95,7 @@ export function useModalTranslate(root?: HTMLElement) {
         isEnglish ? EnumTranslateLang.ZH : EnumTranslateLang.EN,
       )
       state.result = data
-      data && (storageTranslateCacheMap.value[state.text] = data)
+      data && (storageCacheMap.value[state.text] = data)
     }
     catch (error) {
       state.result = void 0

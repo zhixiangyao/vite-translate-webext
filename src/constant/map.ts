@@ -1,6 +1,17 @@
 import { EnumDataSet, EnumSpeakerLang } from './enum'
 
-export const DEFAULT_SETTING = {
+export interface TSetting {
+  api: {
+    url: string
+    token: string
+    timeout: number
+  }
+  highlight: {
+    style: string
+  }
+}
+
+export const DEFAULT_SETTING: TSetting = {
   api: {
     url: 'http://home.yaozhixiang.top:1188/translate',
     token: 'deeplx_yzx',
