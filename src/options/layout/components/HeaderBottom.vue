@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { theme } from 'ant-design-vue'
+
 defineOptions({ name: 'HeaderBottom' })
 
+const { token } = theme.useToken()
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 </script>
 
 <template>
   <div class="header-bottom" @click="collapsed = !collapsed">
-    {{ collapsed ? 'Collapsed' : 'Collapse' }}
+    <MenuUnfoldOutlined v-if="collapsed" :style="{ color: token.colorPrimary }" />
+    <MenuFoldOutlined v-else :style="{ color: token.colorPrimary }" />
   </div>
 </template>
 
