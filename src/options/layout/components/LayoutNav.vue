@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { views } from '~/options/router'
 
 defineOptions({ name: 'LayoutNav' })
-defineProps<{ collapsed?: boolean }>()
+const props = defineProps<{ collapsed?: boolean }>()
 
 const items = views.map<ItemType>(view => ({
   key: view.name,
@@ -22,7 +22,7 @@ const state = reactive({
 })
 
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
-  router.push({ name: menuInfo.key.toString() })
+  router.push({ name: menuInfo.key.toString(), query: { collapsed: String(props.collapsed) } })
 }
 </script>
 
