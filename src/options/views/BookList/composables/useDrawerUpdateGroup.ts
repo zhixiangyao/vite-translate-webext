@@ -21,7 +21,6 @@ export function useDrawerUpdateGroup() {
     name: '',
     list: [],
   })
-  const isNameDuplication = computed(() => storageGroupList.value.some(group => formState.name === group.name))
   const { message } = App.useApp()
 
   function handleReset() {
@@ -32,7 +31,8 @@ export function useDrawerUpdateGroup() {
   async function handleSave() {
     await formRef.value?.validate()
 
-    if (isNameDuplication.value) {
+    const isNameDuplication = storageGroupList.value.some(group => formState.name === group.name)
+    if (isNameDuplication) {
       message.warning('不允许添加重复的组名')
       return
     }

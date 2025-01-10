@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { ListGridType } from 'ant-design-vue/es/list'
-import type { TRecordGroup } from '~/logic/storage'
-import { Button, Card, List, ListItem } from 'ant-design-vue'
+import { EditOutlined } from '@ant-design/icons-vue'
+import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
+import { storageGroupList, storageWordList, type TRecordGroup } from '~/logic/storage'
+import ButtonLongPress from '~/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
 import DrawerWordList from './components/DrawerWordList.vue'
@@ -11,9 +13,20 @@ import { useDrawerWordList } from './composables/useDrawerWordList'
 defineOptions({ name: 'BookList' })
 
 const listGrid: ListGridType = { sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }
-
+const { token } = theme.useToken()
 const drawerWordList = useDrawerWordList()
 const drawerUpdateGroup = useDrawerUpdateGroup()
+
+function handleDeleteGroup(name: TRecordGroup['name']) {
+  const index = storageGroupList.value.findIndex(group => group.name === name)
+  if (index !== -1) {
+    storageGroupList.value.splice(index, 1)
+    storageWordList.value.forEach((word) => {
+      if (word.group === name)
+        word.group = void 0
+    })
+  }
+}
 </script>
 
 <template>
@@ -30,7 +43,27 @@ const drawerUpdateGroup = useDrawerUpdateGroup()
   <List class="pb-6" :grid="listGrid" :data-source="drawerUpdateGroup.groupList.value">
     <template #renderItem="{ item }: { item: TRecordGroup }">
       <ListItem class="!mb-0 mt-6">
-        <Card :title="item.name">
+        <Card>
+          <template #title>
+            <div class="flex gap-2 items-center">
+              <WIconWrapper :color="token.colorPrimary">
+                <EditOutlined />
+              </WIconWrapper>
+              <span class="text-sm">{{ item.name }}</span>
+            </div>
+          </template>
+          <template #extra>
+            <ButtonLongPress
+              danger
+              type="link"
+              class="p-0"
+              :delay="2000"
+              title="长按删除"
+              @press="() => handleDeleteGroup(item.name)"
+            >
+              删除
+            </ButtonLongPress>
+          </template>
           <div class="flex justify-between items-center">
             <span class="text-xl">{{ item.list.length }}</span>
           </div>

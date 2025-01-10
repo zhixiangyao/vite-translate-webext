@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { useDrawerWordList } from '../composables/useDrawerWordList'
 import { useElementSize } from '@vueuse/core'
 import { Button, Drawer, Form, FormItem, Input, Select, Table } from 'ant-design-vue'
-import { storageGroupList } from '~/logic/storage'
 
 interface Props {
   use: ReturnType<typeof useDrawerWordList>
@@ -21,12 +19,6 @@ const formState = toRef(props.use, 'formState')
 const containerRef = ref<HTMLDivElement>()
 const containerSize = useElementSize(containerRef)
 const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
-const options = computed(() =>
-  storageGroupList.value.map<DefaultOptionType>(item => ({
-    label: item.name,
-    value: item.name,
-  })),
-)
 </script>
 
 <template>
@@ -68,7 +60,7 @@ const options = computed(() =>
                   v-model:value="formState.wordList![index].group"
                   placeholder="请选择组"
                   size="small"
-                  :options="options"
+                  :options="use.options.value"
                 />
               </FormItem>
             </template>

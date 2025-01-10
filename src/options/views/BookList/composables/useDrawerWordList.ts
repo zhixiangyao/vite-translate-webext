@@ -1,5 +1,6 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
@@ -35,6 +36,7 @@ export function useDrawerWordList() {
   const formState = reactive({
     wordList: [] as TRecordWord[],
   })
+  const options = ref<DefaultOptionType[]>()
   const disabledSave = computed(() => {
     if (!open.value)
       return true
@@ -58,6 +60,7 @@ export function useDrawerWordList() {
 
   function handleReset() {
     formState.wordList = []
+    options.value = []
   }
 
   async function handleSave() {
@@ -66,16 +69,14 @@ export function useDrawerWordList() {
     storageWordList.value = wordList
 
     {
-      const groupList = clone(storageGroupList.value)
-      const groupMap = groupList.reduce<Record<string, TRecordWord[]>>((acc, cur) => {
-        acc[cur.name] = cur.list
+      const groupMap = storageGroupList.value.reduce<Record<string, TRecordWord[]>>((acc, cur) => {
+        acc[cur.name] = []
         return acc
       }, {})
 
       wordList.forEach((item) => {
-        if (item.group) {
+        if (item.group)
           groupMap[item.group]?.push(item)
-        }
       })
       storageGroupList.value = Object.entries(groupMap).map(([name, list]) => ({ name, list }))
     }
@@ -88,6 +89,10 @@ export function useDrawerWordList() {
     open.value = true
     const wordList = clone(storageWordList.value)
     formState.wordList = wordList
+    options.value = storageGroupList.value.map<DefaultOptionType>(item => ({
+      label: item.name,
+      value: item.name,
+    }))
   }
 
   return {
@@ -96,6 +101,7 @@ export function useDrawerWordList() {
     columns,
     formRef,
     formState,
+    options,
     disabledSave,
 
     handleOpen,

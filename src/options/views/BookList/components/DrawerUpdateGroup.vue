@@ -33,10 +33,10 @@ const title = computed(() => `${props.use.type.value === 'add' ? '添加' : '编
           :maxlength="20"
           placeholder="请输入"
           show-count
-          size="small"
         />
       </FormItem>
     </Form>
+
     <template #footer>
       <div class="flex gap-2">
         <Button type="primary" @click="use.handleSave">
