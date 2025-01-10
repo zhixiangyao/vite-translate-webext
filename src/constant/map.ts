@@ -1,15 +1,5 @@
+import type { TSetting } from '~/logic/storage'
 import { EnumDataSet, EnumSpeakerLang } from './enum'
-
-export interface TSetting {
-  api: {
-    url: string
-    token: string
-    timeout: number
-  }
-  highlight: {
-    style: string
-  }
-}
 
 export const DEFAULT_SETTING: TSetting = {
   api: {

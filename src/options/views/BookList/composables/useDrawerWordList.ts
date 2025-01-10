@@ -1,14 +1,10 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
 import { clone } from '~/logic/clone'
 import { storageWordList } from '~/logic/storage'
-
-export interface TRecordWord {
-  word: string
-  group: string[]
-}
 
 const rules = {
   'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
@@ -45,7 +41,7 @@ export function useDrawerWordList() {
     await formRef.value?.validate()
     formState.wordList?.splice(i, 0, {
       word: '',
-      group: [],
+      group: null,
     })
   }
 

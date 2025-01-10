@@ -1,13 +1,9 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { TRecordWebsite } from '~/logic/storage'
 import { App } from 'ant-design-vue'
 import { clone } from '~/logic/clone'
 import { storageWebsiteList } from '~/logic/storage'
-
-export interface TRecordWebsite {
-  url: string
-  enable: boolean
-}
 
 const columns: ColumnsType = [
   {

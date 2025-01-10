@@ -109,7 +109,7 @@ export function useModalTranslate(root?: HTMLElement) {
   function handleAdd() {
     storageWordList.value?.splice(storageWordList.value.length, 0, {
       word: state.text.toLowerCase(),
-      group: [],
+      group: null,
     })
   }
 

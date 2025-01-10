@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { TRecordGroup } from '~/logic/storage'
 import { Button, Card, List, ListItem } from 'ant-design-vue'
 import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import DrawerWordList from './components/DrawerWordList.vue'
-import { type Group, listGrid, useBookList } from './composables/useBookList'
+import { listGrid, useBookList } from './composables/useBookList'
 import { useDrawerWordList } from './composables/useDrawerWordList'
 
 defineOptions({ name: 'BookList' })
@@ -21,11 +22,11 @@ const { groups } = useBookList()
   </Teleport>
 
   <List class="pb-6" :grid="listGrid" :data-source="groups">
-    <template #renderItem="{ item }: { item: Group }">
+    <template #renderItem="{ item }: { item: TRecordGroup }">
       <ListItem class="!mb-0 mt-6">
         <Card :title="item.name">
           <div class="flex justify-between items-center">
-            <span class="text-xl">{{ item.count }}</span>
+            <span class="text-xl">{{ item.list.length }}</span>
           </div>
         </Card>
       </ListItem>
