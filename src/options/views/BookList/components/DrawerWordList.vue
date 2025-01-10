@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { useDrawerWordList } from '../composables/useDrawerWordList'
 import { useElementSize } from '@vueuse/core'
-import { Button, Drawer, Form, FormItem, Input, Table } from 'ant-design-vue'
+import { Button, Drawer, Form, FormItem, Input, Select, Table } from 'ant-design-vue'
+import { storageGroupList } from '~/logic/storage'
 
 interface Props {
   use: ReturnType<typeof useDrawerWordList>
@@ -15,9 +17,16 @@ const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 const formRef = toRef(props.use, 'formRef')
 const open = toRef(props.use, 'open')
+const formState = toRef(props.use, 'formState')
 const containerRef = ref<HTMLDivElement>()
 const containerSize = useElementSize(containerRef)
 const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
+const options = computed(() =>
+  storageGroupList.value.map<DefaultOptionType>(item => ({
+    label: item.name,
+    value: item.name,
+  })),
+)
 </script>
 
 <template>
@@ -27,24 +36,24 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
         ref="formRef"
         autocomplete="off"
         :label-col="labelCol"
-        :model="props.use.formState"
-        :rules="props.use.rules"
+        :model="formState"
+        :rules="use.rules"
         :wrapper-col="wrapperCol"
       >
         <Table
           class="drawer-word-list-table"
           bordered
-          :columns="props.use.columns"
-          :data-source="props.use.formState.wordList"
+          :columns="use.columns"
+          :data-source="formState.wordList"
           :pagination="false"
           size="small"
           :scroll="tableScroll"
         >
           <template #bodyCell="{ column, index }: { column: ColumnsType[number], index: number }">
             <template v-if="column.key === 'word'">
-              <FormItem :name="['wordList', index, 'word']" :rules="props.use.rules['wordList[i].word']">
+              <FormItem :name="['wordList', index, 'word']" :rules="use.rules['wordList[i].word']">
                 <Input
-                  v-model:value.trim="props.use.formState.wordList![index].word"
+                  v-model:value.trim="formState.wordList![index].word"
                   :maxlength="100"
                   placeholder="请输入"
                   show-count
@@ -53,9 +62,20 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
               </FormItem>
             </template>
 
+            <template v-if="column.key === 'group'">
+              <FormItem :name="['wordList', index, 'group']">
+                <Select
+                  v-model:value="formState.wordList![index].group"
+                  placeholder="请选择组"
+                  size="small"
+                  :options="options"
+                />
+              </FormItem>
+            </template>
+
             <template v-if="column.key === 'operation'">
               <div class="flex gap-2">
-                <Button class="!px-0" danger size="small" type="link" @click="() => props.use.handleDelete(index)">
+                <Button class="!px-0" danger size="small" type="link" @click="() => use.handleDelete(index)">
                   删除
                 </Button>
               </div>
@@ -67,11 +87,11 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
 
     <template #footer>
       <div class="flex gap-2">
-        <Button type="primary" :disabled="props.use.disabledAdd.value" @click="props.use.handleSave">
+        <Button type="primary" :disabled="use.disabledSave.value" @click="use.handleSave">
           保存
         </Button>
 
-        <Button @click="() => props.use.handleAdd(props.use.formState.wordList.length)">
+        <Button @click="() => use.handleAdd(formState.wordList.length)">
           新增
         </Button>
       </div>

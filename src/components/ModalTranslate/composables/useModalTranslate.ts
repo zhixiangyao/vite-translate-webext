@@ -1,4 +1,5 @@
 import type { EnumResponseCode } from '~/constant/enum'
+import type { TRecordWord } from '~/logic/storage'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { EnumTranslateLang } from '~/constant/enum'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
@@ -109,8 +110,8 @@ export function useModalTranslate(root?: HTMLElement) {
   function handleAdd() {
     storageWordList.value?.splice(storageWordList.value.length, 0, {
       word: state.text.toLowerCase(),
-      group: null,
-    })
+      group: void 0,
+    } as TRecordWord)
   }
 
   function handleRemove() {

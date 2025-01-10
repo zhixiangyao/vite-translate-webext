@@ -4,7 +4,7 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
 import { clone } from '~/logic/clone'
-import { storageWordList } from '~/logic/storage'
+import { storageGroupList, storageWordList } from '~/logic/storage'
 
 const rules = {
   'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
@@ -15,6 +15,12 @@ const columns: ColumnsType = [
     title: '单词',
     dataIndex: 'word' satisfies keyof TRecordWord,
     key: 'word' satisfies keyof TRecordWord,
+  },
+  {
+    title: '组',
+    dataIndex: 'group' satisfies keyof TRecordWord,
+    key: 'group' satisfies keyof TRecordWord,
+    width: 200,
   },
   {
     title: '操作',
@@ -29,7 +35,7 @@ export function useDrawerWordList() {
   const formState = reactive({
     wordList: [] as TRecordWord[],
   })
-  const disabledAdd = computed(() => {
+  const disabledSave = computed(() => {
     if (!open.value)
       return true
 
@@ -41,8 +47,8 @@ export function useDrawerWordList() {
     await formRef.value?.validate()
     formState.wordList?.splice(i, 0, {
       word: '',
-      group: null,
-    })
+      group: void 0,
+    } as TRecordWord)
   }
 
   function handleDelete(i: number) {
@@ -50,14 +56,35 @@ export function useDrawerWordList() {
     formRef.value?.clearValidate()
   }
 
+  function handleReset() {
+    formState.wordList = []
+  }
+
   async function handleSave() {
     await formRef.value?.validate()
-    storageWordList.value = clone(formState.wordList)
+    const wordList = clone(formState.wordList)
+    storageWordList.value = wordList
+
+    {
+      const groupList = clone(storageGroupList.value)
+      const groupMap = groupList.reduce<Record<string, TRecordWord[]>>((acc, cur) => {
+        acc[cur.name] = cur.list
+        return acc
+      }, {})
+
+      wordList.forEach((item) => {
+        if (item.group) {
+          groupMap[item.group]?.push(item)
+        }
+      })
+      storageGroupList.value = Object.entries(groupMap).map(([name, list]) => ({ name, list }))
+    }
+
     message.success('保存成功')
   }
 
   function handleOpen() {
-    formState.wordList = []
+    handleReset()
     open.value = true
     const wordList = clone(storageWordList.value)
     formState.wordList = wordList
@@ -69,7 +96,7 @@ export function useDrawerWordList() {
     columns,
     formRef,
     formState,
-    disabledAdd,
+    disabledSave,
 
     handleOpen,
     handleAdd,

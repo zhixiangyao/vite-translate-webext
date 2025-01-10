@@ -1,4 +1,4 @@
-import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
+import { useWebExtensionStorage as useWebExtStorage } from '~/composables/useWebExtensionStorage'
 import { DEFAULT_SETTING } from '~/constant/map'
 
 interface TCurrentTab {
@@ -7,7 +7,7 @@ interface TCurrentTab {
 
 export interface TRecordWord {
   word: string
-  group: string | null
+  group: string | undefined
 }
 
 export interface TRecordGroup {
@@ -38,19 +38,19 @@ export interface TSetting {
 const DO_NOT_LISTEN = { listenToStorageChanges: false }
 
 /** 当前 Tab 信息 */
-export const storageCurrentTab = useWebExtensionStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
+export const storageCurrentTab = useWebExtStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
 /** 单词 list */
-export const storageWordList = useWebExtensionStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo', group: null }])
+export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo', group: void 0 }])
 
 /** 组 list */
-export const storageGroupList = useWebExtensionStorage<TRecordGroup[]>('webext-word-list', [])
+export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', [])
 
 /** 网站 list */
-export const storageWebsiteList = useWebExtensionStorage<TRecordWebsite[]>('webext-website-list', [])
+export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', [])
 
 /** 搜索结果缓存 */
-export const storageCacheMap = useWebExtensionStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)
+export const storageCacheMap = useWebExtStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)
 
 /** 设置 */
-export const storageSetting = useWebExtensionStorage<TSetting>('webext-setting', DEFAULT_SETTING)
+export const storageSetting = useWebExtStorage<TSetting>('webext-setting', DEFAULT_SETTING)
