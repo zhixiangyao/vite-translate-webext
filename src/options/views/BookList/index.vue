@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { ListGridType } from 'ant-design-vue/es/list'
+import type { TRecordGroup } from '~/logic/storage'
 import { EditOutlined } from '@ant-design/icons-vue'
 import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
-import { storageGroupList, storageWordList, type TRecordGroup } from '~/logic/storage'
+import { storageGroupList, storageWordList } from '~/logic/storage'
 import ButtonLongPress from '~/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
@@ -17,12 +18,14 @@ const { token } = theme.useToken()
 const drawerWordList = useDrawerWordList()
 const drawerUpdateGroup = useDrawerUpdateGroup()
 
-function handleDeleteGroup(name: TRecordGroup['name']) {
-  const index = storageGroupList.value.findIndex(group => group.name === name)
+function handleDeleteGroup(group: TRecordGroup) {
+  const groupList = storageGroupList.value
+  const index = groupList.findIndex(({ uuid }) => group.uuid === uuid)
+
   if (index !== -1) {
-    storageGroupList.value.splice(index, 1)
+    groupList.splice(index, 1)
     storageWordList.value.forEach((word) => {
-      if (word.group === name)
+      if (word.group === group.name)
         word.group = void 0
     })
   }
@@ -40,18 +43,20 @@ function handleDeleteGroup(name: TRecordGroup['name']) {
     </Button>
   </Teleport>
 
-  <List class="pb-6" :grid="listGrid" :data-source="drawerUpdateGroup.groupList.value">
-    <template #renderItem="{ item }: { item: TRecordGroup }">
+  <List class="pb-6" :grid="listGrid" :data-source="storageGroupList">
+    <template #renderItem="{ item: group }: { item: TRecordGroup }">
       <ListItem class="!mb-0 mt-6">
         <Card>
           <template #title>
             <div class="flex gap-2 items-center">
-              <WIconWrapper :color="token.colorPrimary">
+              <WIconWrapper :color="token.colorPrimary" @click="() => drawerUpdateGroup.handleOpen(group)">
                 <EditOutlined />
               </WIconWrapper>
-              <span class="text-sm">{{ item.name }}</span>
+
+              <span class="text-sm">{{ group.name }}</span>
             </div>
           </template>
+
           <template #extra>
             <ButtonLongPress
               danger
@@ -59,13 +64,14 @@ function handleDeleteGroup(name: TRecordGroup['name']) {
               class="p-0"
               :delay="2000"
               title="长按删除"
-              @press="() => handleDeleteGroup(item.name)"
+              @press="() => handleDeleteGroup(group)"
             >
               删除
             </ButtonLongPress>
           </template>
+
           <div class="flex justify-between items-center">
-            <span class="text-xl">{{ item.list.length }}</span>
+            <span class="text-xl">{{ group.list.length }}</span>
           </div>
         </Card>
       </ListItem>

@@ -7,11 +7,12 @@ interface TCurrentTab {
 
 export interface TRecordWord {
   word: string
-  group: string | undefined
+  groupUUID: string | undefined
 }
 
 export interface TRecordGroup {
   name: string
+  uuid: string
   list: TRecordWord[]
 }
 
@@ -41,7 +42,7 @@ const DO_NOT_LISTEN = { listenToStorageChanges: false }
 export const storageCurrentTab = useWebExtStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
 /** 单词 list */
-export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [{ word: 'demo', group: void 0 }])
+export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [])
 
 /** 组 list */
 export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', [])

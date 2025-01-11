@@ -27,6 +27,13 @@ const title = computed(() => `${props.use.type.value === 'add' ? '添加' : '编
       :rules="use.rules"
       :wrapper-col="wrapperCol"
     >
+      <FormItem label="uuid" name="uuid">
+        <Input
+          readonly
+          :value="formState.uuid"
+          :bordered="false"
+        />
+      </FormItem>
       <FormItem label="组名" name="name" :rules="use.rules.name">
         <Input
           v-model:value.trim="formState.name"

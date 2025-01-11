@@ -54,10 +54,10 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
               </FormItem>
             </template>
 
-            <template v-if="column.key === 'group'">
-              <FormItem :name="['wordList', index, 'group']">
+            <template v-if="column.key === 'groupUUID'">
+              <FormItem :name="['wordList', index, 'groupUUID']">
                 <Select
-                  v-model:value="formState.wordList![index].group"
+                  v-model:value="formState.wordList![index].groupUUID"
                   placeholder="请选择组"
                   size="small"
                   :options="use.options.value"

@@ -110,7 +110,7 @@ export function useModalTranslate(root?: HTMLElement) {
   function handleAdd() {
     storageWordList.value?.splice(storageWordList.value.length, 0, {
       word: state.text.toLowerCase(),
-      group: void 0,
+      groupUUID: void 0,
     } as TRecordWord)
   }
 
