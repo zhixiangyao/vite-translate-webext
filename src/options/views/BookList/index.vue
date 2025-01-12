@@ -25,8 +25,8 @@ function handleDeleteGroup(group: TRecordGroup) {
   if (index !== -1) {
     groupList.splice(index, 1)
     storageWordList.value.forEach((word) => {
-      if (word.group === group.name)
-        word.group = void 0
+      if (word.groupUUID === group.uuid)
+        word.groupUUID = void 0
     })
   }
 }
