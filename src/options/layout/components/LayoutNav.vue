@@ -32,7 +32,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
     <Menu
       v-model:selected-keys="state.selectedKeys"
       class="!border-none"
-      mode="vertical"
+      mode="inline"
       :items="items"
       :inline-collapsed="collapsed"
       @click="handleClick"
