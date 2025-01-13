@@ -13,12 +13,17 @@ const { token } = theme.useToken()
     <Tag
       v-for="item in use.list.value"
       :key="item.path"
-      class="cursor-pointer"
+      class="cursor-pointer select-none"
       :color="item.name === use.activity.value?.name ? token.colorPrimary : void 0"
       :closable="use.list.value.length !== 0"
+      :bordered="false"
       @close="() => use.handleClose(item)"
       @click="() => use.handleTo(item)"
     >
+      <template #icon>
+        <component :is="item.icon" />
+      </template>
+
       {{ item.title }}
     </Tag>
   </div>

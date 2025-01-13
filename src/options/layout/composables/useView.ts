@@ -10,6 +10,7 @@ interface View {
   path: string
   query: LocationQuery
   title: string
+  icon: () => VNode
 }
 
 export function useView() {
@@ -51,6 +52,7 @@ export function useView() {
           path: to.path,
           query: to.query,
           title: view.title,
+          icon: view.icon,
         }
         activity.value = data
         list.value.findIndex(item => item.path === data.path) === -1 && list.value.push(data)
