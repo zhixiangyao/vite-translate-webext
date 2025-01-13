@@ -7,7 +7,14 @@ interface State {
   open: boolean
 }
 
-export function useModalSearch(disabled: ComputedRef<boolean>) {
+interface Params {
+  disabled: ComputedRef<boolean>
+  root?: HTMLElement
+}
+
+export function useModalSearch(params: Params) {
+  const { disabled, root } = params
+
   const state = reactive<State>({
     top: 0,
     left: 0,
@@ -46,7 +53,7 @@ export function useModalSearch(disabled: ComputedRef<boolean>) {
     handleHidden()
   }
 
-  useEventListener(document, 'mouseup', useDebounceFn(listener, 50))
+  useEventListener(root ?? document, 'mouseup', useDebounceFn(listener, 50))
   useEventListener(document, 'keydown', e => e.key === 'Escape' && handleHidden())
 
   return {
