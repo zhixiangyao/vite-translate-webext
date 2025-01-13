@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { TRecordWebsite } from '~/logic/storage'
 import { storageWebsiteList } from '~/logic/storage'
 
 const host = ref('')
-const website = computed(() => host.value ? storageWebsiteList.value.find(item => item.url === host.value) : void 0)
+const website = computed<TRecordWebsite | undefined>(() =>
+  host.value ? storageWebsiteList.value.find(item => item.url === host.value) : void 0,
+)
 
 function handleOpenDashboard() {
   browser.runtime.openOptionsPage()
@@ -44,7 +47,14 @@ onMounted(updateKey)
       Dashboard
     </WButton>
 
-    <WButton v-if="host" dark align="left" class="w-full relative" :class="{ activity: website?.url }" @click="handleEnable">
+    <WButton
+      v-if="host"
+      dark
+      align="left"
+      class="w-full relative"
+      :class="{ activity: website?.enable }"
+      @click="handleEnable"
+    >
       Enable
     </WButton>
   </main>
