@@ -1,22 +1,18 @@
 <script lang="ts" setup>
-import { useUrlSearchParams } from '@vueuse/core'
 import HeaderBottom from './components/HeaderBottom.vue'
 import HeaderTop from './components/HeaderTop.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutMain from './components/LayoutMain.vue'
 import LayoutNav from './components/LayoutNav.vue'
+import LayoutViewTab from './components/LayoutViewTab.vue'
+import { useCollapsed } from './composables/useCollapsed'
+import { useView } from './composables/useView'
 
 defineOptions({ name: 'Layout' })
 
-const params = useUrlSearchParams<{ collapsed: 'true' | 'false' }>('hash', { initialValue: { collapsed: 'false' } })
-const collapsed = computed<boolean>({
-  get() {
-    return params.collapsed === 'true'
-  },
-  set(bool) {
-    params.collapsed = bool ? 'true' : 'false'
-  },
-})
+const collapsed = useCollapsed()
+const view = useView()
+const cachedViewNames = computed(() => view.list.value.map(item => item.name))
 </script>
 
 <template>
@@ -33,7 +29,9 @@ const collapsed = computed<boolean>({
 
     <LayoutHeader />
 
-    <LayoutMain />
+    <LayoutViewTab :use="view" />
+
+    <LayoutMain :cached-view-names="cachedViewNames" />
   </div>
 </template>
 
@@ -42,7 +40,6 @@ const collapsed = computed<boolean>({
   @apply h-screen w-screen;
   @apply grid gap-1;
   grid-template-columns: v-bind('`${collapsed ? 80 : 200}px 1fr`');
-
-  grid-template-rows: 48px 1fr;
+  grid-template-rows: 40px 30px 1fr;
 }
 </style>

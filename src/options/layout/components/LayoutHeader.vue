@@ -2,12 +2,14 @@
 import { useDark } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
+import { views } from '~/options/router'
 
 defineOptions({ name: 'LayoutHeader' })
 
 const { token } = theme.useToken()
 const route = useRoute()
 const isDark = useDark()
+const view = computed(() => views.find(view => view.name === route.name))
 </script>
 
 <script lang="ts">
@@ -16,7 +18,9 @@ export const layoutHeaderRightSlotRef = ref<HTMLDivElement>()
 
 <template>
   <header :style="{ backgroundColor: token.colorBgContainer }">
-    <div>{{ route.name }}</div>
+    <div :title="route.name?.toString()">
+      {{ view?.title ?? route.name }}
+    </div>
 
     <div class="flex gap-4 items-center">
       <div ref="layoutHeaderRightSlotRef" class="flex gap-4 items-center" />

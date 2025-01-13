@@ -7,10 +7,13 @@ interface Emits {
 }
 
 defineOptions({ name: 'ModalSearch' })
-const props = defineProps<{ disabled?: boolean }>()
+const props = defineProps<{ disabled?: boolean, root?: HTMLElement }>()
 const emit = defineEmits<Emits>()
 
-const modalSearch = useModalSearch(computed(() => props.disabled))
+const modalSearch = useModalSearch({
+  disabled: computed(() => props.disabled),
+  root: props.root,
+})
 
 function handle() {
   modalSearch.handleHidden()

@@ -14,5 +14,5 @@ function search(text: string, left: number, top: number) {
 <template>
   <ModalTranslate ref="modal-translate" :root="root" />
 
-  <ModalSearch :disabled="!!ref?.state.open" @search="search" />
+  <ModalSearch :disabled="!!ref?.state.open" :root="root" @search="search" />
 </template>

@@ -3,6 +3,7 @@ import type { ListGridType } from 'ant-design-vue/es/list'
 import type { TRecordGroup } from '~/logic/storage'
 import { EditOutlined } from '@ant-design/icons-vue'
 import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
+import { useRoute } from 'vue-router'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 import ButtonLongPress from '~/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
@@ -14,9 +15,11 @@ import { useDrawerWordList } from './composables/useDrawerWordList'
 defineOptions({ name: 'BookList' })
 
 const listGrid: ListGridType = { sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }
+const route = useRoute()
 const { token } = theme.useToken()
 const drawerWordList = useDrawerWordList()
 const drawerUpdateGroup = useDrawerUpdateGroup()
+const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'BookList')
 
 function handleDeleteGroup(group: TRecordGroup) {
   const groupList = storageGroupList.value
@@ -33,12 +36,12 @@ function handleDeleteGroup(group: TRecordGroup) {
 </script>
 
 <template>
-  <Teleport v-if="layoutHeaderRightSlotRef" :to="layoutHeaderRightSlotRef">
-    <Button @click="() => drawerUpdateGroup.handleOpen()">
+  <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
+    <Button size="small" @click="() => drawerUpdateGroup.handleOpen()">
       添加组
     </Button>
 
-    <Button @click="drawerWordList.handleOpen">
+    <Button size="small" @click="drawerWordList.handleOpen">
       编辑单词列表
     </Button>
   </Teleport>
