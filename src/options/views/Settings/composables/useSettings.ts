@@ -23,12 +23,12 @@ export function useSettings() {
   const { message } = App.useApp()
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive<FormType>({
-    apiUrl: storageSetting.value.api.url,
-    apiToken: storageSetting.value.api.token,
-    apiTimeout: storageSetting.value.api.timeout / 1000,
-    highlightStyle: cssBeautify(storageSetting.value.highlight.style),
+    apiUrl: '',
+    apiToken: '',
+    apiTimeout: 0,
+    highlightStyle: '',
   })
-  const disabledSave = computed(() => {
+  const disabledReset = computed(() => {
     return (
       DEFAULT_SETTING.api.url === formState.apiUrl
       && DEFAULT_SETTING.api.token === formState.apiToken
@@ -39,11 +39,10 @@ export function useSettings() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    const data = toRaw(formState)
-    storageSetting.value.api.url = data.apiUrl
-    storageSetting.value.api.token = data.apiToken
-    storageSetting.value.api.timeout = data.apiTimeout * 1000
-    storageSetting.value.highlight.style = data.highlightStyle
+    storageSetting.value.api.url = formState.apiUrl
+    storageSetting.value.api.token = formState.apiToken
+    storageSetting.value.api.timeout = formState.apiTimeout * 1000
+    storageSetting.value.highlight.style = formState.highlightStyle
     message.success('保存成功')
   }
 
@@ -62,11 +61,22 @@ export function useSettings() {
     message.success('恢复默认成功')
   }
 
+  watch(
+    storageSetting,
+    (setting) => {
+      formState.apiUrl = setting.api.url
+      formState.apiToken = setting.api.token
+      formState.apiTimeout = setting.api.timeout / 1000
+      formState.highlightStyle = cssBeautify(setting.highlight.style)
+    },
+    { immediate: true },
+  )
+
   return {
     rules,
     formRef,
     formState,
-    disabledSave,
+    disabledReset,
 
     handleSave,
     handleReset,

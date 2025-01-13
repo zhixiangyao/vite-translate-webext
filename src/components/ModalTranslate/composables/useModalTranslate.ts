@@ -1,6 +1,8 @@
+import type { EnumResponseCode } from '~/constant/enum'
+import type { TRecordWord } from '~/logic/storage'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { EnumTranslateLang } from '~/constant/enum'
-import { storageTranslateCacheMap, storageWordList } from '~/logic/storage'
+import { storageCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
 
 function isFiftyPercentLetters(str: string) {
@@ -25,6 +27,7 @@ interface State {
   pin: boolean
   loading: boolean
   result: DeeplxResponse | undefined
+  error: EnumResponseCode | undefined
 }
 
 export function useModalTranslate(root?: HTMLElement) {
@@ -38,8 +41,19 @@ export function useModalTranslate(root?: HTMLElement) {
     pin: false,
     loading: false,
     result: void 0,
+    error: void 0,
   })
   const mouse = useMouse()
+  const wordList = computed(() => {
+    return storageWordList.value.map(value => value.word.toLowerCase())
+  })
+  const favorite = computed(() => {
+    return wordList.value.includes(state.text.toLowerCase())
+  })
+  const isWord = computed<boolean>(() => {
+    const regex = /^[a-z]+$/i
+    return regex.test(state.text)
+  })
 
   function handleReset() {
     state.top = 0
@@ -47,6 +61,7 @@ export function useModalTranslate(root?: HTMLElement) {
     state.text = ''
     state.loading = false
     state.result = void 0
+    state.error = void 0
   }
 
   function handleShow(text: string, left: number, top: number) {
@@ -64,8 +79,10 @@ export function useModalTranslate(root?: HTMLElement) {
   }
 
   async function handleSearch() {
-    if (storageTranslateCacheMap.value[state.text]) {
-      state.result = storageTranslateCacheMap.value[state.text]
+    state.error = void 0
+
+    if (storageCacheMap.value[state.text]) {
+      state.result = storageCacheMap.value[state.text]
       return
     }
 
@@ -79,10 +96,11 @@ export function useModalTranslate(root?: HTMLElement) {
         isEnglish ? EnumTranslateLang.ZH : EnumTranslateLang.EN,
       )
       state.result = data
-      data && (storageTranslateCacheMap.value[state.text] = data)
+      data && (storageCacheMap.value[state.text] = data)
     }
-    catch {
+    catch (error) {
       state.result = void 0
+      state.error = error as EnumResponseCode
     }
     finally {
       state.loading = false
@@ -92,7 +110,8 @@ export function useModalTranslate(root?: HTMLElement) {
   function handleAdd() {
     storageWordList.value?.splice(storageWordList.value.length, 0, {
       word: state.text.toLowerCase(),
-    })
+      groupUUID: void 0,
+    } as TRecordWord)
   }
 
   function handleRemove() {
@@ -127,6 +146,9 @@ export function useModalTranslate(root?: HTMLElement) {
 
   return {
     state,
+    favorite,
+    isWord,
+
     handleShow,
     handleHidden,
     handleSearch,

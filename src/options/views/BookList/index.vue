@@ -1,75 +1,83 @@
-<script setup lang="ts">
-import type { ColumnsType } from 'ant-design-vue/es/table'
-import { Button, Form, FormItem, Input, Table } from 'ant-design-vue'
-import { useBookList } from './composables/useBookList'
+<script lang="ts" setup>
+import type { ListGridType } from 'ant-design-vue/es/list'
+import type { TRecordGroup } from '~/logic/storage'
+import { EditOutlined } from '@ant-design/icons-vue'
+import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
+import { storageGroupList, storageWordList } from '~/logic/storage'
+import ButtonLongPress from '~/options/components/ButtonLongPress.vue'
+import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
+import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
+import DrawerWordList from './components/DrawerWordList.vue'
+import { useDrawerUpdateGroup } from './composables/useDrawerUpdateGroup'
+import { useDrawerWordList } from './composables/useDrawerWordList'
 
 defineOptions({ name: 'BookList' })
 
-const labelCol = { span: 3 }
-const wrapperCol = { span: 24 - labelCol.span }
+const listGrid: ListGridType = { sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }
+const { token } = theme.useToken()
+const drawerWordList = useDrawerWordList()
+const drawerUpdateGroup = useDrawerUpdateGroup()
 
-const { columns, rules, formRef, formState, handleAdd, handleDelete, handleSave } = useBookList()
+function handleDeleteGroup(group: TRecordGroup) {
+  const groupList = storageGroupList.value
+  const index = groupList.findIndex(({ uuid }) => group.uuid === uuid)
+
+  if (index !== -1) {
+    groupList.splice(index, 1)
+    storageWordList.value.forEach((word) => {
+      if (word.groupUUID === group.uuid)
+        word.groupUUID = void 0
+    })
+  }
+}
 </script>
 
 <template>
-  <Form
-    ref="formRef"
-    autocomplete="off"
-    :label-col="labelCol"
-    :model="formState"
-    :rules="rules"
-    :wrapper-col="wrapperCol"
-  >
-    <Table
-      class="book-list-table"
-      bordered
-      :columns="columns"
-      :data-source="formState.wordList"
-      :pagination="false"
-      size="small"
-    >
-      <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
-        <template v-if="column.key === 'word'">
-          <FormItem :name="['wordList', i, 'word']" :rules="rules['wordList[i].word']">
-            <Input
-              v-model:value.trim="formState.wordList![i].word"
-              :maxlength="100"
-              placeholder="请输入"
-              show-count
-              size="small"
-            />
-          </FormItem>
-        </template>
+  <Teleport v-if="layoutHeaderRightSlotRef" :to="layoutHeaderRightSlotRef">
+    <Button @click="() => drawerUpdateGroup.handleOpen()">
+      添加组
+    </Button>
 
-        <template v-if="column.key === 'operation'">
-          <div class="flex gap-2">
-            <Button class="!px-0" size="small" type="link" @click="() => handleAdd(i)">
-              新增
-            </Button>
+    <Button @click="drawerWordList.handleOpen">
+      编辑单词列表
+    </Button>
+  </Teleport>
 
-            <Button
-              v-if="!(formState.wordList?.length === 1 && i === 0)"
-              class="!px-0"
+  <List class="pb-6" :grid="listGrid" :data-source="storageGroupList">
+    <template #renderItem="{ item: group }: { item: TRecordGroup }">
+      <ListItem class="!mb-0 mt-6">
+        <Card>
+          <template #title>
+            <div class="flex gap-2 items-center">
+              <WIconWrapper :color="token.colorPrimary" @click="() => drawerUpdateGroup.handleOpen(group)">
+                <EditOutlined />
+              </WIconWrapper>
+
+              <span class="text-sm">{{ group.name }}</span>
+            </div>
+          </template>
+
+          <template #extra>
+            <ButtonLongPress
               danger
-              size="small"
               type="link"
-              @click="() => handleDelete(i)"
+              class="p-0"
+              :delay="2000"
+              title="长按删除"
+              @press="() => handleDeleteGroup(group)"
             >
               删除
-            </Button>
+            </ButtonLongPress>
+          </template>
+
+          <div class="flex justify-between items-center">
+            <span class="text-xl">{{ group.list.length }}</span>
           </div>
-        </template>
-      </template>
-    </Table>
+        </Card>
+      </ListItem>
+    </template>
+  </List>
 
-    <Button class="mt-2" type="primary" @click="handleSave">
-      保存
-    </Button>
-  </Form>
+  <DrawerUpdateGroup :use="drawerUpdateGroup" />
+  <DrawerWordList :use="drawerWordList" />
 </template>
-
-<style scoped>
-.book-list-table :deep(.ant-form-item) {
-  margin-bottom: 0;
-}
-</style>

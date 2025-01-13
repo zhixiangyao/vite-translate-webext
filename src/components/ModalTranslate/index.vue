@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
-import { storageWordList } from '~/logic/storage'
 import Empty from './components/Empty.vue'
-import Result from './components/Result.vue'
+import Error from './components/Error.vue'
+import Result from './components/Result/index.vue'
 import { useModalTranslate } from './composables/useModalTranslate'
 import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
 
@@ -15,16 +15,6 @@ const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDrag
   y: toRef(modalTranslate.state, 'top'),
   open: toRef(modalTranslate.state, 'open'),
   root: props.root,
-})
-const wordList = computed(() => {
-  return storageWordList.value.map(value => value.word.toLowerCase())
-})
-const favorite = computed(() => {
-  return wordList.value.includes(modalTranslate.state.text.toLowerCase())
-})
-const isWord = computed<boolean>(() => {
-  const regex = /^[a-z]+$/i
-  return regex.test(modalTranslate.state.text)
 })
 
 defineExpose({
@@ -52,9 +42,9 @@ defineExpose({
           <PushpinOutlined v-else title="点击固定" @click="modalTranslate.state.pin = true" />
         </WIconWrapper>
 
-        <WIconWrapper :show="!isWord">
-          <template v-if="isWord">
-            <HeartFilled v-if="favorite" title="点击取消收藏" @click="modalTranslate.handleRemove" />
+        <WIconWrapper :show="!modalTranslate.isWord.value">
+          <template v-if="modalTranslate.isWord.value">
+            <HeartFilled v-if="modalTranslate.favorite.value" title="点击取消收藏" @click="modalTranslate.handleRemove" />
             <HeartOutlined v-else title="点击收藏" @click="modalTranslate.handleAdd" />
           </template>
         </WIconWrapper>
@@ -79,6 +69,9 @@ defineExpose({
         </template>
         <template v-else-if="modalTranslate.state.result">
           <Result :result="modalTranslate.state.result" />
+        </template>
+        <template v-else-if="modalTranslate.state.error !== void 0">
+          <Error :code="modalTranslate.state.error" />
         </template>
         <template v-else>
           <Empty />

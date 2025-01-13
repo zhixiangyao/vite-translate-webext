@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { storageActivityWebsiteMap } from '~/logic/storage'
+import type { TRecordWebsite } from '~/logic/storage'
+import { storageWebsiteList } from '~/logic/storage'
 
-const key = ref('')
+const host = ref('')
+const website = computed<TRecordWebsite | undefined>(() =>
+  host.value ? storageWebsiteList.value.find(item => item.url === host.value) : void 0,
+)
 
 function handleOpenDashboard() {
   browser.runtime.openOptionsPage()
 }
 
 function handleEnable() {
-  if (!key.value || !storageActivityWebsiteMap.value)
+  if (!host.value || !storageWebsiteList.value)
     return
 
-  storageActivityWebsiteMap.value[key.value] = !storageActivityWebsiteMap.value[key.value]
+  const i = storageWebsiteList.value.findIndex(item => item.url === host.value)
+
+  if (i !== -1) {
+    storageWebsiteList.value[i].enable = !storageWebsiteList.value[i].enable
+  }
+  else {
+    storageWebsiteList.value.push({ url: host.value, enable: true })
+  }
 }
 
 async function updateKey() {
@@ -20,10 +31,10 @@ async function updateKey() {
   if (!tab.url)
     return
 
-  const { host, protocol } = new URL(tab.url)
+  const url = new URL(tab.url)
 
-  if (protocol.includes('http')) {
-    key.value = host
+  if (url.protocol.includes('http')) {
+    host.value = url.host
   }
 }
 
@@ -37,11 +48,11 @@ onMounted(updateKey)
     </WButton>
 
     <WButton
-      v-if="key"
+      v-if="host"
       dark
       align="left"
       class="w-full relative"
-      :class="{ activity: storageActivityWebsiteMap[key] }"
+      :class="{ activity: website?.enable }"
       @click="handleEnable"
     >
       Enable

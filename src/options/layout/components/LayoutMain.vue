@@ -7,7 +7,7 @@ const { token } = theme.useToken()
 </script>
 
 <template>
-  <main>
+  <main :style="{ backgroundColor: token.colorBgContainer }">
     <router-view />
   </main>
 </template>
@@ -16,6 +16,5 @@ const { token } = theme.useToken()
 main {
   @apply grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3;
   @apply p-1 overflow-auto;
-  background-color: v-bind('token.colorBgContainer');
 }
 </style>

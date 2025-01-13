@@ -108,7 +108,7 @@ export function highlight(words: string[]) {
 
 export function unhighlight() {
   try {
-    unhighlightTextNode([])
+    requestIdleCallback(() => unhighlightTextNode([]))
   }
   catch (err) {
     console.error('Error during execution:', err)

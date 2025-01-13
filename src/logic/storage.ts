@@ -1,34 +1,57 @@
-import type { RecordType } from '~/options/views/BookList/composables/useBookList'
-import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
+import { useWebExtensionStorage as useWebExtStorage } from '~/composables/useWebExtensionStorage'
 import { DEFAULT_SETTING } from '~/constant/map'
 
+interface TCurrentTab {
+  id?: number
+}
+
+export interface TRecordWord {
+  word: string
+  groupUUID: string | undefined
+}
+
+export interface TRecordGroup {
+  name: string
+  uuid: string
+  list: TRecordWord[]
+}
+
+export interface TRecordWebsite {
+  url: string
+  enable: boolean
+}
+
+interface TCacheMap {
+  [name: string]: any
+}
+
+export interface TSetting {
+  api: {
+    url: string
+    token: string
+    timeout: number
+  }
+  highlight: {
+    style: string
+  }
+}
+
+const DO_NOT_LISTEN = { listenToStorageChanges: false }
+
 /** 当前 Tab 信息 */
-export const storageCurrentTab = useWebExtensionStorage<{ id?: number }>('webext-current-tab', { id: void 0 })
+export const storageCurrentTab = useWebExtStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
-/** 单词本 */
-export const storageWordList = useWebExtensionStorage<RecordType[]>('webext-word-list', [{ word: 'demo' }])
+/** 单词 list */
+export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [])
 
-/** 启用的网站 */
-export const storageActivityWebsiteMap = useWebExtensionStorage<Record<string, boolean>>(
-  'webext-activity-website-map',
-  {},
-)
+/** 组 list */
+export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', [])
+
+/** 网站 list */
+export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', [])
 
 /** 搜索结果缓存 */
-export const storageTranslateCacheMap = useWebExtensionStorage<Record<string, any>>(
-  'webext-cache-map',
-  {},
-  { listenToStorageChanges: false },
-)
+export const storageCacheMap = useWebExtStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)
 
 /** 设置 */
-export const storageSetting = useWebExtensionStorage('webext-setting', {
-  api: {
-    url: DEFAULT_SETTING.api.url,
-    token: DEFAULT_SETTING.api.token,
-    timeout: DEFAULT_SETTING.api.timeout,
-  },
-  highlight: {
-    style: DEFAULT_SETTING.highlight.style,
-  },
-})
+export const storageSetting = useWebExtStorage<TSetting>('webext-setting', DEFAULT_SETTING)

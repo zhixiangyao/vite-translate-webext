@@ -9,16 +9,21 @@ import AntProvider from '~/options/components/AntProvider.vue'
 </template>
 
 <style>
-html {
+:root {
   --dark-bg-color: #000;
+  --dark-second-bg-color: #282828;
   --light-bg-color: #f5f5f5;
+}
 
-  #app {
-    background-color: var(--light-bg-color);
-  }
+html #app {
+  background-color: var(--light-bg-color);
+}
 
-  &.dark #app {
-    background-color: var(--dark-bg-color);
-  }
+html.dark #app {
+  background-color: var(--dark-bg-color);
+}
+
+html.dark * {
+  scrollbar-color: var(--dark-bg-color) var(--dark-second-bg-color);
 }
 </style>
