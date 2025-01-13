@@ -8,7 +8,7 @@ const CodeEditor = defineAsyncComponent({
   loader: () => import('~/options/components/CodeEditor.vue'),
 })
 
-const { rules, formRef, formState, disabledReset, handleSave, handleReset } = useSettings()
+const { rules, formRef, formState, disabledSave, disabledReset, handleSave, handleReset } = useSettings()
 </script>
 
 <template>
@@ -35,9 +35,13 @@ const { rules, formRef, formState, disabledReset, handleSave, handleReset } = us
       </Suspense>
     </FormItem>
 
+    <FormItem label="Theme Color" name="themeColor" :rules="rules.themeColor">
+      <Input v-model:value="formState.themeColor" type="color" class="w-22" />
+    </FormItem>
+
     <FormItem>
       <div class="flex gap-2">
-        <Button type="primary" @click="handleSave">
+        <Button type="primary" :disabled="disabledSave" @click="handleSave">
           保存
         </Button>
 

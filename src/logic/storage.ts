@@ -34,6 +34,9 @@ export interface TSetting {
   highlight: {
     style: string
   }
+  theme: {
+    color: string
+  }
 }
 
 const DO_NOT_LISTEN = { listenToStorageChanges: false }

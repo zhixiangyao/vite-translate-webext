@@ -3,21 +3,25 @@ import type { ConfigProviderProps } from 'ant-design-vue'
 import type { AliasToken, SeedToken } from 'ant-design-vue/es/theme/internal'
 import { useDark } from '@vueuse/core'
 import { App, ConfigProvider, theme } from 'ant-design-vue'
+import { storageSetting } from '~/logic/storage'
 
 defineOptions({ name: 'AntProvider' })
 
-const token: Partial<AliasToken> = {
-  borderRadius: 2,
-  colorPrimary: '#A0D911',
-}
-const seed: SeedToken = { ...theme.defaultSeed, ...token }
-const tokenDark = theme.darkAlgorithm(seed)
-const tokenLight = theme.defaultAlgorithm(seed)
-
 const isDark = useDark()
-const defaultTheme = computed<ConfigProviderProps['theme']>(() => ({
-  token: isDark.value ? tokenDark : tokenLight,
-}))
+const token = reactive<Partial<AliasToken>>({
+  borderRadius: 2,
+  colorPrimary: storageSetting.value.theme.color,
+})
+const seed = computed<SeedToken>(() => ({ ...theme.defaultSeed, ...token }))
+const tokenDark = computed(() => theme.darkAlgorithm(seed.value))
+const tokenLight = computed(() => theme.defaultAlgorithm(seed.value))
+const defaultTheme = computed<ConfigProviderProps['theme']>(() => {
+  return {
+    token: isDark.value ? tokenDark.value : tokenLight.value,
+  }
+})
+
+watch(storageSetting, setting => (token.colorPrimary = setting.theme.color))
 </script>
 
 <template>
