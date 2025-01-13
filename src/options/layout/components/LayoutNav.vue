@@ -17,20 +17,20 @@ const items = views.map<ItemType>(view => ({
 const { token } = theme.useToken()
 const route = useRoute()
 const router = useRouter()
-const state = reactive({
-  selectedKeys: [route.name!.toString()],
-})
+const selectedKeys = ref<string[]>([])
 
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
   router.push({ name: menuInfo.key.toString(), query: { collapsed: String(props.collapsed) } })
 }
+
+watch(route, to => to.name && (selectedKeys.value = [to.name.toString()]), { immediate: true })
 </script>
 
 <template>
   <nav :style="{ backgroundColor: token.colorBgContainer }">
     <slot name="top" />
     <Menu
-      v-model:selected-keys="state.selectedKeys"
+      :selected-keys="selectedKeys"
       class="!border-none"
       mode="inline"
       :items="items"
@@ -43,7 +43,7 @@ const handleClick: MenuProps['onClick'] = (menuInfo) => {
 
 <style scoped>
 nav {
-  @apply grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-3;
+  @apply grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-4;
   @apply flex flex-col flex-shrink-0;
 }
 </style>
