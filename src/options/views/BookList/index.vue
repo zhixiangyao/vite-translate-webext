@@ -11,6 +11,8 @@ import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
 import DrawerWordList from './components/DrawerWordList.vue'
 import { useDrawerUpdateGroup } from './composables/useDrawerUpdateGroup'
 import { useDrawerWordList } from './composables/useDrawerWordList'
+import { useExportBackups } from './composables/useExportBackups'
+import { useRecoverBackups } from './composables/useRecoverBackups'
 
 defineOptions({ name: 'BookList' })
 
@@ -19,6 +21,8 @@ const route = useRoute()
 const { token } = theme.useToken()
 const drawerWordList = useDrawerWordList()
 const drawerUpdateGroup = useDrawerUpdateGroup()
+const exportBackups = useExportBackups()
+const recoverBackups = useRecoverBackups()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'BookList')
 
 function handleDeleteGroup(group: TRecordGroup) {
@@ -43,6 +47,14 @@ function handleDeleteGroup(group: TRecordGroup) {
 
     <Button size="small" @click="drawerWordList.handleOpen">
       编辑单词列表
+    </Button>
+
+    <Button size="small" type="primary" :disabled="exportBackups.disabled.value" @click="exportBackups.handleExport">
+      导出备份
+    </Button>
+
+    <Button danger size="small" type="dashed" @click="recoverBackups.handleRecover">
+      恢复备份
     </Button>
   </Teleport>
 

@@ -68,7 +68,7 @@ defineExpose({
           <WLoading />
         </template>
         <template v-else-if="modalTranslate.state.result">
-          <Result :result="modalTranslate.state.result" />
+          <Result :result="modalTranslate.state.result" :search="modalTranslate.state.text" />
         </template>
         <template v-else-if="modalTranslate.state.error !== void 0">
           <Error :code="modalTranslate.state.error" />
