@@ -2,22 +2,9 @@ import type { EnumResponseCode } from '~/constant/enum'
 import type { TRecordWord } from '~/logic/storage'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { EnumTranslateLang } from '~/constant/enum'
+import { isFiftyPercentLetters } from '~/logic/is'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
-
-function isFiftyPercentLetters(str: string) {
-  str = str.replaceAll(' ', '')
-
-  let letterCount = 0
-
-  for (let i = 0; i < str.length; i++) {
-    if (/[a-z]/i.test(str[i])) {
-      letterCount++
-    }
-  }
-
-  return letterCount / str.length >= 0.5
-}
 
 interface State {
   top: number

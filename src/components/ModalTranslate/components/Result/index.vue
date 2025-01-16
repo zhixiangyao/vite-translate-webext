@@ -2,10 +2,12 @@
 import type { useModalTranslate } from '../../composables/useModalTranslate'
 import { LeftOutlined } from '@ant-design/icons-vue'
 import { EnumSpeakerLang } from '~/constant/enum'
+import { isFiftyPercentLetters } from '~/logic/is'
 import ButtonCopy from './components/ButtonCopy.vue'
 import ButtonSpeaker from './components/ButtonSpeaker.vue'
 
 interface Props {
+  search: NonNullable<ReturnType<typeof useModalTranslate>['state']['text']>
   result: NonNullable<ReturnType<typeof useModalTranslate>['state']['result']>
 }
 
@@ -44,10 +46,14 @@ const text = computed(() => props.result.alternatives[selectedIdx.value])
       </div>
 
       <div v-if="expend" class="pt-2 flex gap-2">
-        <ButtonSpeaker :lang="EnumSpeakerLang.en_GB" :text="text" />
-        <ButtonSpeaker :lang="EnumSpeakerLang.en_US" :text="text" />
-        <ButtonSpeaker :lang="EnumSpeakerLang.zh_CN" :text="text" />
-        <ButtonSpeaker :lang="EnumSpeakerLang.zh_HK" :text="text" />
+        <template v-if="isFiftyPercentLetters(search)">
+          <ButtonSpeaker :lang="EnumSpeakerLang.en_GB" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.en_US" :text="search" />
+        </template>
+        <template v-else>
+          <ButtonSpeaker :lang="EnumSpeakerLang.zh_CN" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.zh_HK" :text="search" />
+        </template>
       </div>
 
       <div v-if="expend" class="pt-2">
