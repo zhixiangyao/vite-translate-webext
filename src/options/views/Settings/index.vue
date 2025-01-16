@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Button, Form, FormItem, Input, InputNumber } from 'ant-design-vue'
+import { Button, Form, FormItem, Input, InputNumber, Skeleton } from 'ant-design-vue'
 import { useSettings } from './composables/useSettings'
 
 defineOptions({ name: 'Settings' })
@@ -30,7 +30,7 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
         <CodeEditor v-model:code="formState.highlightStyle" language="css" />
 
         <template #fallback>
-          <WLoading />
+          <Skeleton active class="h-[210px]" />
         </template>
       </Suspense>
     </FormItem>
