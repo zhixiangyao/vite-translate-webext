@@ -7,10 +7,15 @@ type TColumnName = string
 type TColumnValue = string | number | null | undefined
 type TPre = Record<TColumnName, TColumnValue>
 
-function generateWordListData(wordList: TRecordWord[]) {
+export enum EnumSheetName {
+  words = 'words',
+  groups = 'groups',
+}
+
+function generateWordListDataToWorkSheet(wordList: TRecordWord[]) {
   const pres: TPre[] = wordList.map(({ word, groupUUID }) => ({
-    'Word': word,
-    'Group UUID': groupUUID,
+    word,
+    groupUUID,
   }))
 
   const ws = utils.json_to_sheet(pres)
@@ -23,10 +28,10 @@ function generateWordListData(wordList: TRecordWord[]) {
   return ws
 }
 
-function generateGroupListData(groupList: TRecordGroup[]) {
+function generateGroupListDataToWorkSheet(groupList: TRecordGroup[]) {
   const pres: TPre[] = groupList.map(({ name, uuid }) => ({
-    Name: name,
-    UUID: uuid,
+    name,
+    uuid,
   }))
 
   const ws = utils.json_to_sheet(pres)
@@ -40,15 +45,17 @@ function generateGroupListData(groupList: TRecordGroup[]) {
 }
 
 export function useExportBackups() {
+  const disabled = computed(() => storageWordList.value.length === 0 && storageGroupList.value.length === 0)
+
   function handleExport() {
     /* create workbook and append worksheet */
     const wb = utils.book_new()
     /* Add the worksheet to the workbook */
-    utils.book_append_sheet(wb, generateWordListData(storageWordList.value), 'words')
-    utils.book_append_sheet(wb, generateGroupListData(storageGroupList.value), 'groups')
+    utils.book_append_sheet(wb, generateWordListDataToWorkSheet(storageWordList.value), EnumSheetName.words)
+    utils.book_append_sheet(wb, generateGroupListDataToWorkSheet(storageGroupList.value), EnumSheetName.groups)
     /* export to XLSX */
     writeFileXLSX(wb, `Translate-${dayjs().format('YYYY-MM-DD')}.backups.xlsx`)
   }
 
-  return { handleExport }
+  return { disabled, handleExport }
 }
