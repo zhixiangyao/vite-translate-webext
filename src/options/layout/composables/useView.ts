@@ -1,6 +1,6 @@
 import type { LocationQuery, RouteMeta, RouteParamsGeneric } from 'vue-router'
+import { useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { views } from '~/options/router'
 
 interface View {
   fullPath: string
@@ -9,12 +9,10 @@ interface View {
   params: RouteParamsGeneric
   path: string
   query: LocationQuery
-  title: string
-  icon: () => VNode
 }
 
 export function useView() {
-  const list = ref<View[]>([])
+  const list = useStorage<View[]>('view-list', [])
   const activity = ref<View | null>(null)
   const route = useRoute()
   const router = useRouter()
@@ -31,9 +29,11 @@ export function useView() {
       list.value.splice(index, 1)
 
       if (view.path === activity.value?.path) {
-        activity.value = list.value[index === list.value.length ? index - 1 : index]
+        const position = index === list.value.length ? index - 1 : index
 
-        router.push({ name: activity.value.name })
+        const data = list.value[position]
+        activity.value = data
+        router.push({ name: data.name })
       }
     }
   }
@@ -41,22 +41,16 @@ export function useView() {
   watch(
     route,
     (to) => {
-      const view = views.find(view => view.name === to.name)
-
-      if (view) {
-        const data = {
-          fullPath: to.fullPath,
-          meta: to.meta,
-          name: to.name!.toString(),
-          params: to.params,
-          path: to.path,
-          query: to.query,
-          title: view.title,
-          icon: view.icon,
-        }
-        activity.value = data
-        list.value.findIndex(item => item.path === data.path) === -1 && list.value.push(data)
+      const data = {
+        fullPath: to.fullPath,
+        meta: to.meta,
+        name: to.name!.toString(),
+        params: to.params,
+        path: to.path,
+        query: to.query,
       }
+      activity.value = data
+      list.value.findIndex(item => item.path === data.path) === -1 && list.value.push(data)
     },
     {
       immediate: true,

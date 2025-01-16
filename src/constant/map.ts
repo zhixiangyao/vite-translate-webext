@@ -15,6 +15,9 @@ export const DEFAULT_SETTING: TSetting = {
       background-color:rgb(222, 222, 197); 
     }`,
   },
+  theme: {
+    color: '#A0D911',
+  },
 }
 
 export const SPEAKER_LANG_MAP: Record<EnumSpeakerLang, string> = {

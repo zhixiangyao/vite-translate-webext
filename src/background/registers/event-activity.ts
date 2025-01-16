@@ -19,10 +19,13 @@ onMessage('event-activity', async ({ data }) => {
   if (!tabId)
     return
 
-  if (data.show) {
-    browser.action.setIcon({ tabId, path: actionPath })
+  try {
+    if (data.show) {
+      browser.action.setIcon({ tabId, path: actionPath })
+    }
+    else {
+      browser.action.setIcon({ tabId, path: unActionPath })
+    }
   }
-  else {
-    browser.action.setIcon({ tabId, path: unActionPath })
-  }
+  catch {}
 })
