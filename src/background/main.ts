@@ -29,3 +29,25 @@ browser.windows.onFocusChanged.addListener(async (windowId) => {
   const tab = await getCurrentTab()
   storageCurrentTab.value.id = tab?.id
 })
+
+browser.contextMenus.create({
+  type: 'normal',
+  title: 'Translate',
+  contexts: ['all'],
+  id: 'menus',
+})
+
+browser.contextMenus.create({
+  type: 'normal',
+  title: '打开 Options',
+  contexts: ['all'],
+  id: 'menu-1',
+  parentId: 'menus',
+})
+
+/** 右键菜单点击事件 */
+browser.contextMenus.onClicked.addListener((data) => {
+  if (data.menuItemId === 'menu-1') {
+    browser.runtime.openOptionsPage()
+  }
+})
