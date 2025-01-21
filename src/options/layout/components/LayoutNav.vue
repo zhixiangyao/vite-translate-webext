@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { views } from '~/options/router'
 
 defineOptions({ name: 'LayoutNav' })
-const props = defineProps<{ collapsed?: boolean }>()
+defineProps<{ collapsed?: boolean }>()
 
 const items = views.map<ItemType>(view => ({
   key: view.name,
@@ -20,7 +20,7 @@ const router = useRouter()
 const selectedKeys = ref<string[]>([])
 
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
-  router.push({ name: menuInfo.key.toString(), query: { collapsed: String(props.collapsed) } })
+  router.push({ name: menuInfo.key.toString() })
 }
 
 watch(route, to => to.name && (selectedKeys.value = [to.name.toString()]), { immediate: true })
