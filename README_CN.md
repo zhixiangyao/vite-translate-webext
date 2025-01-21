@@ -4,6 +4,23 @@
 
 一个由 [Vite](https://vitejs.dev/) 驱动的 WebExtension ([Chrome](https://developer.chrome.com/docs/extensions/reference/), [FireFox](https://addons.mozilla.org/en-US/developers/), 等等).
 
+<p align="center">
+  <sub>Popup</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Popup" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-popup.png">
+  <br/>
+  <sub>Options Page</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Options Page" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-options.png">
+  <br/>
+  <sub>Inject Vue App into the Content Script</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Content Script" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-contentScript.png">
+</p>
+
 ## 功能
 
 - ⚡️ **即时 HMR** - 在开发时使用 **Vite** (无需刷新!)

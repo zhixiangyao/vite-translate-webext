@@ -8,6 +8,23 @@ A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.c
 
 English | [中文](./README_CN.md)
 
+<p align="center">
+  <sub>Popup</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Popup" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-popup.png">
+  <br/>
+  <sub>Options Page</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Options Page" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-options.png">
+  <br/>
+  <sub>Inject Vue App into the Content Script</sub>
+  <br/>
+  <br/>
+  <img width="1024" alt="Content Script" src="https://raw.githubusercontent.com/zhixiangyao/CDN/refs/heads/master/images/screenshot/vite-translate-webext-contentScript.png">
+</p>
+
 ## Features
 
 - ⚡️ **Instant HMR** - use **Vite** on dev (no more refresh!)
