@@ -30,7 +30,7 @@ export function useModalTranslate(root?: HTMLElement) {
     result: void 0,
     error: void 0,
   })
-  const mouse = useMouse()
+  const mouse = useMouse({ touch: false })
   const wordList = computed(() => {
     return storageWordList.value.map(value => value.word.toLowerCase())
   })
