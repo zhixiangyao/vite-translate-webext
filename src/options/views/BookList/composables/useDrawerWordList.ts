@@ -82,14 +82,9 @@ export function useDrawerWordList() {
     formState.wordList = wordList
 
     {
-      const groupList = clone(storageGroupList.value)
-      const groupMapByUUID = groupList.reduce<Record<string, TRecordGroup>>((acc, group) => {
-        acc[group.uuid] = {
-          ...group,
-          list: [],
-        }
-        return acc
-      }, {})
+      const groupMapByUUID = Object.fromEntries(
+        storageGroupList.value.map<[string, TRecordGroup]>(({ uuid, name }) => [uuid, { name, uuid, list: [] }]),
+      )
 
       wordList.forEach((item) => {
         if (item.groupUUID)

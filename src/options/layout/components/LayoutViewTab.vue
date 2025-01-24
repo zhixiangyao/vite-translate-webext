@@ -4,19 +4,12 @@ import { Tag, theme } from 'ant-design-vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { views } from '~/options/router'
 
-interface ViewsMap {
-  [name: string]: (typeof views)[0] | undefined
-}
-
 defineOptions({ name: 'LayoutViewTab' })
 const props = defineProps<{ use: ReturnType<typeof useView> }>()
 
 const list = toRef(props.use, 'list')
 const { token } = theme.useToken()
-const viewsMap = views.reduce<ViewsMap>((acc, cur) => {
-  acc[cur.name] = cur
-  return acc
-}, {})
+const viewsMap = Object.fromEntries(views.map(({ name, title, icon }) => [name, { title, icon }]))
 </script>
 
 <template>
