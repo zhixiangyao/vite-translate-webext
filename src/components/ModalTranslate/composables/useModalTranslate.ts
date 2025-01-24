@@ -2,6 +2,7 @@ import type { EnumResponseCode } from '~/constant/enum'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { uniqBy } from 'es-toolkit'
 import { EnumTranslateLang } from '~/constant/enum'
+import { regexIsWord } from '~/constant/regex'
 import { clone } from '~/logic/clone'
 import { isFiftyPercentLetters } from '~/logic/is'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
@@ -39,8 +40,7 @@ export function useModalTranslate(root?: HTMLElement) {
     return wordList.value.includes(state.text.toLowerCase())
   })
   const isWord = computed<boolean>(() => {
-    const regex = /^[a-z]+$/i
-    return regex.test(state.text)
+    return regexIsWord.test(state.text)
   })
 
   function handleReset() {
