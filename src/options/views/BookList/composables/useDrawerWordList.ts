@@ -87,8 +87,9 @@ export function useDrawerWordList() {
       )
 
       wordList.forEach((item) => {
-        if (item.groupUUID)
-          groupMapByUUID[item.groupUUID]?.list.push(item)
+        if (item.groupUUID && groupMapByUUID[item.groupUUID]) {
+          groupMapByUUID[item.groupUUID].list.push(item)
+        }
       })
       storageGroupList.value = Object.values(groupMapByUUID)
     }
