@@ -1,5 +1,6 @@
 import type { WorkSheet } from 'xlsx'
 import { useFileDialog } from '@vueuse/core'
+import { uniqBy } from 'es-toolkit'
 import { read, utils } from 'xlsx'
 import { storageGroupList, storageWordList, type TRecordGroup, type TRecordWord } from '~/logic/storage'
 import { EnumSheetName } from './useExportBackups'
@@ -7,10 +8,13 @@ import { EnumSheetName } from './useExportBackups'
 function generateWorkSheetToWordListData(ws: WorkSheet): TRecordWord[] {
   const json = utils.sheet_to_json<Record<string, string>>(ws)
 
-  return json.map(item => ({
-    word: item.word,
-    groupUUID: item.groupUUID,
-  }))
+  return uniqBy(
+    json.map(item => ({
+      word: item.word.toLowerCase(),
+      groupUUID: item.groupUUID,
+    })),
+    item => item.word,
+  )
 }
 
 function generateWorkSheetToGroupListData(ws: WorkSheet, wordList: TRecordWord[]): TRecordGroup[] {

@@ -4,6 +4,7 @@ import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { TRecordGroup, TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
+import { uniqBy } from 'es-toolkit'
 import { clone } from '~/logic/clone'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 
@@ -65,8 +66,10 @@ export function useDrawerWordList() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    const wordList = clone(formState.wordList)
+    const wordList = uniqBy(clone(formState.wordList), item => item.word)
+
     storageWordList.value = wordList
+    formState.wordList = wordList
 
     {
       const groupList = clone(storageGroupList.value)
