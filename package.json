@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@9.15.1",
-  "description": "[description]",
+  "description": "a translate and english words book extension",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
   "homepage": "https://github.com/zhixiangyao/vite-translate-webext",
   "repository": {
