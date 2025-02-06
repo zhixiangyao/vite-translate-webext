@@ -2,7 +2,7 @@ import type { LocationQuery, RouteMeta, RouteParamsGeneric } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 
-interface View {
+export interface TView {
   fullPath: string
   meta: RouteMeta
   name: string
@@ -12,17 +12,17 @@ interface View {
 }
 
 export function useView() {
-  const list = useStorage<View[]>('view-list', [])
-  const activity = ref<View | null>(null)
+  const list = useStorage<TView[]>('view-list', [])
+  const activity = ref<TView | null>(null)
   const route = useRoute()
   const router = useRouter()
 
-  function handleTo(view: View) {
+  function handleTo(view: TView) {
     activity.value = view
     router.push({ name: view.name })
   }
 
-  function handleClose(view: View) {
+  function handleClose(view: TView) {
     const index = list.value.findIndex(item => item.path === view.path)
 
     if (index !== -1) {

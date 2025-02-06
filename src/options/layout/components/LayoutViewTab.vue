@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { useView } from '../composables/useView'
+import type { TView, useView } from '../composables/useView'
 import { Tag, theme } from 'ant-design-vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { views } from '~/options/router'
@@ -11,21 +11,32 @@ const props = defineProps<{ use: ReturnType<typeof useView> }>()
 const viewsMap = Object.fromEntries(views.map(({ name, title, icon }) => [name, { title, icon }]))
 const list = toRef(props.use, 'list')
 const { token } = theme.useToken()
-const contextState = reactive({ open: false, x: 0, y: 0 })
+const contextState = reactive({ open: false, view: null as TView | null, x: 0, y: 0 })
+const itemRefs = useTemplateRef<HTMLLIElement[]>('items')
 
-function handleContextMenu(event: MouseEvent) {
+function handleContextMenu(event: MouseEvent, view: TView, index: number) {
   event.preventDefault()
   event.stopPropagation()
-  contextState.open = true
-  contextState.x = event.clientX + 20
-  contextState.y = event.clientY + 20
+  const elementLi = itemRefs.value?.[index]
+  if (elementLi) {
+    const elementLiRect = elementLi.getClientRects()[0]
+    contextState.open = true
+    contextState.view = view
+    contextState.x = elementLiRect.left + elementLiRect.width
+    contextState.y = elementLiRect.top + elementLiRect.height + 4
+  }
 }
 </script>
 
 <template>
   <ul :style="{ backgroundColor: token.colorBgContainer }">
     <VueDraggable v-model="list" :animation="150" class="flex gap-2">
-      <li v-for="item in list" :key="item.path" @contextmenu="handleContextMenu">
+      <li
+        v-for="(item, index) in list"
+        :key="item.path"
+        ref="items"
+        @contextmenu="handleContextMenu($event, item, index)"
+      >
         <Tag
           class="cursor-pointer select-none m-0"
           :color="item.name === use.activity.value?.name ? token.colorPrimary : void 0"
@@ -44,7 +55,16 @@ function handleContextMenu(event: MouseEvent) {
     </VueDraggable>
   </ul>
 
-  <LayoutViewTabContextMenu v-model:open="contextState.open" :x="contextState.x" :y="contextState.y" />
+  <LayoutViewTabContextMenu
+    v-model:open="contextState.open"
+    :x="contextState.x"
+    :y="contextState.y"
+    @close="() => {
+      contextState.open = false;
+      use.handleClose(contextState.view!)
+    }
+    "
+  />
 </template>
 
 <style scoped>
