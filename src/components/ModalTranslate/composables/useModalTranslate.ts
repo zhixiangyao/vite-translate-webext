@@ -1,7 +1,9 @@
 import type { EnumResponseCode } from '~/constant/enum'
-import type { TRecordWord } from '~/logic/storage'
 import { useEventListener, useMouse } from '@vueuse/core'
+import { uniqBy } from 'es-toolkit'
 import { EnumTranslateLang } from '~/constant/enum'
+import { regexIsWord } from '~/constant/regex'
+import { clone } from '~/logic/clone'
 import { isFiftyPercentLetters } from '~/logic/is'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
 import { type DeeplxResponse, useTranslate } from './useTranslate'
@@ -30,7 +32,7 @@ export function useModalTranslate(root?: HTMLElement) {
     result: void 0,
     error: void 0,
   })
-  const mouse = useMouse()
+  const mouse = useMouse({ touch: false })
   const wordList = computed(() => {
     return storageWordList.value.map(value => value.word.toLowerCase())
   })
@@ -38,8 +40,7 @@ export function useModalTranslate(root?: HTMLElement) {
     return wordList.value.includes(state.text.toLowerCase())
   })
   const isWord = computed<boolean>(() => {
-    const regex = /^[a-z]+$/i
-    return regex.test(state.text)
+    return regexIsWord.test(state.text)
   })
 
   function handleReset() {
@@ -95,17 +96,20 @@ export function useModalTranslate(root?: HTMLElement) {
   }
 
   function handleAdd() {
-    storageWordList.value?.splice(storageWordList.value.length, 0, {
-      word: state.text.toLowerCase(),
-      groupUUID: void 0,
-    } as TRecordWord)
+    const word = state.text.toLowerCase()
+    const wordList = [...clone(storageWordList.value), { word, groupUUID: void 0 }]
+
+    storageWordList.value = uniqBy(wordList, item => item.word)
   }
 
   function handleRemove() {
-    const i = storageWordList.value
-      .map(value => value.word.toLowerCase())
-      .findIndex(word => word === state.text.toLowerCase())
-    storageWordList.value?.splice(i, 1)
+    const word = state.text.toLowerCase()
+
+    const wordList = uniqBy(
+      clone(storageWordList.value).filter(item => item.word !== word),
+      item => item.word,
+    )
+    storageWordList.value = wordList
   }
 
   function listener(event: Event) {

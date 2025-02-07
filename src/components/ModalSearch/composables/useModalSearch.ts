@@ -21,7 +21,7 @@ export function useModalSearch(params: Params) {
     text: '',
     open: false,
   })
-  const mouse = useMouse()
+  const mouse = useMouse({ touch: false })
 
   function handleShow(text: string, left: number, top: number) {
     state.open = true

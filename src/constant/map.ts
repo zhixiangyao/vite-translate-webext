@@ -3,8 +3,8 @@ import { EnumDataSet, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_SETTING: TSetting = {
   api: {
-    url: 'http://home.yaozhixiang.top:1188/translate',
-    token: 'deeplx_yzx',
+    url: 'http://localhost:1188/translate',
+    token: 'helloxxx',
     timeout: 10_000,
   },
   highlight: {

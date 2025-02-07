@@ -4,11 +4,22 @@ import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { TRecordGroup, TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
+import { uniqBy } from 'es-toolkit'
+import { regexIsWord } from '~/constant/regex'
 import { clone } from '~/logic/clone'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 
+async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
+  if (value && regexIsWord.test(value) === false) {
+    return Promise.reject(new Error('请输入英文单词'))
+  }
+  else {
+    return Promise.resolve()
+  }
+}
+
 const rules = {
-  'wordList[i].word': [{ required: true, message: '', trigger: 'change' }],
+  'wordList[i].word': [{ required: true, message: '请输入单词', trigger: 'change' }, { validator: validatorIsWord }],
 } satisfies Record<`wordList[i].${keyof Pick<TRecordWord, 'word'>}`, Rule[]>
 
 const columns: ColumnsType = [
@@ -65,22 +76,20 @@ export function useDrawerWordList() {
 
   async function handleSave() {
     await formRef.value?.validate()
-    const wordList = clone(formState.wordList)
+    const wordList = uniqBy(clone(formState.wordList), item => item.word)
+
     storageWordList.value = wordList
+    formState.wordList = wordList
 
     {
-      const groupList = clone(storageGroupList.value)
-      const groupMapByUUID = groupList.reduce<Record<string, TRecordGroup>>((acc, group) => {
-        acc[group.uuid] = {
-          ...group,
-          list: [],
-        }
-        return acc
-      }, {})
+      const groupMapByUUID = Object.fromEntries(
+        storageGroupList.value.map<[string, TRecordGroup]>(({ uuid, name }) => [uuid, { name, uuid, list: [] }]),
+      )
 
       wordList.forEach((item) => {
-        if (item.groupUUID)
-          groupMapByUUID[item.groupUUID]?.list.push(item)
+        if (item.groupUUID && groupMapByUUID[item.groupUUID]) {
+          groupMapByUUID[item.groupUUID].list.push(item)
+        }
       })
       storageGroupList.value = Object.values(groupMapByUUID)
     }
