@@ -3,7 +3,7 @@
   "displayName": "翻译",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "pnpm@9.15.1",
+  "packageManager": "pnpm@10.4.0",
   "description": "a translate and english words book extension",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
   "homepage": "https://github.com/zhixiangyao/vite-translate-webext",
@@ -13,7 +13,7 @@
   },
   "engines": {
     "node": ">=22",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   },
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
