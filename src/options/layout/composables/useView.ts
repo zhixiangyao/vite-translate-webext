@@ -38,6 +38,12 @@ export function useView() {
     }
   }
 
+  function handleCloseOther(view: TView) {
+    list.value = [view]
+    activity.value = view
+    router.replace({ name: view.name })
+  }
+
   watch(
     route,
     (to) => {
@@ -63,5 +69,6 @@ export function useView() {
 
     handleTo,
     handleClose,
+    handleCloseOther,
   }
 }
