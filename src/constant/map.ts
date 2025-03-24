@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS: TSettings = {
   highlight: {
     style: `span[${EnumDataSet.highlightedWord}] { 
       color: #e61a1a;
-      /* 要和 color 的颜色一致 */
+      /* To match the color of 'color' */
       -webkit-text-fill-color: #e61a1a; 
       cursor: pointer;
       background-color:rgb(222, 222, 197); 

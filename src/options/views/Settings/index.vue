@@ -13,15 +13,15 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
 
 <template>
   <Form ref="formRef" class="w-200" label-align="left" :model="formState" :label-col="{ span: 4 }">
-    <FormItem label="请求 URL" name="apiUrl" :rules="rules.apiUrl">
+    <FormItem label="Request URL" name="apiUrl" :rules="rules.apiUrl">
       <Input v-model:value="formState.apiUrl" />
     </FormItem>
 
-    <FormItem label="请求 Token" name="apiToken" :rules="rules.apiToken">
+    <FormItem label="Request Token" name="apiToken" :rules="rules.apiToken">
       <Input v-model:value="formState.apiToken" />
     </FormItem>
 
-    <FormItem label="请求 Timeout" name="apiTimeout" :rules="rules.apiTimeout">
+    <FormItem label="Request Timeout" name="apiTimeout" :rules="rules.apiTimeout">
       <InputNumber v-model:value="formState.apiTimeout" :min="1" :max="60" :precision="0" />
     </FormItem>
 

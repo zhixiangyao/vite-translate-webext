@@ -58,7 +58,7 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
               <FormItem :name="['wordList', index, 'groupUUID']">
                 <Select
                   v-model:value="formState.wordList![index].groupUUID"
-                  placeholder="请选择组"
+                  placeholder="Please select group"
                   size="small"
                   :options="use.options.value"
                 />
