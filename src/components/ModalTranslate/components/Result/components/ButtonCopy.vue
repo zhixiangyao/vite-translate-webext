@@ -19,7 +19,7 @@ function handleCopy() {
 
   copied.value = true
   copy(props.text)
-  message?.success('复制成功')
+  message?.success('Copy success')
 
   timer.value = setTimeout(() => {
     copied.value = false
@@ -29,7 +29,7 @@ function handleCopy() {
 
 <template>
   <WIconWrapper>
-    <CopyOutlined v-if="!copied" title="复制" @click.prevent.stop="handleCopy" />
+    <CopyOutlined v-if="!copied" title="Copy" @click.prevent.stop="handleCopy" />
     <CheckOutlined v-else />
   </WIconWrapper>
 </template>

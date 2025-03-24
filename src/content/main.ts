@@ -1,7 +1,7 @@
 import { useDebounceFn, useWindowFocus } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import { highlight, unhighlight } from '~/logic/highlight'
-import { storageSetting, storageWebsiteList, storageWordList } from '~/logic/storage'
+import { storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
 
 import App from './Content.vue'
 import '~/styles'
@@ -77,14 +77,14 @@ function updateStyle() {
 
   const style = document.createElement('style')
   style.id = id
-  style.innerHTML = storageSetting.value.highlight.style
+  style.innerHTML = storageSettings.value.highlight.style
   document.head.appendChild(style)
 }
 
 watch([enable, focused], updateIcon, { immediate: true })
 watch([enable, focused], updatePage, { immediate: true })
 watch([words, focused], updatePage, { deep: true })
-watch([() => storageSetting.value.highlight, focused], updateStyle, { immediate: true })
+watch([() => storageSettings.value.highlight, focused], updateStyle, { immediate: true })
 
 const app = createApp(App)
 app.mount(createRoot(document.querySelector('html')!))

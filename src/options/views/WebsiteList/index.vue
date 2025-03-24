@@ -31,7 +31,7 @@ const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, hand
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
             <Button class="!px-0" danger size="small" type="link" @click="() => handleDelete(i)">
-              删除
+              Delete
             </Button>
           </div>
         </template>
@@ -40,11 +40,11 @@ const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, hand
 
     <div class="mt-2 flex gap-2">
       <Button type="primary" :disabled="disabledAdd" @click="handleSave">
-        保存
+        Save
       </Button>
 
       <Button type="dashed" :disabled="disabledAdd" @click="handleCancel">
-        取消
+        Cancel
       </Button>
     </div>
   </Form>

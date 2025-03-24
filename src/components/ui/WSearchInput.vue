@@ -41,11 +41,11 @@ function search() {
     >
 
     <WIconWrapper v-if="!!inputValue" class="clear invisible">
-      <CloseOutlined title="点击清除" @click="clear" />
+      <CloseOutlined title="Click to clear" @click="clear" />
     </WIconWrapper>
 
     <WIconWrapper :disabled="disabled">
-      <SearchOutlined title="点击搜索" @click="search" />
+      <SearchOutlined title="Click to search" @click="search" />
     </WIconWrapper>
   </div>
 </template>

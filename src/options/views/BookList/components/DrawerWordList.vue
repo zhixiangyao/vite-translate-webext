@@ -22,7 +22,7 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
 </script>
 
 <template>
-  <Drawer v-model:open="open" destroy-on-close title="编辑单词列表" placement="right" width="70%">
+  <Drawer v-model:open="open" destroy-on-close title="Edit Book List" placement="right" width="70%">
     <div ref="containerRef" class="h-full">
       <Form
         ref="formRef"
@@ -47,7 +47,7 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
                 <Input
                   v-model:value.trim="formState.wordList![index].word"
                   :maxlength="100"
-                  placeholder="请输入"
+                  placeholder="Please enter"
                   show-count
                   size="small"
                 />
@@ -68,7 +68,7 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
             <template v-if="column.key === 'operation'">
               <div class="flex gap-2">
                 <Button class="!px-0" danger size="small" type="link" @click="() => use.handleDelete(index)">
-                  删除
+                  Delete
                 </Button>
               </div>
             </template>
@@ -80,11 +80,11 @@ const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
     <template #footer>
       <div class="flex gap-2">
         <Button type="primary" :disabled="use.disabledSave.value" @click="use.handleSave">
-          保存
+          Save
         </Button>
 
         <Button @click="() => use.handleAdd(formState.wordList.length)">
-          新增
+          Add
         </Button>
       </div>
     </template>

@@ -7,17 +7,17 @@ import { storageWebsiteList } from '~/logic/storage'
 
 const columns: ColumnsType = [
   {
-    title: '网址',
+    title: 'Website',
     dataIndex: 'url' satisfies keyof TRecordWebsite,
     key: 'url' satisfies keyof TRecordWebsite,
   },
   {
-    title: '启用',
+    title: 'Enable',
     dataIndex: 'enable' satisfies keyof TRecordWebsite,
     key: 'enable' satisfies keyof TRecordWebsite,
   },
   {
-    title: '操作',
+    title: 'Operation',
     key: 'operation',
     width: 90,
   },
@@ -41,7 +41,7 @@ export function useWebsiteList() {
   async function handleSave() {
     await formRef.value?.validate()
     storageWebsiteList.value = clone(formState.websiteList)
-    message.success('保存成功')
+    message.success('Save success')
   }
 
   async function handleCancel() {

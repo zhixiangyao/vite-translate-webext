@@ -28,12 +28,12 @@ export function useBackgroundFetch(params?: { silent: boolean }) {
         }
         case EnumResponseCode.Error: {
           reject(EnumResponseCode.Error)
-          !params?.silent && message.error('未知错误')
+          !params?.silent && message.error('Unknown error')
           break
         }
         case EnumResponseCode.AbortError: {
           reject(EnumResponseCode.Error)
-          !params?.silent && message.error('请求超时')
+          !params?.silent && message.error('Request timeout')
           break
         }
       }

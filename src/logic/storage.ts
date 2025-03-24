@@ -1,5 +1,5 @@
 import { useWebExtensionStorage as useWebExtStorage } from '~/composables/useWebExtensionStorage'
-import { DEFAULT_SETTING } from '~/constant/map'
+import { DEFAULT_SETTINGS } from '~/constant/map'
 
 interface TCurrentTab {
   id?: number
@@ -25,7 +25,7 @@ interface TCacheMap {
   [name: string]: any
 }
 
-export interface TSetting {
+export interface TSettings {
   api: {
     url: string
     token: string
@@ -41,20 +41,20 @@ export interface TSetting {
 
 const DO_NOT_LISTEN = { listenToStorageChanges: false }
 
-/** 当前 Tab 信息 */
+/** Current Tab Information */
 export const storageCurrentTab = useWebExtStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
-/** 单词 list */
+/** Word list */
 export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [])
 
-/** 组 list */
+/** Group list */
 export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', [])
 
-/** 网站 list */
+/** Website list */
 export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', [])
 
-/** 搜索结果缓存 */
+/** Search Results Cache */
 export const storageCacheMap = useWebExtStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)
 
-/** 设置 */
-export const storageSetting = useWebExtStorage<TSetting>('webext-setting', DEFAULT_SETTING)
+/** Settings */
+export const storageSettings = useWebExtStorage<TSettings>('webext-settings', DEFAULT_SETTINGS)

@@ -5,8 +5,12 @@ import { VueDraggable } from 'vue-draggable-plus'
 import { views } from '~/options/router'
 import LayoutViewTabContextMenu from './LayoutViewTabContextMenu.vue'
 
+interface Props {
+  use: ReturnType<typeof useView>
+}
+
 defineOptions({ name: 'LayoutViewTab' })
-const props = defineProps<{ use: ReturnType<typeof useView> }>()
+const props = defineProps<Props>()
 
 const viewsMap = Object.fromEntries(views.map(({ name, title, icon }) => [name, { title, icon }]))
 const list = toRef(props.use, 'list')
@@ -22,7 +26,7 @@ function handleContextMenu(event: MouseEvent, view: TView, index: number) {
     const elementLiRect = elementLi.getClientRects()[0]
     contextState.open = true
     contextState.view = view
-    contextState.x = elementLiRect.left + elementLiRect.width
+    contextState.x = elementLiRect.left
     contextState.y = elementLiRect.top + elementLiRect.height + 4
   }
 }
@@ -38,7 +42,7 @@ function handleContextMenu(event: MouseEvent, view: TView, index: number) {
         @contextmenu="handleContextMenu($event, item, index)"
       >
         <Tag
-          class="cursor-pointer select-none m-0"
+          class="cursor-pointer select-none m-0 flex"
           :color="item.name === use.activity.value?.name ? token.colorPrimary : void 0"
           :closable="list.length !== 1"
           :bordered="false"
@@ -49,7 +53,9 @@ function handleContextMenu(event: MouseEvent, view: TView, index: number) {
             <component :is="viewsMap[item.name]?.icon" />
           </template>
 
-          {{ viewsMap[item.name]?.title ?? '-' }}
+          <div :class="list.length !== 1 ? 'w-[63px]' : 'w-[80px]'">
+            {{ viewsMap[item.name]?.title ?? '-' }}
+          </div>
         </Tag>
       </li>
     </VueDraggable>
@@ -59,11 +65,8 @@ function handleContextMenu(event: MouseEvent, view: TView, index: number) {
     v-model:open="contextState.open"
     :x="contextState.x"
     :y="contextState.y"
-    @close="() => {
-      contextState.open = false;
-      use.handleClose(contextState.view!)
-    }
-    "
+    :use="use"
+    :view="contextState.view"
   />
 </template>
 

@@ -42,19 +42,19 @@ function handleDeleteGroup(group: TRecordGroup) {
 <template>
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
     <Button size="small" @click="() => drawerUpdateGroup.handleOpen()">
-      添加组
+      Add Group
     </Button>
 
     <Button size="small" @click="drawerWordList.handleOpen">
-      编辑单词列表
+      Edit Book List
     </Button>
 
     <Button size="small" type="primary" :disabled="exportBackups.disabled.value" @click="exportBackups.handleExport">
-      导出备份
+      Export Backup
     </Button>
 
     <Button danger size="small" type="dashed" @click="recoverBackups.handleRecover">
-      恢复备份
+      Restore Backup
     </Button>
   </Teleport>
 
@@ -78,10 +78,10 @@ function handleDeleteGroup(group: TRecordGroup) {
               type="link"
               class="p-0"
               :delay="2000"
-              title="长按删除"
+              title="Long press to delete"
               @press="() => handleDeleteGroup(group)"
             >
-              删除
+              Delete
             </ButtonLongPress>
           </template>
 

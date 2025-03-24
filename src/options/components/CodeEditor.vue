@@ -26,8 +26,8 @@ function init() {
   editor.value = monaco.editor.create(refContainer.value, {
     automaticLayout: true,
     contextmenu: false,
-    lineNumbers: 'on', // 启用行号
-    lineNumbersMinChars: 1, // 设置行号区域最小宽度为 1 个字符
+    lineNumbers: 'on', // Enable line numbers
+    lineNumbersMinChars: 1, // Set the minimum width of the line number field to 1 character
     lineDecorationsWidth: 0,
     overviewRulerBorder: false,
     minimap: { enabled: false },

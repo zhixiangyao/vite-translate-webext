@@ -1,6 +1,6 @@
 import type { EnumTranslateLang } from '~/constant/enum'
 import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
-import { storageSetting } from '~/logic/storage'
+import { storageSettings } from '~/logic/storage'
 
 export interface DeeplxResponse {
   alternatives: string[]
@@ -23,10 +23,10 @@ export function useTranslate() {
     }
 
     const headers = {
-      Authorization: `Bearer ${storageSetting.value.api.token}`,
+      Authorization: `Bearer ${storageSettings.value.api.token}`,
     }
 
-    const response = await fetch.post<DeeplxResponse>(storageSetting.value.api.url, {
+    const response = await fetch.post<DeeplxResponse>(storageSettings.value.api.url, {
       params,
       headers,
     })

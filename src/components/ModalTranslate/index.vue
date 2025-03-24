@@ -36,29 +36,29 @@ defineExpose({
         <WIconWrapper>
           <PushpinFilled
             v-if="modalTranslate.state.pin"
-            title="点击取消固定"
+            title="Click to unfix"
             @click="modalTranslate.state.pin = false"
           />
-          <PushpinOutlined v-else title="点击固定" @click="modalTranslate.state.pin = true" />
+          <PushpinOutlined v-else title="Click to fix" @click="modalTranslate.state.pin = true" />
         </WIconWrapper>
 
         <WIconWrapper :show="!modalTranslate.isWord.value">
           <template v-if="modalTranslate.isWord.value">
-            <HeartFilled v-if="modalTranslate.favorite.value" title="点击取消收藏" @click="modalTranslate.handleRemove" />
-            <HeartOutlined v-else title="点击收藏" @click="modalTranslate.handleAdd" />
+            <HeartFilled v-if="modalTranslate.favorite.value" title="Click to unfavorite" @click="modalTranslate.handleRemove" />
+            <HeartOutlined v-else title="Click to favorite" @click="modalTranslate.handleAdd" />
           </template>
         </WIconWrapper>
       </div>
 
       <WIconWrapper>
-        <CloseOutlined title="关闭" @click="modalTranslate.handleHidden" />
+        <CloseOutlined title="Close" @click="modalTranslate.handleHidden" />
       </WIconWrapper>
     </header>
 
     <main class="px-2">
       <WSearchInput
         v-model:value="modalTranslate.state.text"
-        placeholder="请输入要翻译的内容"
+        placeholder="Please enter the content to be translated"
         :disabled="!modalTranslate.state.text"
         @search="modalTranslate.handleSearch"
       />
