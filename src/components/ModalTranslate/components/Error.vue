@@ -10,6 +10,6 @@ defineProps<Props>()
 </script>
 
 <template>
-  <span v-if="code === EnumResponseCode.Error">糟糕! API 接口异常! 请重新尝试!</span>
-  <span v-if="code === EnumResponseCode.AbortError">糟糕! API 请求超时! 请重新尝试!</span>
+  <span v-if="code === EnumResponseCode.Error">Oops! API interface exception! Please try again!</span>
+  <span v-if="code === EnumResponseCode.AbortError">Oops! API request timed out! Please try again!</span>
 </template>

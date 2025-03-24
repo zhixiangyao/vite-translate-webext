@@ -53,7 +53,7 @@ function handleContextMenu(event: MouseEvent, view: TView, index: number) {
             <component :is="viewsMap[item.name]?.icon" />
           </template>
 
-          <div :class="list.length !== 1 ? 'w-[56px]' : 'w-[73px]'">
+          <div :class="list.length !== 1 ? 'w-[63px]' : 'w-[80px]'">
             {{ viewsMap[item.name]?.title ?? '-' }}
           </div>
         </Tag>

@@ -9,12 +9,12 @@ interface Props {
 defineOptions({ name: 'DrawerUpdateGroup' })
 const props = defineProps<Props>()
 
-const labelCol = { span: 4 }
+const labelCol = { span: 6 }
 const wrapperCol = { span: 24 - labelCol.span }
 const formRef = toRef(props.use, 'formRef')
 const open = toRef(props.use, 'open')
 const formState = toRef(props.use, 'formState')
-const title = computed(() => `${props.use.type.value === 'add' ? '添加' : '编辑'}组`)
+const title = computed(() => `${props.use.type.value === 'add' ? 'Add' : 'Edit'} Group`)
 </script>
 
 <template>
@@ -34,11 +34,11 @@ const title = computed(() => `${props.use.type.value === 'add' ? '添加' : '编
           :bordered="false"
         />
       </FormItem>
-      <FormItem label="组名" name="name" :rules="use.rules.name">
+      <FormItem label="Group Name" name="name" :rules="use.rules.name">
         <Input
           v-model:value.trim="formState.name"
           :maxlength="20"
-          placeholder="请输入"
+          placeholder="Please enter"
           show-count
         />
       </FormItem>
@@ -47,7 +47,7 @@ const title = computed(() => `${props.use.type.value === 'add' ? '添加' : '编
     <template #footer>
       <div class="flex gap-2">
         <Button type="primary" @click="use.handleSave">
-          保存
+          Save
         </Button>
       </div>
     </template>

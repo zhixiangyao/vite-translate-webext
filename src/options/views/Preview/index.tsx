@@ -1,7 +1,7 @@
 import { useDebounceFn, useStyleTag } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
 import { highlight } from '~/logic/highlight'
-import { storageSetting, storageWordList } from '~/logic/storage'
+import { storageSettings, storageWordList } from '~/logic/storage'
 import ShadowHost from './components/ShadowHost.vue'
 
 const debounceHighlight = useDebounceFn(highlight, 50)
@@ -11,13 +11,13 @@ export default defineComponent({
   setup() {
     const { token } = theme.useToken()
     const previewContainer = ref<HTMLElement>()
-    const { css } = useStyleTag(storageSetting.value.highlight.style)
+    const { css } = useStyleTag(storageSettings.value.highlight.style)
     const words = computed(() => {
       return storageWordList.value.map(value => value.word).filter(word => !!word)
     })
 
     watch(
-      () => storageSetting.value.highlight.style,
+      () => storageSettings.value.highlight.style,
       value => (css.value = value),
     )
 

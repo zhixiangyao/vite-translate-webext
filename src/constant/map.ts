@@ -1,7 +1,7 @@
-import type { TSetting } from '~/logic/storage'
+import type { TSettings } from '~/logic/storage'
 import { EnumDataSet, EnumSpeakerLang } from './enum'
 
-export const DEFAULT_SETTING: TSetting = {
+export const DEFAULT_SETTINGS: TSettings = {
   api: {
     url: 'http://localhost:1188/translate',
     token: 'helloxxx',

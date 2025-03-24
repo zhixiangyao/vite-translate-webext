@@ -42,11 +42,11 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
     <FormItem>
       <div class="flex gap-2">
         <Button type="primary" :disabled="disabledSave" @click="handleSave">
-          保存
+          Save
         </Button>
 
         <Button :disabled="disabledReset" @click="handleReset">
-          恢复默认
+          Restore Defaults
         </Button>
       </div>
     </FormItem>

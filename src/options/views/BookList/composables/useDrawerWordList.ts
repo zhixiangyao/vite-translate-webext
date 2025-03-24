@@ -11,7 +11,7 @@ import { storageGroupList, storageWordList } from '~/logic/storage'
 
 async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
   if (value && regexIsWord.test(value) === false) {
-    return Promise.reject(new Error('请输入英文单词'))
+    return Promise.reject(new Error('Please enter the English word'))
   }
   else {
     return Promise.resolve()
@@ -19,23 +19,23 @@ async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
 }
 
 const rules = {
-  'wordList[i].word': [{ required: true, message: '请输入单词', trigger: 'change' }, { validator: validatorIsWord }],
+  'wordList[i].word': [{ required: true, message: 'Please enter the word', trigger: 'change' }, { validator: validatorIsWord }],
 } satisfies Record<`wordList[i].${keyof Pick<TRecordWord, 'word'>}`, Rule[]>
 
 const columns: ColumnsType = [
   {
-    title: '单词',
+    title: 'Word',
     dataIndex: 'word' satisfies keyof TRecordWord,
     key: 'word' satisfies keyof TRecordWord,
   },
   {
-    title: '组',
+    title: 'Group',
     dataIndex: 'groupUUID' satisfies keyof TRecordWord,
     key: 'groupUUID' satisfies keyof TRecordWord,
     width: 200,
   },
   {
-    title: '操作',
+    title: 'Operation',
     key: 'operation',
     width: 90,
   },
@@ -94,7 +94,7 @@ export function useDrawerWordList() {
       storageGroupList.value = Object.values(groupMapByUUID)
     }
 
-    message.success('保存成功')
+    message.success('Save success')
   }
 
   function handleOpen() {

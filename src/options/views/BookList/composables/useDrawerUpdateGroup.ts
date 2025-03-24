@@ -9,8 +9,8 @@ import { storageGroupList } from '~/logic/storage'
 type TType = 'edit' | 'add'
 
 const rules = {
-  name: [{ required: true, message: '请输入组名', trigger: 'change' }],
-  list: [{ required: true, message: '请添加组内单词', trigger: 'change' }],
+  name: [{ required: true, message: 'Please enter group name', trigger: 'change' }],
+  list: [{ required: true, message: 'Please add words from the group', trigger: 'change' }],
 } satisfies Record<keyof Omit<TRecordGroup, 'uuid'>, Rule[]>
 
 export function useDrawerUpdateGroup() {
@@ -36,14 +36,14 @@ export function useDrawerUpdateGroup() {
 
     const isNameDuplication = groupList.some(group => formState.name === group.name)
     if (isNameDuplication) {
-      message.warning('不允许添加重复的组名')
+      message.warning('Duplicate group names are not allowed to be added')
       return
     }
 
     try {
       if (type.value === 'add') {
         groupList.push(clone(formState))
-        message.success('添加成功')
+        message.success('Add success')
       }
 
       if (type.value === 'edit') {
@@ -54,7 +54,7 @@ export function useDrawerUpdateGroup() {
           }
         }
 
-        message.success('编辑成功')
+        message.success('Edit success')
       }
     }
     finally {
@@ -67,7 +67,7 @@ export function useDrawerUpdateGroup() {
     if (group) {
       const isUUID = uuidValidate(group.uuid)
       if (!isUUID) {
-        message.error('目标对象是错误的 UUID')
+        message.error('The target object is the wrong UUID')
         return
       }
 
