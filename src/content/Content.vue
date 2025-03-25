@@ -44,12 +44,7 @@ async function updateIcon() {
     return
   }
 
-  try {
-    await sendMessage('event-activity', { show: enable.value, tabId }, 'background')
-  }
-  catch (err) {
-    console.error('Message failed [event-activity]:', err)
-  }
+  sendMessage('event-activity', { show: enable.value, tabId }, 'background').catch()
 }
 
 /** 更新 style 要实时 */

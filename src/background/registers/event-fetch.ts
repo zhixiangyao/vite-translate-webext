@@ -21,16 +21,11 @@ onMessage('event-fetch-send', async ({ data }) => {
     if (response.status !== 200)
       throw new Error('unknown')
 
-    try {
-      await sendMessage(
-        'event-fetch-on',
-        { code: EnumResponseCode.Success, response: await response.json() },
-        { tabId, context },
-      )
-    }
-    catch (err) {
-      console.error('Message failed [event-fetch-on]:', err)
-    }
+    sendMessage(
+      'event-fetch-on',
+      { code: EnumResponseCode.Success, response: await response.json() },
+      { tabId, context },
+    ).catch()
   }
   catch (error) {
     clearTimeout(timeoutId)
@@ -39,11 +34,6 @@ onMessage('event-fetch-send', async ({ data }) => {
       code = EnumResponseCode.AbortError
     }
 
-    try {
-      await sendMessage('event-fetch-on', { code }, { tabId, context })
-    }
-    catch (err) {
-      console.error('Message failed [event-fetch-on]:', err)
-    }
+    sendMessage('event-fetch-on', { code }, { tabId, context }).catch()
   }
 })

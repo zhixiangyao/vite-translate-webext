@@ -10,45 +10,40 @@ export function useBackgroundFetch(params?: { silent: boolean }) {
     options: Pick<ProtocolMap['event-fetch-send'], 'headers' | 'params'>,
     timeout?: number,
   ): Promise<T | undefined> {
-    try {
-      const { promise, resolve, reject } = Promise.withResolvers<T | undefined>()
+    const { promise, resolve, reject } = Promise.withResolvers<T | undefined>()
 
-      await sendMessage(
-        'event-fetch-send',
-        {
-          tabId,
-          url,
-          headers: options.headers,
-          params: options.params,
-          timeout,
-        },
-        'background',
-      )
+    sendMessage(
+      'event-fetch-send',
+      {
+        tabId,
+        url,
+        headers: options.headers,
+        params: options.params,
+        timeout,
+      },
+      'background',
+    ).catch()
 
-      onMessage('event-fetch-on', async ({ data }) => {
-        switch (data.code) {
-          case EnumResponseCode.Success: {
-            resolve(data.response as T)
-            break
-          }
-          case EnumResponseCode.Error: {
-            reject(EnumResponseCode.Error)
-            !params?.silent && message.error('Unknown error')
-            break
-          }
-          case EnumResponseCode.AbortError: {
-            reject(EnumResponseCode.Error)
-            !params?.silent && message.error('Request timeout')
-            break
-          }
+    onMessage('event-fetch-on', async ({ data }) => {
+      switch (data.code) {
+        case EnumResponseCode.Success: {
+          resolve(data.response as T)
+          break
         }
-      })
+        case EnumResponseCode.Error: {
+          reject(EnumResponseCode.Error)
+          !params?.silent && message.error('Unknown error')
+          break
+        }
+        case EnumResponseCode.AbortError: {
+          reject(EnumResponseCode.Error)
+          !params?.silent && message.error('Request timeout')
+          break
+        }
+      }
+    })
 
-      return promise
-    }
-    catch (err) {
-      console.error('Message failed [event-fetch-send]:', err)
-    }
+    return promise
   }
 
   return { post }
