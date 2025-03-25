@@ -1,9 +1,20 @@
 import type { Tabs } from 'webextension-polyfill'
-import { storageCurrentTab } from '~/logic/storage'
+import { storageCurrentTab, storageWebsiteList } from '~/logic/storage'
 
 import('./hmr') // only on dev mode
-import('./registers/event-activity')
 import('./registers/event-fetch')
+
+const actionIconPathMap = {
+  16: browser.runtime.getURL(`assets/icons/icon-16.png`),
+  48: browser.runtime.getURL(`assets/icons/icon-48.png`),
+  128: browser.runtime.getURL(`assets/icons/icon-128.png`),
+}
+
+const unActionIconPathMap = {
+  16: browser.runtime.getURL(`assets/icons/icon-gray-16.png`),
+  48: browser.runtime.getURL(`assets/icons/icon-gray-48.png`),
+  128: browser.runtime.getURL(`assets/icons/icon-gray-128.png`),
+}
 
 async function getCurrentTab(): Promise<Tabs.Tab | undefined> {
   try {
@@ -16,29 +27,45 @@ async function getCurrentTab(): Promise<Tabs.Tab | undefined> {
   }
 }
 
-/** 扩展加载时获取当前 tabId */
-browser.runtime.onInstalled.addListener(async () => {
+async function updateActionIcon(tab: Tabs.Tab | undefined) {
+  const url = tab?.url || tab?.pendingUrl
+  const tabId = tab?.id
+
+  if (!url || !tabId)
+    return
+
+  const { host } = new URL(url)
+  const website = storageWebsiteList.value.find(item => item.url === host)
+
+  if (website?.enable) {
+    browser.action.setIcon({ tabId, path: actionIconPathMap })
+  }
+  else {
+    browser.action.setIcon({ tabId, path: unActionIconPathMap })
+  }
+}
+
+/** 标签选中时 */
+browser.tabs.onActivated.addListener(async () => {
   const tab = await getCurrentTab()
   const tabId = tab?.id
 
+  updateActionIcon(tab)
+
   if (tabId && tabId !== storageCurrentTab.value.id) {
     storageCurrentTab.value.id = tabId
   }
 })
 
-/** 监听 tab 激活时获取当前 tabId */
-browser.tabs.onActivated.addListener(({ tabId }) => {
-  if (tabId && tabId !== storageCurrentTab.value.id) {
-    storageCurrentTab.value.id = tabId
-  }
-})
-
-/** 监听窗口切换时获取当前 tabId */
+/** 窗口切换时 */
 browser.windows.onFocusChanged.addListener(async (windowId) => {
   if (windowId === browser.windows.WINDOW_ID_NONE)
     return // 没有窗口获得焦点
+
   const tab = await getCurrentTab()
   const tabId = tab?.id
+
+  updateActionIcon(tab)
 
   if (tabId && tabId !== storageCurrentTab.value.id) {
     storageCurrentTab.value.id = tabId
