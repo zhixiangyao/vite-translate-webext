@@ -1,21 +1,19 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
 import { EnumResponseCode } from '~/constant/enum'
-import { storageCurrentTab, storageSettings } from '~/logic/storage'
 
 const context = 'content-script'
 
 onMessage('event-fetch-send', async ({ data }) => {
+  const { tabId, url, headers, params, timeout = 30 } = data
   const controller = new AbortController()
   const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), storageSettings.value.api.timeout)
-
-  const tabId = storageCurrentTab.value.id!
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
 
   try {
-    const response = await fetch(data.url, {
+    const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...data.headers },
-      body: JSON.stringify(data.params),
+      headers: { 'Content-Type': 'application/json', ...headers },
+      body: JSON.stringify(params),
       signal,
     })
     clearTimeout(timeoutId)
@@ -23,11 +21,16 @@ onMessage('event-fetch-send', async ({ data }) => {
     if (response.status !== 200)
       throw new Error('unknown')
 
-    sendMessage(
-      'event-fetch-on',
-      { code: EnumResponseCode.Success, response: await response.json() },
-      { tabId, context },
-    )
+    try {
+      await sendMessage(
+        'event-fetch-on',
+        { code: EnumResponseCode.Success, response: await response.json() },
+        { tabId, context },
+      )
+    }
+    catch (err) {
+      console.error('Message failed [event-fetch-on]:', err)
+    }
   }
   catch (error) {
     clearTimeout(timeoutId)
@@ -35,6 +38,12 @@ onMessage('event-fetch-send', async ({ data }) => {
     if (error instanceof Error && error.name === 'AbortError') {
       code = EnumResponseCode.AbortError
     }
-    sendMessage('event-fetch-on', { code }, { tabId, context })
+
+    try {
+      await sendMessage('event-fetch-on', { code }, { tabId, context })
+    }
+    catch (err) {
+      console.error('Message failed [event-fetch-on]:', err)
+    }
   }
 })

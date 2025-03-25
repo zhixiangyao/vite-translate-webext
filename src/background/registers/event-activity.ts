@@ -1,5 +1,4 @@
 import { onMessage } from 'webext-bridge/background'
-import { storageCurrentTab } from '~/logic/storage'
 
 const actionPath = {
   16: browser.runtime.getURL(`assets/icons/icon-16.png`),
@@ -14,17 +13,18 @@ const unActionPath = {
 }
 
 onMessage('event-activity', async ({ data }) => {
-  const tabId = storageCurrentTab.value.id
-
-  if (!tabId)
-    return
+  const { tabId } = data
 
   try {
-    if (data.show) {
-      browser.action.setIcon({ tabId, path: actionPath })
-    }
-    else {
-      browser.action.setIcon({ tabId, path: unActionPath })
+    const tab = await browser.tabs.get(tabId)
+
+    if (tab) {
+      if (data.show) {
+        browser.action.setIcon({ tabId, path: actionPath })
+      }
+      else {
+        browser.action.setIcon({ tabId, path: unActionPath })
+      }
     }
   }
   catch {}
