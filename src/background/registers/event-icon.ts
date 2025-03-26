@@ -1,5 +1,4 @@
 import { onMessage } from 'webext-bridge/background'
-import { storageCurrentTab } from '~/logic/storage'
 
 const actionPath = {
   16: browser.runtime.getURL(`assets/icons/icon-16.png`),
@@ -13,19 +12,21 @@ const unActionPath = {
   128: browser.runtime.getURL(`assets/icons/icon-gray-128.png`),
 }
 
-onMessage('event-activity', async ({ data }) => {
-  const tabId = storageCurrentTab.value.id
-
-  if (!tabId)
-    return
-
+async function updateActionIcon(show: boolean, tabId: number) {
   try {
-    if (data.show) {
-      browser.action.setIcon({ tabId, path: actionPath })
+    if (show) {
+      await browser.action.setIcon({ tabId, path: actionPath })
     }
     else {
-      browser.action.setIcon({ tabId, path: unActionPath })
+      await browser.action.setIcon({ tabId, path: unActionPath })
     }
   }
   catch {}
-})
+}
+
+export function register() {
+  onMessage('event-icon', ({ data }) => {
+    const { tabId, show } = data
+    updateActionIcon(show, tabId)
+  })
+}

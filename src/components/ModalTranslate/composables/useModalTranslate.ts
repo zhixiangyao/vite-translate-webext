@@ -1,3 +1,4 @@
+import type { DeeplxResponse } from './useTranslate'
 import type { EnumResponseCode } from '~/constant/enum'
 import { useEventListener, useMouse } from '@vueuse/core'
 import { uniqBy } from 'es-toolkit'
@@ -6,7 +7,7 @@ import { regexIsWord } from '~/constant/regex'
 import { clone } from '~/logic/clone'
 import { isFiftyPercentLetters } from '~/logic/is'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
-import { type DeeplxResponse, useTranslate } from './useTranslate'
+import { useTranslate } from './useTranslate'
 
 interface State {
   top: number

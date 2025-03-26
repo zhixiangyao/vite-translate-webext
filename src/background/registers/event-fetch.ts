@@ -1,40 +1,41 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
 import { EnumResponseCode } from '~/constant/enum'
-import { storageCurrentTab, storageSettings } from '~/logic/storage'
 
 const context = 'content-script'
 
-onMessage('event-fetch-send', async ({ data }) => {
-  const controller = new AbortController()
-  const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), storageSettings.value.api.timeout)
+export function register() {
+  onMessage('event-fetch-send', async ({ data }) => {
+    const { tabId, url, headers, params, timeout = 30 } = data
+    const controller = new AbortController()
+    const signal = controller.signal
+    const timeoutId = setTimeout(() => controller.abort(), timeout)
 
-  const tabId = storageCurrentTab.value.id!
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...headers },
+        body: JSON.stringify(params),
+        signal,
+      })
+      clearTimeout(timeoutId)
 
-  try {
-    const response = await fetch(data.url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...data.headers },
-      body: JSON.stringify(data.params),
-      signal,
-    })
-    clearTimeout(timeoutId)
+      if (response.status !== 200)
+        throw new Error('unknown')
 
-    if (response.status !== 200)
-      throw new Error('unknown')
-
-    sendMessage(
-      'event-fetch-on',
-      { code: EnumResponseCode.Success, response: await response.json() },
-      { tabId, context },
-    )
-  }
-  catch (error) {
-    clearTimeout(timeoutId)
-    let code = EnumResponseCode.Error
-    if (error instanceof Error && error.name === 'AbortError') {
-      code = EnumResponseCode.AbortError
+      sendMessage(
+        'event-fetch-on',
+        { code: EnumResponseCode.Success, response: await response.json() },
+        { tabId, context },
+      ).catch()
     }
-    sendMessage('event-fetch-on', { code }, { tabId, context })
-  }
-})
+    catch (error) {
+      clearTimeout(timeoutId)
+      let code = EnumResponseCode.Error
+      if (error instanceof Error && error.name === 'AbortError') {
+        code = EnumResponseCode.AbortError
+      }
+
+      sendMessage('event-fetch-on', { code }, { tabId, context }).catch()
+    }
+  })
+}
