@@ -11,9 +11,7 @@ const props = defineProps<Props>()
 
 const labelCol = { span: 6 }
 const wrapperCol = { span: 24 - labelCol.span }
-const formRef = toRef(props.use, 'formRef')
-const open = toRef(props.use, 'open')
-const formState = toRef(props.use, 'formState')
+const { open, formRef, formState } = props.use
 const title = computed(() => `${props.use.type.value === 'add' ? 'Add' : 'Edit'} Group`)
 </script>
 

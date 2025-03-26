@@ -11,9 +11,9 @@ const props = defineProps<{ root?: HTMLElement }>()
 
 const modalTranslate = useModalTranslate(props.root)
 const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDraggable({
-  x: toRef(modalTranslate.state, 'left'),
-  y: toRef(modalTranslate.state, 'top'),
-  open: toRef(modalTranslate.state, 'open'),
+  x: computed(() => modalTranslate.state.left),
+  y: computed(() => modalTranslate.state.top),
+  open: computed(() => modalTranslate.state.open),
   root: props.root,
 })
 

@@ -13,16 +13,14 @@ const props = defineProps<Props>()
 
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
-const formRef = toRef(props.use, 'formRef')
-const open = toRef(props.use, 'open')
-const formState = toRef(props.use, 'formState')
+const { open, formRef, formState } = props.use
 const containerRef = ref<HTMLDivElement>()
 const containerSize = useElementSize(containerRef)
 const tableScroll = computed(() => ({ y: containerSize.height.value - 40 }))
 </script>
 
 <template>
-  <Drawer v-model:open="open" destroy-on-close title="Edit Book List" placement="right" width="70%">
+  <Drawer v-model:open="open" destroy-on-close title="Edit Book List" placement="right" width="600px">
     <div ref="containerRef" class="h-full">
       <Form
         ref="formRef"
