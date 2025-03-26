@@ -1,19 +1,19 @@
 import { useWebExtensionStorage as useWebExtStorage } from '~/composables/useWebExtensionStorage'
-import { DEFAULT_SETTINGS } from '~/constant/map'
+import { DEFAULT_GROUP_LIST, DEFAULT_SETTINGS, DEFAULT_WEBSITE_LIST, DEFAULT_WORD_LIST } from '~/constant/map'
 
 interface TCurrentTab {
   id?: number
-}
-
-export interface TRecordWord {
-  word: string
-  groupUUID: string | undefined
 }
 
 export interface TRecordGroup {
   name: string
   uuid: string
   list: TRecordWord[]
+}
+
+export interface TRecordWord {
+  word: string
+  groupUUID: string | undefined
 }
 
 export interface TRecordWebsite {
@@ -44,14 +44,14 @@ const DO_NOT_LISTEN = { listenToStorageChanges: false }
 /** Current Tab Information */
 export const storageCurrentTab = useWebExtStorage<TCurrentTab>('webext-current-tab', { id: void 0 })
 
-/** Word list */
-export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', [])
-
 /** Group list */
-export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', [])
+export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-list', DEFAULT_GROUP_LIST)
+
+/** Word list */
+export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', DEFAULT_WORD_LIST)
 
 /** Website list */
-export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', [])
+export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', DEFAULT_WEBSITE_LIST)
 
 /** Search Results Cache */
 export const storageCacheMap = useWebExtStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)

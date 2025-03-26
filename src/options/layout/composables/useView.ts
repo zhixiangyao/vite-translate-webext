@@ -22,7 +22,10 @@ export function useView() {
     router.push({ name: view.name })
   }
 
-  function handleClose(view: TView) {
+  function handleClose(view: TView | null) {
+    if (!view)
+      return
+
     const index = list.value.findIndex(item => item.path === view.path)
 
     if (index !== -1) {
@@ -38,7 +41,10 @@ export function useView() {
     }
   }
 
-  function handleCloseOther(view: TView) {
+  function handleCloseOther(view: TView | null) {
+    if (!view)
+      return
+
     list.value = [view]
     activity.value = view
     router.replace({ name: view.name })

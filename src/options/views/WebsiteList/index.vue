@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { Button, Form, FormItem, Switch, Table } from 'ant-design-vue'
+import { useRoute } from 'vue-router'
+import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import { useWebsiteList } from './composables/useWebsiteList'
 
 defineOptions({ name: 'WebsiteList' })
@@ -8,10 +10,22 @@ defineOptions({ name: 'WebsiteList' })
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 
+const route = useRoute()
+const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'WebsiteList')
 const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, handleCancel } = useWebsiteList()
 </script>
 
 <template>
+  <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
+    <Button size="small" type="primary" :disabled="disabledAdd" @click="handleSave">
+      Save
+    </Button>
+
+    <Button size="small" type="dashed" :disabled="disabledAdd" @click="handleCancel">
+      Cancel
+    </Button>
+  </Teleport>
+
   <Form ref="formRef" autocomplete="off" :label-col="labelCol" :model="formState" :wrapper-col="wrapperCol">
     <Table
       class="allow-list-table"
@@ -37,16 +51,6 @@ const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, hand
         </template>
       </template>
     </Table>
-
-    <div class="mt-2 flex gap-2">
-      <Button type="primary" :disabled="disabledAdd" @click="handleSave">
-        Save
-      </Button>
-
-      <Button type="dashed" :disabled="disabledAdd" @click="handleCancel">
-        Cancel
-      </Button>
-    </div>
   </Form>
 </template>
 

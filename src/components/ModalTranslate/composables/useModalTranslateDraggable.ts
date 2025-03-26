@@ -1,8 +1,8 @@
 import { useDraggable, useElementBounding, useElementSize, useWindowSize } from '@vueuse/core'
 
 interface ParamsDraggable {
-  containerTop: Ref<number>
-  containerLeft: Ref<number>
+  containerTop: ComputedRef<number>
+  containerLeft: ComputedRef<number>
   sizeContainer: ReturnType<typeof useElementSize>
   distance: number
 }
@@ -64,9 +64,9 @@ function useRootDraggable(params: ParamsDraggable & { root: HTMLElement }) {
 }
 
 interface Params {
-  x: Ref<number>
-  y: Ref<number>
-  open: Ref<boolean>
+  x: ComputedRef<number>
+  y: ComputedRef<number>
+  open: ComputedRef<boolean>
   root?: HTMLElement
 }
 
