@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useDebounceFn, useWindowFocus } from '@vueuse/core'
+import { sendMessage } from 'webext-bridge/content-script'
 import ModalSearch from '~/components/ModalSearch/index.vue'
 import ModalTranslate from '~/components/ModalTranslate/index.vue'
 import { highlight, unhighlight } from '~/logic/highlight'
-import { storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
+import { storageCurrentTab, storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
 
 interface Props {
   root?: HTMLElement
@@ -11,10 +12,10 @@ interface Props {
 
 defineProps<Props>()
 
-const ref = useTemplateRef('modal-translate')
+const modalRef = useTemplateRef('modal-translate')
 const debounceHighlight = useDebounceFn(highlight, 500)
 const focused = useWindowFocus()
-const enable = computed(() => {
+const show = computed(() => {
   const website = storageWebsiteList.value.find(item => item.url === location.host)
 
   return website?.enable ?? false
@@ -22,7 +23,24 @@ const enable = computed(() => {
 const words = computed(() => {
   return storageWordList.value.map(value => value.word).filter(word => !!word)
 })
+const tabId = ref<number>()
 const scope = effectScope()
+
+/** 更新 tabId 只要一次 */
+function updateTabId([id, focused]: [number | undefined, boolean]) {
+  if (id && focused && !tabId.value) {
+    tabId.value = id
+  }
+}
+
+/** 更新 icon 要实时 */
+function updateIcon() {
+  if (focused.value === false || tabId.value === void 0) {
+    return
+  }
+
+  sendMessage('event-icon', { show: show.value, tabId: tabId.value }, 'background').catch()
+}
 
 /** 更新 page 要实时 */
 async function updatePage() {
@@ -30,7 +48,7 @@ async function updatePage() {
     return
   }
 
-  if (enable.value) {
+  if (show.value) {
     debounceHighlight(words.value)
   }
   else {
@@ -55,11 +73,13 @@ function updateStyle() {
 }
 
 function search(text: string, left: number, top: number) {
-  ref.value?.show(text, left, top)
+  modalRef.value?.show(text, left, top)
 }
 
 scope.run(() => {
-  watch([enable, focused], updatePage, { immediate: true })
+  watch([() => storageCurrentTab.value.id, focused], updateTabId)
+  watch([show, focused], updateIcon, { immediate: true })
+  watch([show, focused], updatePage, { immediate: true })
   watch([words, focused], updatePage, { deep: true })
   watch([() => storageSettings.value.highlight, focused], updateStyle, { immediate: true })
 })
@@ -70,5 +90,5 @@ onUnmounted(scope.stop)
 <template>
   <ModalTranslate ref="modal-translate" :root="root" />
 
-  <ModalSearch :disabled="!!ref?.state.open" :root="root" @search="search" />
+  <ModalSearch :disabled="!!modalRef?.state.open" :root="root" @search="search" />
 </template>

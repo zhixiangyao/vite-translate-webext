@@ -6,5 +6,6 @@ declare module 'webext-bridge' {
     // see https://github.com/antfu/webext-bridge#type-safe-protocols
     'event-fetch-send': { tabId: number, url: string, headers?: Record<string, string>, params?: Record<string, any>, timeout?: number }
     'event-fetch-on': { code: number, response?: unknown }
+    'event-icon': { tabId: number, show: boolean }
   }
 }
