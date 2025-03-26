@@ -1,4 +1,4 @@
-import type { TRecordGroup, TRecordWord, TSettings } from '~/logic/storage'
+import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/logic/storage'
 import { EnumDataSet, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_GROUP_LIST: TRecordGroup[] = [
@@ -18,6 +18,13 @@ export const DEFAULT_WORD_LIST: TRecordWord[] = [
   {
     word: 'Vue',
     groupUUID: 'ea278a06-5fde-4ffb-af57-9d0c7552cd38',
+  },
+]
+
+export const DEFAULT_WEBSITE_LIST: TRecordWebsite[] = [
+  {
+    url: 'example.com',
+    enable: true,
   },
 ]
 

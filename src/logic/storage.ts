@@ -1,5 +1,5 @@
 import { useWebExtensionStorage as useWebExtStorage } from '~/composables/useWebExtensionStorage'
-import { DEFAULT_GROUP_LIST, DEFAULT_SETTINGS, DEFAULT_WORD_LIST } from '~/constant/map'
+import { DEFAULT_GROUP_LIST, DEFAULT_SETTINGS, DEFAULT_WEBSITE_LIST, DEFAULT_WORD_LIST } from '~/constant/map'
 
 interface TCurrentTab {
   id?: number
@@ -51,7 +51,7 @@ export const storageGroupList = useWebExtStorage<TRecordGroup[]>('webext-group-l
 export const storageWordList = useWebExtStorage<TRecordWord[]>('webext-word-list', DEFAULT_WORD_LIST)
 
 /** Website list */
-export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', [])
+export const storageWebsiteList = useWebExtStorage<TRecordWebsite[]>('webext-website-list', DEFAULT_WEBSITE_LIST)
 
 /** Search Results Cache */
 export const storageCacheMap = useWebExtStorage<TCacheMap>('webext-cache-map', {}, DO_NOT_LISTEN)
