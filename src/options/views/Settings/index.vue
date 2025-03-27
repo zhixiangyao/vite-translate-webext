@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { Button, Form, FormItem, Input, InputNumber, Skeleton } from 'ant-design-vue'
+import { useRoute } from 'vue-router'
+import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import { useSettings } from './composables/useSettings'
 
 defineOptions({ name: 'Settings' })
@@ -8,10 +10,22 @@ const CodeEditor = defineAsyncComponent({
   loader: () => import('~/options/components/CodeEditor.vue'),
 })
 
+const route = useRoute()
+const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'Settings')
 const { rules, formRef, formState, disabledSave, disabledReset, handleSave, handleReset } = useSettings()
 </script>
 
 <template>
+  <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
+    <Button size="small" type="primary" :disabled="disabledSave" @click="handleSave">
+      Save
+    </Button>
+
+    <Button size="small" :disabled="disabledReset" @click="handleReset">
+      Restore Defaults
+    </Button>
+  </Teleport>
+
   <Form ref="formRef" class="w-200" label-align="left" :model="formState" :label-col="{ span: 4 }">
     <FormItem label="Request URL" name="apiUrl" :rules="rules.apiUrl">
       <Input v-model:value="formState.apiUrl" />
@@ -37,18 +51,6 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
 
     <FormItem label="Theme Color" name="themeColor" :rules="rules.themeColor">
       <Input v-model:value="formState.themeColor" type="color" class="w-22" />
-    </FormItem>
-
-    <FormItem>
-      <div class="flex gap-2">
-        <Button type="primary" :disabled="disabledSave" @click="handleSave">
-          Save
-        </Button>
-
-        <Button :disabled="disabledReset" @click="handleReset">
-          Restore Defaults
-        </Button>
-      </div>
     </FormItem>
   </Form>
 </template>
