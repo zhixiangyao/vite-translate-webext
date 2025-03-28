@@ -37,6 +37,12 @@ export interface TSettings {
   theme: {
     color: string
   }
+  cloud: {
+    type: string | undefined
+    url: string | undefined
+    username: string | undefined
+    password: string | undefined
+  }
 }
 
 const DO_NOT_LISTEN = { listenToStorageChanges: false }

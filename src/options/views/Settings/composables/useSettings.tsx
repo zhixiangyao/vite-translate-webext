@@ -1,19 +1,26 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { TSettings } from '~/logic/storage'
-import { App } from 'ant-design-vue'
+import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
 import { useCustomModal } from '~/options/composables/useCustomModal'
 
-interface FormType {
+interface TFormType {
   apiUrl: TSettings['api']['url']
   apiToken: TSettings['api']['token']
   apiTimeout: TSettings['api']['timeout']
   highlightStyle: TSettings['highlight']['style']
   themeColor: TSettings['theme']['color']
+  cloudType: TSettings['cloud']['type']
+  cloudUrl: TSettings['cloud']['url']
+  cloudUsername: TSettings['cloud']['username']
+  cloudPassword: TSettings['cloud']['password']
 }
+
+export type TFormTypeKeys = keyof TFormType
 
 const rules = {
   apiUrl: [{ required: true, message: 'Please enter the request URL', trigger: 'change' }],
@@ -21,18 +28,30 @@ const rules = {
   apiTimeout: [{ required: true, message: 'Please enter the request Timeout', trigger: 'change' }],
   highlightStyle: [{ required: true, message: 'Please enter the Highlight Style', trigger: 'change' }],
   themeColor: [{ required: true, message: 'Please enter the Theme Color', trigger: 'change' }],
-} satisfies Record<keyof FormType, Rule[]>
+  cloudType: [{ required: false, message: 'Please select the Cloud Type', trigger: 'change' }],
+  cloudUrl: [{ required: false, message: 'Please enter the Cloud URL', trigger: 'change' }],
+  cloudUsername: [{ required: false, message: 'Please enter the Cloud username', trigger: 'change' }],
+  cloudPassword: [{ required: false, message: 'Please enter the Cloud Password', trigger: 'change' }],
+} satisfies Record<keyof TFormType, Rule[]>
+
+const options = {
+  cloudType: [{ label: 'webdav', value: 'webdav' }],
+} satisfies Record<string, DefaultOptionType[]>
 
 export function useSettings() {
   const { message } = App.useApp()
   const customModal = useCustomModal()
   const formRef = ref<FormInstance | null>(null)
-  const formState = reactive<FormType>({
+  const formState = reactive<TFormType>({
     apiUrl: '',
     apiToken: '',
     apiTimeout: 0,
     highlightStyle: '',
     themeColor: '',
+    cloudType: void 0,
+    cloudUrl: void 0,
+    cloudUsername: void 0,
+    cloudPassword: void 0,
   })
   const disabledReset = computed(() => {
     return (
@@ -41,9 +60,12 @@ export function useSettings() {
       && DEFAULT_SETTINGS.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(DEFAULT_SETTINGS.highlight.style) === formState.highlightStyle
       && DEFAULT_SETTINGS.theme.color === formState.themeColor
+      && DEFAULT_SETTINGS.cloud.type === formState.cloudType
+      && DEFAULT_SETTINGS.cloud.url === formState.cloudUrl
+      && DEFAULT_SETTINGS.cloud.username === formState.cloudUsername
+      && DEFAULT_SETTINGS.cloud.password === formState.cloudPassword
     )
   })
-
   const disabledSave = computed(() => {
     return (
       storageSettings.value.api.url === formState.apiUrl
@@ -51,6 +73,10 @@ export function useSettings() {
       && storageSettings.value.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(storageSettings.value.highlight.style) === formState.highlightStyle
       && storageSettings.value.theme.color === formState.themeColor
+      && storageSettings.value.cloud.type === formState.cloudType
+      && storageSettings.value.cloud.url === formState.cloudUrl
+      && storageSettings.value.cloud.username === formState.cloudUsername
+      && storageSettings.value.cloud.password === formState.cloudPassword
     )
   })
 
@@ -61,12 +87,34 @@ export function useSettings() {
     storageSettings.value.api.timeout = formState.apiTimeout * 1000
     storageSettings.value.highlight.style = formState.highlightStyle
     storageSettings.value.theme.color = formState.themeColor
+    storageSettings.value.cloud.type = formState.cloudType
+    storageSettings.value.cloud.url = formState.cloudUrl
+    storageSettings.value.cloud.username = formState.cloudUsername
+    storageSettings.value.cloud.password = formState.cloudPassword
 
     setTimeout(() => message.success('Save success'), 20)
   }
 
+  async function handleResetOk(cb: () => void) {
+    formRef.value?.clearValidate()
+
+    storageSettings.value.api.url = DEFAULT_SETTINGS.api.url
+    storageSettings.value.api.token = DEFAULT_SETTINGS.api.token
+    storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
+    storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
+    storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
+    storageSettings.value.cloud.type = DEFAULT_SETTINGS.cloud.type
+    storageSettings.value.cloud.url = DEFAULT_SETTINGS.cloud.url
+    storageSettings.value.cloud.username = DEFAULT_SETTINGS.cloud.username
+    storageSettings.value.cloud.password = DEFAULT_SETTINGS.cloud.password
+
+    cb()
+
+    setTimeout(() => message.success('Restore defaults success'), 20)
+  }
+
   async function handleReset() {
-    customModal.confirm({
+    const { close } = customModal.confirm({
       title: (
         <div>
           Sure you want to&nbsp;
@@ -74,23 +122,15 @@ export function useSettings() {
           ?
         </div>
       ),
-      onOk: async () => {
-        formRef.value?.clearValidate()
+      footer: (
+        <div class="mt-3 flex justify-end gap-2">
+          <Button onClick={() => close()}>Cancel</Button>
 
-        formState.apiUrl = DEFAULT_SETTINGS.api.url
-        formState.apiToken = DEFAULT_SETTINGS.api.token
-        formState.apiTimeout = DEFAULT_SETTINGS.api.timeout / 1000
-        formState.highlightStyle = cssBeautify(DEFAULT_SETTINGS.highlight.style)
-        formState.themeColor = DEFAULT_SETTINGS.theme.color
-
-        storageSettings.value.api.url = DEFAULT_SETTINGS.api.url
-        storageSettings.value.api.token = DEFAULT_SETTINGS.api.token
-        storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
-        storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
-        storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
-
-        setTimeout(() => message.success('Restore defaults success'), 20)
-      },
+          <Button type="primary" onClick={() => handleResetOk(close)}>
+            Ok
+          </Button>
+        </div>
+      ),
     })
   }
 
@@ -102,12 +142,17 @@ export function useSettings() {
       formState.apiTimeout = setting.api.timeout / 1000
       formState.highlightStyle = cssBeautify(setting.highlight.style)
       formState.themeColor = setting.theme.color
+      formState.cloudType = setting.cloud.type
+      formState.cloudUrl = setting.cloud.url
+      formState.cloudUsername = setting.cloud.username
+      formState.cloudPassword = setting.cloud.password
     },
     { immediate: true },
   )
 
   return {
     rules,
+    options,
     formRef,
     formState,
     disabledSave,
