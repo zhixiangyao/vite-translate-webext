@@ -5,6 +5,7 @@ import { App } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
+import { useCustomModal } from '~/options/composables/useCustomModal'
 
 interface FormType {
   apiUrl: TSettings['api']['url']
@@ -24,6 +25,7 @@ const rules = {
 
 export function useSettings() {
   const { message } = App.useApp()
+  const customModal = useCustomModal()
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive<FormType>({
     apiUrl: '',
@@ -64,21 +66,32 @@ export function useSettings() {
   }
 
   async function handleReset() {
-    formRef.value?.clearValidate()
+    customModal.confirm({
+      title: (
+        <div>
+          Sure you want to&nbsp;
+          <b class="text-red">Restore Defaults</b>
+          ?
+        </div>
+      ),
+      onOk: async () => {
+        formRef.value?.clearValidate()
 
-    formState.apiUrl = DEFAULT_SETTINGS.api.url
-    formState.apiToken = DEFAULT_SETTINGS.api.token
-    formState.apiTimeout = DEFAULT_SETTINGS.api.timeout / 1000
-    formState.highlightStyle = cssBeautify(DEFAULT_SETTINGS.highlight.style)
-    formState.themeColor = DEFAULT_SETTINGS.theme.color
+        formState.apiUrl = DEFAULT_SETTINGS.api.url
+        formState.apiToken = DEFAULT_SETTINGS.api.token
+        formState.apiTimeout = DEFAULT_SETTINGS.api.timeout / 1000
+        formState.highlightStyle = cssBeautify(DEFAULT_SETTINGS.highlight.style)
+        formState.themeColor = DEFAULT_SETTINGS.theme.color
 
-    storageSettings.value.api.url = DEFAULT_SETTINGS.api.url
-    storageSettings.value.api.token = DEFAULT_SETTINGS.api.token
-    storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
-    storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
-    storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
+        storageSettings.value.api.url = DEFAULT_SETTINGS.api.url
+        storageSettings.value.api.token = DEFAULT_SETTINGS.api.token
+        storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
+        storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
+        storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
 
-    setTimeout(() => message.success('Restore defaults success'), 20)
+        setTimeout(() => message.success('Restore defaults success'), 20)
+      },
+    })
   }
 
   watch(
