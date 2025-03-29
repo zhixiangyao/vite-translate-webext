@@ -42,6 +42,7 @@ export interface TSettings {
     url: string | undefined
     username: string | undefined
     password: string | undefined
+    path: string | undefined
   }
 }
 

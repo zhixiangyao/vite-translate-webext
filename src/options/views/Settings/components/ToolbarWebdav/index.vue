@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Button } from 'ant-design-vue'
 import ModalBackupList from './components/ModalBackupList.vue'
-import ModalCreateFolder from './components/ModalCreateFolder.vue'
 import { useToolbarWebdav } from './composables/useToolbarWebdav'
 
 interface Props {
@@ -9,6 +8,7 @@ interface Props {
   url?: string
   username?: string
   password?: string
+  path?: string
 }
 
 defineOptions({ name: 'ToolbarWebdav' })
@@ -18,6 +18,7 @@ const webdav = useToolbarWebdav({
   url: computed(() => props.url),
   username: computed(() => props.username),
   password: computed(() => props.password),
+  path: computed(() => props.path),
 })
 </script>
 
@@ -27,16 +28,14 @@ const webdav = useToolbarWebdav({
       Export
     </Button>
 
-    <Button :disabled="webdav.disabled.value || !disabled" @click="webdav.handleShowBackups">
+    <Button
+      :disabled="webdav.disabled.value || !disabled"
+      :loading="webdav.loadingShowBackups.value"
+      @click="webdav.handleShowBackups"
+    >
       Show Backups
     </Button>
   </div>
-
-  <ModalCreateFolder
-    v-model:open="webdav.stateCreateFolder.open"
-    :loading="webdav.stateCreateFolder.loading"
-    @ok="webdav.handleCreateFolder"
-  />
 
   <ModalBackupList
     v-model:open="webdav.stateBackupList.open"

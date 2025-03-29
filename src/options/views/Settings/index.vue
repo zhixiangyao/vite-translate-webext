@@ -91,6 +91,10 @@ const { rules, options, formRef, formState, disabledSave, disabledReset, handleS
           <Input v-model:value="formState.cloudPassword" type="password" />
         </FormItem>
 
+        <FormItem label="Cloud Path" :name="('cloudPath' satisfies TFormTypeKeys)" :rules="rules.cloudPath">
+          <Input v-model:value="formState.cloudPath" />
+        </FormItem>
+
         <!-- 只有 webdav 时才显示 -->
         <FormItem v-if="formState.cloudType === 'webdav'">
           <ToolbarWebdav
@@ -98,6 +102,7 @@ const { rules, options, formRef, formState, disabledSave, disabledReset, handleS
             :url="formState.cloudUrl"
             :username="formState.cloudUsername"
             :password="formState.cloudPassword"
+            :path="formState.cloudPath"
           />
         </FormItem>
       </TabPane>

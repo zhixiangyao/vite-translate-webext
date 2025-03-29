@@ -1,13 +1,7 @@
 import type { FileStat, WebDAVClient } from 'webdav'
-import { App } from 'ant-design-vue'
+import { App, Button } from 'ant-design-vue'
 import { AuthType, createClient } from 'webdav'
-
-export const folderName = '/Translate'
-
-interface TStateCreateFolder {
-  open: boolean
-  loading: boolean
-}
+import { useCustomModal } from '~/options/composables/useCustomModal'
 
 interface TStateBackupList {
   open: boolean
@@ -19,23 +13,22 @@ interface Params {
   url: ComputedRef<string | undefined>
   username: ComputedRef<string | undefined>
   password: ComputedRef<string | undefined>
+  path: ComputedRef<string | undefined>
 }
 
 export function useToolbarWebdav(params: Params) {
-  const { url, username, password } = params
+  const { url, username, password, path } = params
 
   const { message } = App.useApp()
+  const customModal = useCustomModal()
   const client = ref<WebDAVClient>()
-  const stateCreateFolder = reactive<TStateCreateFolder>({
-    open: false,
-    loading: false,
-  })
+  const disabled = computed(() => !url.value || !username.value || !password.value || !path.value)
+  const loadingShowBackups = ref(false)
   const stateBackupList = reactive<TStateBackupList>({
     open: false,
     loading: false,
     list: [],
   })
-  const disabled = computed(() => !url.value || !username.value || !password.value)
 
   /** Create Client */
   function handleCreateClient() {
@@ -50,33 +43,10 @@ export function useToolbarWebdav(params: Params) {
     return client.value!
   }
 
-  /** Modal: Create Missing Folder */
-  async function handleCreateFolder() {
-    try {
-      stateCreateFolder.loading = true
-
-      // await client.value?.createDirectory(folderName) // TODO
-      const directoryItems = await client.value?.getDirectoryContents('/') // TODO
-      stateCreateFolder.open = false
-      stateBackupList.open = true
-
-      if (Array.isArray(directoryItems)) {
-        stateBackupList.list = directoryItems
-      }
-    }
-    catch {
-      message.error('Oops! Create folder is fail')
-    }
-    finally {
-      stateCreateFolder.loading = false
-    }
-  }
-
   /** Modal: Backup List */
   async function handleBackupList() {
     try {
       stateBackupList.loading = true
-      // TODO
     }
     finally {
       stateBackupList.loading = false
@@ -85,7 +55,16 @@ export function useToolbarWebdav(params: Params) {
 
   /** Export */
   function handleExport() {
-    // TODO
+    const { close } = customModal.confirm({
+      title: 'Sure you want to Export All Data?',
+      footer: (
+        <div class="mt-3 flex justify-end gap-2">
+          <Button onClick={() => close()}>Cancel</Button>
+
+          <Button type="primary">Yes</Button>
+        </div>
+      ),
+    })
   }
 
   /** Show Backups */
@@ -93,23 +72,35 @@ export function useToolbarWebdav(params: Params) {
     if (disabled.value)
       return
 
-    const client = handleCreateClient()
+    loadingShowBackups.value = true
 
-    const existsFolder = await client.exists(folderName)
+    try {
+      const client = handleCreateClient()
 
-    if (!existsFolder) {
-      stateCreateFolder.open = true
+      await client.exists(path.value!)
+
+      const directoryItems = await client.getDirectoryContents(path.value!)
+
+      if (Array.isArray(directoryItems)) {
+        stateBackupList.open = true
+        stateBackupList.list = directoryItems
+      }
+    }
+    catch {
+      message.error(`Oops! "${path.value}" does not exist`)
+    }
+    finally {
+      loadingShowBackups.value = false
     }
   }
 
   onUnmounted(() => (client.value = void 0))
 
   return {
-    stateCreateFolder,
-    stateBackupList,
+    loadingShowBackups,
     disabled,
+    stateBackupList,
 
-    handleCreateFolder,
     handleBackupList,
     handleExport,
     handleShowBackups,

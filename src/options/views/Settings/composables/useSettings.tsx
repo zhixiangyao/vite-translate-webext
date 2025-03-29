@@ -18,6 +18,7 @@ interface TFormType {
   cloudUrl: TSettings['cloud']['url']
   cloudUsername: TSettings['cloud']['username']
   cloudPassword: TSettings['cloud']['password']
+  cloudPath: TSettings['cloud']['path']
 }
 
 export type TFormTypeKeys = keyof TFormType
@@ -30,8 +31,9 @@ const rules = {
   themeColor: [{ required: true, message: 'Please enter the Theme Color', trigger: 'change' }],
   cloudType: [{ required: false, message: 'Please select the Cloud Type', trigger: 'change' }],
   cloudUrl: [{ required: false, message: 'Please enter the Cloud URL', trigger: 'change' }],
-  cloudUsername: [{ required: false, message: 'Please enter the Cloud username', trigger: 'change' }],
+  cloudUsername: [{ required: false, message: 'Please enter the Cloud Username', trigger: 'change' }],
   cloudPassword: [{ required: false, message: 'Please enter the Cloud Password', trigger: 'change' }],
+  cloudPath: [{ required: false, message: 'Please enter the Cloud Path', trigger: 'change' }],
 } satisfies Record<keyof TFormType, Rule[]>
 
 const options = {
@@ -52,6 +54,7 @@ export function useSettings() {
     cloudUrl: void 0,
     cloudUsername: void 0,
     cloudPassword: void 0,
+    cloudPath: void 0,
   })
   const disabledReset = computed(() => {
     return (
@@ -64,6 +67,7 @@ export function useSettings() {
       && DEFAULT_SETTINGS.cloud.url === formState.cloudUrl
       && DEFAULT_SETTINGS.cloud.username === formState.cloudUsername
       && DEFAULT_SETTINGS.cloud.password === formState.cloudPassword
+      && DEFAULT_SETTINGS.cloud.path === formState.cloudPath
     )
   })
   const disabledSave = computed(() => {
@@ -77,6 +81,7 @@ export function useSettings() {
       && storageSettings.value.cloud.url === formState.cloudUrl
       && storageSettings.value.cloud.username === formState.cloudUsername
       && storageSettings.value.cloud.password === formState.cloudPassword
+      && storageSettings.value.cloud.path === formState.cloudPath
     )
   })
 
@@ -91,6 +96,7 @@ export function useSettings() {
     storageSettings.value.cloud.url = formState.cloudUrl
     storageSettings.value.cloud.username = formState.cloudUsername
     storageSettings.value.cloud.password = formState.cloudPassword
+    storageSettings.value.cloud.path = formState.cloudPath
 
     setTimeout(() => message.success('Save success'), 20)
   }
@@ -107,6 +113,7 @@ export function useSettings() {
     storageSettings.value.cloud.url = DEFAULT_SETTINGS.cloud.url
     storageSettings.value.cloud.username = DEFAULT_SETTINGS.cloud.username
     storageSettings.value.cloud.password = DEFAULT_SETTINGS.cloud.password
+    storageSettings.value.cloud.path = DEFAULT_SETTINGS.cloud.path
 
     cb()
 
@@ -146,6 +153,7 @@ export function useSettings() {
       formState.cloudUrl = setting.cloud.url
       formState.cloudUsername = setting.cloud.username
       formState.cloudPassword = setting.cloud.password
+      formState.cloudPath = setting.cloud.path
     },
     { immediate: true },
   )

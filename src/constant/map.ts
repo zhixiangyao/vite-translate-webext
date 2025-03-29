@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS: TSettings = {
     url: void 0,
     username: void 0,
     password: void 0,
+    path: void 0,
   },
 }
 
