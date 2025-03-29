@@ -1,7 +1,9 @@
 import type { TRecordGroup, TRecordWord } from '~/logic/storage'
+import { Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { utils, writeFileXLSX } from 'xlsx'
 import { storageGroupList, storageWordList } from '~/logic/storage'
+import { useCustomModal } from '~/options/composables/useCustomModal'
 
 type TColumnName = string
 type TColumnValue = string | number | null | undefined
@@ -45,6 +47,7 @@ function generateGroupListDataToWorkSheet(groupList: TRecordGroup[]) {
 }
 
 export function useExportBackups() {
+  const customModal = useCustomModal()
   const disabled = computed(() => storageWordList.value.length === 0 && storageGroupList.value.length === 0)
 
   function handleExport() {
@@ -53,8 +56,28 @@ export function useExportBackups() {
     /* Add the worksheet to the workbook */
     utils.book_append_sheet(wb, generateWordListDataToWorkSheet(storageWordList.value), EnumSheetName.words)
     utils.book_append_sheet(wb, generateGroupListDataToWorkSheet(storageGroupList.value), EnumSheetName.groups)
-    /* export to XLSX */
-    writeFileXLSX(wb, `Translate-${dayjs().format('YYYY-MM-DD')}.backups.xlsx`)
+    const fileName = `Translate-Book-List-${dayjs().format('YYYY-MM-DD')}.backups.xlsx`
+
+    const { close } = customModal.confirm({
+      title: <div>Export Book List</div>,
+      width: 500,
+      content: <code class="bg-gray-800 text-white rounded-sm px-2 py-1">{fileName}</code>,
+      footer: (
+        <div class="mt-3 flex justify-end gap-2">
+          <Button onClick={() => close()}>Cancel</Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              writeFileXLSX(wb, fileName)
+              close()
+            }}
+          >
+            Yes
+          </Button>
+        </div>
+      ),
+    })
   }
 
   return { disabled, handleExport }
