@@ -1,6 +1,5 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { TSettings } from '~/logic/storage'
 import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
@@ -14,11 +13,10 @@ interface TFormType {
   apiTimeout: TSettings['api']['timeout']
   highlightStyle: TSettings['highlight']['style']
   themeColor: TSettings['theme']['color']
-  cloudType: TSettings['cloud']['type']
-  cloudUrl: TSettings['cloud']['url']
-  cloudUsername: TSettings['cloud']['username']
-  cloudPassword: TSettings['cloud']['password']
-  cloudPath: TSettings['cloud']['path']
+  WebdavUrl: TSettings['Webdav']['url']
+  WebdavUsername: TSettings['Webdav']['username']
+  WebdavPassword: TSettings['Webdav']['password']
+  WebdavPath: TSettings['Webdav']['path']
 }
 
 export type TFormTypeKeys = keyof TFormType
@@ -29,16 +27,11 @@ const rules = {
   apiTimeout: [{ required: true, message: 'Please enter the request Timeout', trigger: 'change' }],
   highlightStyle: [{ required: true, message: 'Please enter the Highlight Style', trigger: 'change' }],
   themeColor: [{ required: true, message: 'Please enter the Theme Color', trigger: 'change' }],
-  cloudType: [{ required: false, message: 'Please select the Cloud Type', trigger: 'change' }],
-  cloudUrl: [{ required: false, message: 'Please enter the Cloud URL', trigger: 'change' }],
-  cloudUsername: [{ required: false, message: 'Please enter the Cloud Username', trigger: 'change' }],
-  cloudPassword: [{ required: false, message: 'Please enter the Cloud Password', trigger: 'change' }],
-  cloudPath: [{ required: false, message: 'Please enter the Cloud Path', trigger: 'change' }],
+  WebdavUrl: [{ required: false, message: 'Please enter the Webdav URL', trigger: 'change' }],
+  WebdavUsername: [{ required: false, message: 'Please enter the Webdav Username', trigger: 'change' }],
+  WebdavPassword: [{ required: false, message: 'Please enter the Webdav Password', trigger: 'change' }],
+  WebdavPath: [{ required: false, message: 'Please enter the Webdav Path', trigger: 'change' }],
 } satisfies Record<keyof TFormType, Rule[]>
-
-const options = {
-  cloudType: [{ label: 'webdav', value: 'webdav' }],
-} satisfies Record<string, DefaultOptionType[]>
 
 export function useSettings() {
   const { message } = App.useApp()
@@ -50,11 +43,10 @@ export function useSettings() {
     apiTimeout: 0,
     highlightStyle: '',
     themeColor: '',
-    cloudType: void 0,
-    cloudUrl: void 0,
-    cloudUsername: void 0,
-    cloudPassword: void 0,
-    cloudPath: void 0,
+    WebdavUrl: void 0,
+    WebdavUsername: void 0,
+    WebdavPassword: void 0,
+    WebdavPath: void 0,
   })
   const disabledReset = computed(() => {
     return (
@@ -63,11 +55,10 @@ export function useSettings() {
       && DEFAULT_SETTINGS.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(DEFAULT_SETTINGS.highlight.style) === formState.highlightStyle
       && DEFAULT_SETTINGS.theme.color === formState.themeColor
-      && DEFAULT_SETTINGS.cloud.type === formState.cloudType
-      && DEFAULT_SETTINGS.cloud.url === formState.cloudUrl
-      && DEFAULT_SETTINGS.cloud.username === formState.cloudUsername
-      && DEFAULT_SETTINGS.cloud.password === formState.cloudPassword
-      && DEFAULT_SETTINGS.cloud.path === formState.cloudPath
+      && DEFAULT_SETTINGS.Webdav.url === formState.WebdavUrl
+      && DEFAULT_SETTINGS.Webdav.username === formState.WebdavUsername
+      && DEFAULT_SETTINGS.Webdav.password === formState.WebdavPassword
+      && DEFAULT_SETTINGS.Webdav.path === formState.WebdavPath
     )
   })
   const disabledSave = computed(() => {
@@ -77,11 +68,10 @@ export function useSettings() {
       && storageSettings.value.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(storageSettings.value.highlight.style) === formState.highlightStyle
       && storageSettings.value.theme.color === formState.themeColor
-      && storageSettings.value.cloud.type === formState.cloudType
-      && storageSettings.value.cloud.url === formState.cloudUrl
-      && storageSettings.value.cloud.username === formState.cloudUsername
-      && storageSettings.value.cloud.password === formState.cloudPassword
-      && storageSettings.value.cloud.path === formState.cloudPath
+      && storageSettings.value.Webdav.url === formState.WebdavUrl
+      && storageSettings.value.Webdav.username === formState.WebdavUsername
+      && storageSettings.value.Webdav.password === formState.WebdavPassword
+      && storageSettings.value.Webdav.path === formState.WebdavPath
     )
   })
 
@@ -92,11 +82,10 @@ export function useSettings() {
     storageSettings.value.api.timeout = formState.apiTimeout * 1000
     storageSettings.value.highlight.style = formState.highlightStyle
     storageSettings.value.theme.color = formState.themeColor
-    storageSettings.value.cloud.type = formState.cloudType
-    storageSettings.value.cloud.url = formState.cloudUrl
-    storageSettings.value.cloud.username = formState.cloudUsername
-    storageSettings.value.cloud.password = formState.cloudPassword
-    storageSettings.value.cloud.path = formState.cloudPath
+    storageSettings.value.Webdav.url = formState.WebdavUrl
+    storageSettings.value.Webdav.username = formState.WebdavUsername
+    storageSettings.value.Webdav.password = formState.WebdavPassword
+    storageSettings.value.Webdav.path = formState.WebdavPath
 
     setTimeout(() => message.success('Save success'), 20)
   }
@@ -109,11 +98,10 @@ export function useSettings() {
     storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
     storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
     storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
-    storageSettings.value.cloud.type = DEFAULT_SETTINGS.cloud.type
-    storageSettings.value.cloud.url = DEFAULT_SETTINGS.cloud.url
-    storageSettings.value.cloud.username = DEFAULT_SETTINGS.cloud.username
-    storageSettings.value.cloud.password = DEFAULT_SETTINGS.cloud.password
-    storageSettings.value.cloud.path = DEFAULT_SETTINGS.cloud.path
+    storageSettings.value.Webdav.url = DEFAULT_SETTINGS.Webdav.url
+    storageSettings.value.Webdav.username = DEFAULT_SETTINGS.Webdav.username
+    storageSettings.value.Webdav.password = DEFAULT_SETTINGS.Webdav.password
+    storageSettings.value.Webdav.path = DEFAULT_SETTINGS.Webdav.path
 
     cb()
 
@@ -149,18 +137,16 @@ export function useSettings() {
       formState.apiTimeout = setting.api.timeout / 1000
       formState.highlightStyle = cssBeautify(setting.highlight.style)
       formState.themeColor = setting.theme.color
-      formState.cloudType = setting.cloud.type
-      formState.cloudUrl = setting.cloud.url
-      formState.cloudUsername = setting.cloud.username
-      formState.cloudPassword = setting.cloud.password
-      formState.cloudPath = setting.cloud.path
+      formState.WebdavUrl = setting.Webdav.url
+      formState.WebdavUsername = setting.Webdav.username
+      formState.WebdavPassword = setting.Webdav.password
+      formState.WebdavPath = setting.Webdav.path
     },
     { immediate: true },
   )
 
   return {
     rules,
-    options,
     formRef,
     formState,
     disabledSave,

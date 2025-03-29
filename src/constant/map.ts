@@ -46,8 +46,7 @@ export const DEFAULT_SETTINGS: TSettings = {
   theme: {
     color: '#A0D911',
   },
-  cloud: {
-    type: void 0,
+  Webdav: {
     url: void 0,
     username: void 0,
     password: void 0,

@@ -37,8 +37,7 @@ export interface TSettings {
   theme: {
     color: string
   }
-  cloud: {
-    type: string | undefined
+  Webdav: {
     url: string | undefined
     username: string | undefined
     password: string | undefined

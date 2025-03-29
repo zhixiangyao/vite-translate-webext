@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { TFormTypeKeys } from './composables/useSettings'
-import { Button, Form, FormItem, Input, InputNumber, Select, Skeleton, TabPane, Tabs } from 'ant-design-vue'
+import { Button, Form, FormItem, Input, InputNumber, Skeleton, TabPane, Tabs } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
 import ToolbarWebdav from './components/ToolbarWebdav/index.vue'
@@ -10,7 +10,7 @@ defineOptions({ name: 'Settings' })
 
 enum EnumActiveKey {
   Basic = 'Basic',
-  Cloud = 'Cloud',
+  Webdav = 'Webdav',
 }
 
 const CodeEditor = defineAsyncComponent({ loader: () => import('~/options/components/CodeEditor.vue') })
@@ -18,7 +18,7 @@ const CodeEditor = defineAsyncComponent({ loader: () => import('~/options/compon
 const activeKey = ref<EnumActiveKey>(EnumActiveKey.Basic)
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'Settings')
-const { rules, options, formRef, formState, disabledSave, disabledReset, handleSave, handleReset } = useSettings()
+const { rules, formRef, formState, disabledSave, disabledReset, handleSave, handleReset } = useSettings()
 </script>
 
 <template>
@@ -67,42 +67,31 @@ const { rules, options, formRef, formState, disabledSave, disabledReset, handleS
         </FormItem>
       </TabPane>
 
-      <!-- Cloud -->
-      <TabPane :key="EnumActiveKey.Cloud" tab="Cloud" force-render>
-        <FormItem label="Cloud Type" :name="('cloudType' satisfies TFormTypeKeys)" :rules="rules.cloudType">
-          <Select
-            v-model:value="formState.cloudType"
-            size="small"
-            :options="options.cloudType"
-            class="!w-44"
-            allow-clear
-          />
+      <!-- Webdav -->
+      <TabPane :key="EnumActiveKey.Webdav" tab="Webdav" force-render>
+        <FormItem label="Webdav URL" :name="('WebdavUrl' satisfies TFormTypeKeys)" :rules="rules.WebdavUrl">
+          <Input v-model:value="formState.WebdavUrl" />
         </FormItem>
 
-        <FormItem label="Cloud URL" :name="('cloudUrl' satisfies TFormTypeKeys)" :rules="rules.cloudUrl">
-          <Input v-model:value="formState.cloudUrl" />
+        <FormItem label="Webdav Login" :name="('WebdavUsername' satisfies TFormTypeKeys)" :rules="rules.WebdavUsername">
+          <Input v-model:value="formState.WebdavUsername" />
         </FormItem>
 
-        <FormItem label="Cloud Login" :name="('cloudUsername' satisfies TFormTypeKeys)" :rules="rules.cloudUsername">
-          <Input v-model:value="formState.cloudUsername" />
+        <FormItem label="Webdav Password" :name="('WebdavPassword' satisfies TFormTypeKeys)" :rules="rules.WebdavPassword">
+          <Input v-model:value="formState.WebdavPassword" type="password" />
         </FormItem>
 
-        <FormItem label="Cloud Password" :name="('cloudPassword' satisfies TFormTypeKeys)" :rules="rules.cloudPassword">
-          <Input v-model:value="formState.cloudPassword" type="password" />
+        <FormItem label="Webdav Path" :name="('WebdavPath' satisfies TFormTypeKeys)" :rules="rules.WebdavPath">
+          <Input v-model:value="formState.WebdavPath" />
         </FormItem>
 
-        <FormItem label="Cloud Path" :name="('cloudPath' satisfies TFormTypeKeys)" :rules="rules.cloudPath">
-          <Input v-model:value="formState.cloudPath" />
-        </FormItem>
-
-        <!-- 只有 webdav 时才显示 -->
-        <FormItem v-if="formState.cloudType === 'webdav'">
+        <FormItem>
           <ToolbarWebdav
             :disabled="disabledSave"
-            :url="formState.cloudUrl"
-            :username="formState.cloudUsername"
-            :password="formState.cloudPassword"
-            :path="formState.cloudPath"
+            :url="formState.WebdavUrl"
+            :username="formState.WebdavUsername"
+            :password="formState.WebdavPassword"
+            :path="formState.WebdavPath"
           />
         </FormItem>
       </TabPane>
