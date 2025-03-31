@@ -29,8 +29,9 @@ const open = defineModel<boolean>('open')
     <template v-else>
       <div class="flex flex-col gap-1">
         <div v-for="(item, index) of list" :key="index" class="flex justify-between items-center">
-          <div>
-            {{ item.basename }}
+          <div class="flex gap-8">
+            <span>{{ item.basename }}</span>
+            <span>{{ (item.size / 1024).toFixed(2) }}KB</span>
           </div>
 
           <div class="flex gap-1 items-center">
