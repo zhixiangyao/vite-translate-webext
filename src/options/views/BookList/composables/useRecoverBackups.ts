@@ -49,12 +49,12 @@ export function useRecoverBackups() {
       const workbook = read(data)
 
       if (workbook.Sheets[EnumSheetName.words] === void 0) {
-        message.error(`Recovery failed, missing ${EnumSheetName.words} sheet`)
+        message.error(`Oops! Recovery failed, missing ${EnumSheetName.words} sheet!`)
         return
       }
 
       if (workbook.Sheets[EnumSheetName.groups] === void 0) {
-        message.error(`Recovery failed, missing ${EnumSheetName.groups} sheet`)
+        message.error(`Oops! Recovery failed, missing ${EnumSheetName.groups} sheet!`)
         return
       }
 
@@ -62,14 +62,14 @@ export function useRecoverBackups() {
       const groupList = generateWorkSheetToGroupListData(workbook.Sheets[EnumSheetName.groups], wordList)
 
       if (wordList.length === 0 && groupList.length === 0) {
-        message.warning('Imported file is empty or has no legitimate data')
+        message.warning('Oops! Imported file is empty or has no legitimate data!')
         return
       }
 
       storageWordList.value = wordList
       storageGroupList.value = groupList
 
-      message.success('Recovery success')
+      message.success('Recovery success!')
     }
   })
 

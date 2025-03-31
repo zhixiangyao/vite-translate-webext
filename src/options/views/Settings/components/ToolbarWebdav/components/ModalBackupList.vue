@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import type { FileStat } from 'webdav'
-import { Empty, Modal } from 'ant-design-vue'
+import { Button, Empty, Modal } from 'ant-design-vue'
 
 interface Props {
-  loading: boolean
   list: FileStat[]
 }
 
 interface Emits {
-  ok: []
+  delete: [item: FileStat]
+  import: [item: FileStat]
 }
 
 defineOptions({ name: 'ModalBackupList' })
@@ -18,13 +18,7 @@ const open = defineModel<boolean>('open')
 </script>
 
 <template>
-  <Modal
-    v-model:open="open"
-    destroy-on-close
-    :ok-button-props="{ loading, disabled: list.length === 0 }"
-    cancel-text="Close"
-    @ok="$emit('ok')"
-  >
+  <Modal v-model:open="open" cancel-text="Close" :width="600" :mask-closable="false">
     <template #title>
       Backup List
     </template>
@@ -33,9 +27,25 @@ const open = defineModel<boolean>('open')
       <Empty />
     </template>
     <template v-else>
-      <p v-for="(item, index) of list" :key="index">
-        {{ item.basename }}
-      </p>
+      <div class="flex flex-col gap-1">
+        <div v-for="(item, index) of list" :key="index" class="flex justify-between items-center">
+          <div>
+            {{ item.basename }}
+          </div>
+
+          <div class="flex gap-1 items-center">
+            <Button size="small" @click="$emit('import', item)">
+              Import
+            </Button>
+
+            <Button size="small" danger @click="$emit('delete', item)">
+              Delete
+            </Button>
+          </div>
+        </div>
+      </div>
     </template>
+
+    <template #footer />
   </Modal>
 </template>

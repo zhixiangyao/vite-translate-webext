@@ -90,7 +90,7 @@ export function useSettings() {
     setTimeout(() => message.success('Save success'), 20)
   }
 
-  async function handleResetOk(cb: () => void) {
+  function handleResetYes(close: () => void) {
     formRef.value?.clearValidate()
 
     storageSettings.value.api.url = DEFAULT_SETTINGS.api.url
@@ -103,9 +103,9 @@ export function useSettings() {
     storageSettings.value.Webdav.password = DEFAULT_SETTINGS.Webdav.password
     storageSettings.value.Webdav.path = DEFAULT_SETTINGS.Webdav.path
 
-    cb()
+    close()
 
-    setTimeout(() => message.success('Restore defaults success'), 20)
+    setTimeout(() => message.success('Restore defaults success!'), 20)
   }
 
   async function handleReset() {
@@ -121,8 +121,8 @@ export function useSettings() {
         <div class="mt-3 flex justify-end gap-2">
           <Button onClick={() => close()}>Cancel</Button>
 
-          <Button type="primary" onClick={() => handleResetOk(close)}>
-            Ok
+          <Button type="primary" onClick={() => handleResetYes(close)}>
+            Yes
           </Button>
         </div>
       ),

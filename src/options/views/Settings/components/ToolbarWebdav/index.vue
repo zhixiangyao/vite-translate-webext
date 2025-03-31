@@ -20,6 +20,7 @@ const webdav = useToolbarWebdav({
   password: computed(() => props.password),
   path: computed(() => props.path),
 })
+const { loading, open, folderList } = webdav
 </script>
 
 <template>
@@ -30,7 +31,7 @@ const webdav = useToolbarWebdav({
 
     <Button
       :disabled="webdav.disabled.value || !disabled"
-      :loading="webdav.loadingShowBackups.value"
+      :loading="loading"
       @click="webdav.handleShowBackups"
     >
       Show Backups
@@ -38,9 +39,9 @@ const webdav = useToolbarWebdav({
   </div>
 
   <ModalBackupList
-    v-model:open="webdav.stateBackupList.open"
-    :loading="webdav.stateBackupList.loading"
-    :list="webdav.stateBackupList.list"
-    @ok="webdav.handleBackupList"
+    v-model:open="open"
+    :list="folderList"
+    @import="webdav.handleImport"
+    @delete="webdav.handleDelete"
   />
 </template>
