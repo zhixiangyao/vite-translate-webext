@@ -2,14 +2,13 @@
 
 import type { UserConfig } from 'vite'
 import { dirname, relative } from 'node:path'
+import packageJson from '#/package.json'
 import Vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
-
-import packageJson from './package.json'
 import { isDev, port, r } from './scripts/utils'
 
 export const sharedConfig: UserConfig = {
@@ -17,6 +16,7 @@ export const sharedConfig: UserConfig = {
   resolve: {
     alias: {
       '~/': `${r('src')}/`,
+      '#/': `${r()}/`,
     },
   },
   define: {
@@ -43,7 +43,7 @@ export const sharedConfig: UserConfig = {
 
     // https://github.com/antfu/unplugin-vue-components
     Components({
-      dirs: [r('src/components')],
+      dirs: [r('src/components/ui')],
       // generate `components.d.ts` for ts support with Volar
       dts: r('src/components.d.ts'),
       resolvers: [],

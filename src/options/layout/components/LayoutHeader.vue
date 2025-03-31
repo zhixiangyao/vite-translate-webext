@@ -23,7 +23,7 @@ export const layoutHeaderRightSlotRef = ref<HTMLDivElement>()
     </div>
 
     <div class="flex gap-4 items-center">
-      <div ref="layoutHeaderRightSlotRef" class="flex gap-4 items-center" />
+      <div ref="layoutHeaderRightSlotRef" class="flex gap-2 items-center" />
 
       <WSwitch v-model:checked="isDark" :color="token.colorPrimary" />
     </div>

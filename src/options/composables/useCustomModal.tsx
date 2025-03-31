@@ -13,8 +13,6 @@ interface ConfirmParams {
   content?: ModalFuncProps['content']
   width?: ModalFuncProps['width']
   footer?: ModalFuncProps['footer']
-  onOk?: () => Promise<void>
-  afterClose?: () => void
 }
 
 export function useCustomModal() {
@@ -24,21 +22,21 @@ export function useCustomModal() {
   const confirm = (params: ConfirmParams) => {
     params.content && contentStyleTag.load()
 
-    modal.confirm({
+    const instance = modal.confirm({
       width: params.width,
       closable: true,
       icon: null,
       title: params.title,
       content: params.content,
-      async onOk() {
-        return params.onOk?.()
-      },
       footer: params.footer,
-      afterClose: () => {
-        params.content && contentStyleTag.unload()
-        params.afterClose?.()
-      },
     })
+
+    return {
+      close() {
+        instance.destroy()
+        params.content && contentStyleTag.unload()
+      },
+    }
   }
 
   return { confirm }

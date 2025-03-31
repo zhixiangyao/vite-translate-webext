@@ -37,6 +37,12 @@ export interface TSettings {
   theme: {
     color: string
   }
+  Webdav: {
+    url: string | undefined
+    username: string | undefined
+    password: string | undefined
+    path: string | undefined
+  }
 }
 
 const DO_NOT_LISTEN = { listenToStorageChanges: false }

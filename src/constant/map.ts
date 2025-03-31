@@ -46,6 +46,12 @@ export const DEFAULT_SETTINGS: TSettings = {
   theme: {
     color: '#A0D911',
   },
+  Webdav: {
+    url: void 0,
+    username: void 0,
+    password: void 0,
+    path: void 0,
+  },
 }
 
 export const SPEAKER_LANG_MAP: Record<EnumSpeakerLang, string> = {

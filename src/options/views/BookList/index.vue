@@ -50,11 +50,11 @@ function handleDeleteGroup(group: TRecordGroup) {
     </Button>
 
     <Button size="small" type="primary" :disabled="exportBackups.disabled.value" @click="exportBackups.handleExport">
-      Export Backup
+      Export
     </Button>
 
     <Button danger size="small" type="dashed" @click="recoverBackups.handleRecover">
-      Restore Backup
+      Recover
     </Button>
   </Teleport>
 

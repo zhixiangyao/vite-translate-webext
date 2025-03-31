@@ -1,7 +1,7 @@
 {
   "name": "vite-translate-webext",
   "displayName": "Translate",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.4.0",
   "description": "a translate and english words book extension",
@@ -83,6 +83,7 @@
     "vue-draggable-plus": "0.6.0",
     "vue-router": "4.5.0",
     "web-ext": "8.5.0",
+    "webdav": "5.8.0",
     "webext-bridge": "6.0.1",
     "webextension-polyfill": "0.12.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
