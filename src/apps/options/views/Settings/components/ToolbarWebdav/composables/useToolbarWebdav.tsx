@@ -7,6 +7,7 @@ import { AuthType, createClient } from 'webdav'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { storageGroupList, storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
 import { clone } from '~/utils/clone'
+import { triggerFileDownload } from '~/utils/upload'
 
 interface TChromeBackupData {
   time: string
@@ -37,12 +38,15 @@ export function useToolbarWebdav(params: Params) {
   const open = ref(false)
   const disabled = computed(() => !url.value || !username.value || !password.value || !path.value)
 
-  function handleCreateClient() {
-    client.value = createClient(url.value!, {
-      authType: AuthType.Password,
-      username: username.value!,
-      password: password.value!,
-    })
+  function handleWatchCreateClient(data: [string | undefined, string | undefined, string | undefined]) {
+    const [url, username, password] = data
+    if (url && username && password) {
+      client.value = createClient(url, {
+        authType: AuthType.Password,
+        username,
+        password,
+      })
+    }
   }
 
   async function handleLoadBackupItems() {
@@ -65,6 +69,15 @@ export function useToolbarWebdav(params: Params) {
       },
     })
     const jsonString = JSON.stringify(jsonData, null, 2)
+
+    if (disabled.value) {
+      const blob = new Blob([jsonString], { type: 'application/json' })
+      const downloadUrl = URL.createObjectURL(blob)
+      triggerFileDownload(downloadUrl, options.fileName)
+      message.success('Exported successfully!')
+      options.close()
+      return
+    }
 
     try {
       const isUploaded = await client.value!.putFileContents(path.value + options.fileName, jsonString, {
@@ -173,22 +186,21 @@ export function useToolbarWebdav(params: Params) {
   }
 
   async function handleExport() {
-    if (disabled.value)
-      return
-
     try {
-      const isExists = await client.value!.exists(path.value!)
+      if (!disabled.value) {
+        const isExists = await client.value!.exists(path.value!)
 
-      if (!isExists) {
-        message.error(`Oops! "${path.value}" does not exist!`)
-        return
+        if (!isExists) {
+          message.error(`Oops! "${path.value}" does not exist!`)
+          return
+        }
       }
 
       const time = dayjs().toISOString()
       const fileName = `Translate-${time}.backup.json`
 
       const { close } = customModal.confirm({
-        title: <div>Export</div>,
+        title: disabled.value ? 'Export to Local' : 'Export to Webdav',
         width: 550,
         content: (
           <div class="flex items-center gap-1">
@@ -238,7 +250,7 @@ export function useToolbarWebdav(params: Params) {
     }
   }
 
-  onMounted(handleCreateClient)
+  watch([url, username, password], handleWatchCreateClient, { immediate: true })
   onUnmounted(() => (client.value = void 0))
 
   return {

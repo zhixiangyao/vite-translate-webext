@@ -25,23 +25,14 @@ const { loading, open, folderList } = webdav
 
 <template>
   <div class="flex gap-2">
-    <Button :disabled="webdav.disabled.value || !disabled" @click="webdav.handleExport">
-      Export
+    <Button :disabled="!disabled" @click="webdav.handleExport">
+      {{ webdav.disabled.value ? 'Export to Local' : 'Export to Webdav' }}
     </Button>
 
-    <Button
-      :disabled="webdav.disabled.value || !disabled"
-      :loading="loading"
-      @click="webdav.handleShowBackups"
-    >
+    <Button :disabled="webdav.disabled.value || !disabled" :loading="loading" @click="webdav.handleShowBackups">
       Show Backups
     </Button>
   </div>
 
-  <ModalBackupList
-    v-model:open="open"
-    :list="folderList"
-    @import="webdav.handleImport"
-    @delete="webdav.handleDelete"
-  />
+  <ModalBackupList v-model:open="open" :list="folderList" @import="webdav.handleImport" @delete="webdav.handleDelete" />
 </template>
