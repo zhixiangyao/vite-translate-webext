@@ -8,22 +8,19 @@ import ButtonLongPress from '~/apps/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
-import DrawerWordList from './components/DrawerWordList.vue'
 import { useDrawerUpdateGroup } from './composables/useDrawerUpdateGroup'
-import { useDrawerWordList } from './composables/useDrawerWordList'
 import { useExportBackups } from './composables/useExportBackups'
 import { useRecoverBackups } from './composables/useRecoverBackups'
 
-defineOptions({ name: 'BookList' })
+defineOptions({ name: 'GroupList' })
 
 const listGrid: ListGridType = { sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }
 const route = useRoute()
 const { token } = theme.useToken()
-const drawerWordList = useDrawerWordList()
 const drawerUpdateGroup = useDrawerUpdateGroup()
 const exportBackups = useExportBackups()
 const recoverBackups = useRecoverBackups()
-const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'BookList')
+const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'GroupList')
 
 function handleDeleteGroup(group: TRecordGroup) {
   const groupList = storageGroupList.value
@@ -43,10 +40,6 @@ function handleDeleteGroup(group: TRecordGroup) {
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
     <Button size="small" @click="() => drawerUpdateGroup.handleOpen()">
       Add Group
-    </Button>
-
-    <Button size="small" @click="drawerWordList.handleOpen">
-      Edit Book List
     </Button>
 
     <Button size="small" type="primary" :disabled="exportBackups.disabled.value" @click="exportBackups.handleExport">
@@ -94,5 +87,4 @@ function handleDeleteGroup(group: TRecordGroup) {
   </List>
 
   <DrawerUpdateGroup :use="drawerUpdateGroup" />
-  <DrawerWordList :use="drawerWordList" />
 </template>

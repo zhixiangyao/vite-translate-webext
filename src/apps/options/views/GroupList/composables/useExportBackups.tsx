@@ -56,10 +56,10 @@ export function useExportBackups() {
     /* Add the worksheet to the workbook */
     utils.book_append_sheet(wb, generateWordListDataToWorkSheet(storageWordList.value), EnumSheetName.words)
     utils.book_append_sheet(wb, generateGroupListDataToWorkSheet(storageGroupList.value), EnumSheetName.groups)
-    const fileName = `Translate-Book-List-${dayjs().format('YYYY-MM-DD')}.backup.xlsx`
+    const fileName = `Translate-word-and-group-${dayjs().format('YYYY-MM-DD')}.backup.xlsx`
 
     const { close } = customModal.confirm({
-      title: <div>Export Book List</div>,
+      title: <div>Export Word and Group</div>,
       width: 500,
       content: <code class="bg-gray-800 text-white rounded-sm px-2 py-1">{fileName}</code>,
       footer: (
