@@ -1,5 +1,6 @@
 import App from '~/apps/content/Content.vue'
-import '~/styles'
+import '@unocss/reset/tailwind-compat.css'
+import 'virtual:uno.css'
 
 /** 创建 root 节点 */
 function createRoot(target: HTMLElement) {
