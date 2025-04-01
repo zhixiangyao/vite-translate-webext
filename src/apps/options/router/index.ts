@@ -4,6 +4,13 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 export const views = [
   {
+    path: 'word-list',
+    name: 'WordList',
+    title: 'Word List',
+    icon: () => h(FileWordOutlined),
+    component: () => import('~/apps/options/views/WordList/index.vue'),
+  },
+  {
     path: 'book-list',
     name: 'BookList',
     title: 'Book List',

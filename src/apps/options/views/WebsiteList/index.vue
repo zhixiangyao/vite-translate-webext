@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { Button, Form, FormItem, Switch, Table } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
@@ -12,39 +12,47 @@ const wrapperCol = { span: 24 - labelCol.span }
 
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'WebsiteList')
-const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, handleCancel } = useWebsiteList()
+const websiteList = useWebsiteList()
+const { formRef } = websiteList
 </script>
 
 <template>
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
-    <Button size="small" type="primary" :disabled="disabledAdd" @click="handleSave">
+    <Button size="small" type="primary" :disabled="websiteList.disabledAdd.value" @click="websiteList.handleSave">
       Save
     </Button>
 
-    <Button size="small" type="dashed" :disabled="disabledAdd" @click="handleCancel">
+    <Button size="small" type="dashed" :disabled="websiteList.disabledAdd.value" @click="websiteList.handleCancel">
       Cancel
     </Button>
   </Teleport>
 
-  <Form ref="formRef" autocomplete="off" :label-col="labelCol" :model="formState" :wrapper-col="wrapperCol">
+  <Form
+    ref="formRef"
+    autocomplete="off"
+    :label-col="labelCol"
+    :model="websiteList.formState"
+    :rules="void 0"
+    :wrapper-col="wrapperCol"
+  >
     <Table
-      class="allow-list-table"
+      class="website-list-table"
       bordered
-      :columns="columns"
-      :data-source="formState.websiteList"
+      :columns="websiteList.columns"
+      :data-source="websiteList.formState.list"
       :pagination="false"
       size="small"
     >
       <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
         <template v-if="column.key === 'enable'">
-          <FormItem :name="['websiteList', i, 'enable']">
-            <Switch v-model:checked="formState.websiteList![i].enable" size="small" />
+          <FormItem :name="['list', i, 'enable']">
+            <Switch v-model:checked="websiteList.formState.list![i].enable" size="small" />
           </FormItem>
         </template>
 
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
-            <Button class="!px-0" danger size="small" type="link" @click="() => handleDelete(i)">
+            <Button class="!px-0" danger size="small" type="link" @click="() => websiteList.handleDelete(i)">
               Delete
             </Button>
           </div>
@@ -55,7 +63,7 @@ const { columns, formRef, formState, disabledAdd, handleDelete, handleSave, hand
 </template>
 
 <style scoped>
-.allow-list-table :deep(.ant-form-item) {
+.website-list-table :deep(.ant-form-item) {
   margin-bottom: 0;
 }
 </style>

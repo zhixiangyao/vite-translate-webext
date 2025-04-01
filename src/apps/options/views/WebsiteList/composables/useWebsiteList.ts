@@ -26,33 +26,33 @@ const columns: ColumnsType = [
 export function useWebsiteList() {
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive({
-    websiteList: [] as TRecordWebsite[],
+    list: [] as TRecordWebsite[],
   })
   const disabledAdd = computed(() => {
-    return JSON.stringify(formState.websiteList) === JSON.stringify(storageWebsiteList.value)
+    return JSON.stringify(formState.list) === JSON.stringify(storageWebsiteList.value)
   })
   const { message } = App.useApp()
 
   function handleDelete(i: number) {
-    formState.websiteList?.splice(i, 1)
+    formState.list?.splice(i, 1)
     formRef.value?.clearValidate()
   }
 
   async function handleSave() {
     await formRef.value?.validate()
-    storageWebsiteList.value = clone(formState.websiteList)
+    storageWebsiteList.value = clone(formState.list)
     message.success('Save success')
   }
 
   async function handleCancel() {
     formRef.value?.clearValidate()
-    formState.websiteList = clone(storageWebsiteList.value)
+    formState.list = clone(storageWebsiteList.value)
   }
 
   watch(
     storageWebsiteList,
-    (websiteList) => {
-      formState.websiteList = clone(websiteList)
+    (list) => {
+      formState.list = clone(list)
     },
     { immediate: true },
   )
