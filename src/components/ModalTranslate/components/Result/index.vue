@@ -2,7 +2,7 @@
 import type { useModalTranslate } from '../../composables/useModalTranslate'
 import { LeftOutlined } from '@ant-design/icons-vue'
 import { EnumSpeakerLang } from '~/constant/enum'
-import { isFiftyPercentLetters } from '~/logic/is'
+import { isFiftyPercentLetters } from '~/utils/string'
 import ButtonCopy from './components/ButtonCopy.vue'
 import ButtonSpeaker from './components/ButtonSpeaker.vue'
 
