@@ -1,7 +1,7 @@
 {
   "name": "vite-translate-webext",
   "displayName": "Translate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "packageManager": "pnpm@10.4.0",
   "description": "a translate and english words book extension",
