@@ -82,17 +82,26 @@ pnpm i
 
 ### 文件夹
 
+- `extension` - 插件包根目录.
+  - `assets` - 静态资源 (主要用于 `manifest.json`).
+  - `dist` - 构建文件.
+- `scripts` - 开发和打包辅助脚本.
 - `src` - 主要源代码.
-  - `content` - 作为 `content_script` 注入的脚本和组件
-  - `background` - 背景脚本
-  - `components` - 在弹出页面和选项页面中共享的自动导入 Vue 组件
-  - `styles` - 在弹出页面和选项页面中共享的样式
-  - `assets` - Vue 组件中使用的资源
-  - `manifest.ts` - 扩展的 manifest 文件
-- `extension` - 扩展包根目录.
-  - `assets` - 静态资源 (主要用于 `manifest.json`)
-  - `dist` - 构建文件, 同时为开发中的 Vite 提供存根入口
-- `scripts` - 开发和打包辅助脚本
+  - `apps`
+    - `content` - 作为 `content_script` 注入的脚本和组件.
+    - `popup`
+    - `options`
+  - `background` - 背景脚本.
+  - `components` - 公共组件.
+    - `ui`
+  - `composables` - 公共组合函数.
+  - `constant` - 公共常量.
+  - `logic`
+  - `tests`
+  - `utils`
+  - `env.ts`
+  - `global.d.ts`
+  - `manifest.ts` - 插件的 manifest 文件.
 
 ### 开发
 

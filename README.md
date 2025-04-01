@@ -86,17 +86,26 @@ pnpm i
 
 ### Folders
 
-- `src` - main source.
-  - `content` - scripts and components to be injected as `content_script`
-  - `background` - scripts for background.
-  - `components` - auto-imported Vue components that are shared in popup and options page.
-  - `styles` - styles shared in popup and options page
-  - `assets` - assets used in Vue components
-  - `manifest.ts` - manifest for the extension.
 - `extension` - extension package root.
   - `assets` - static assets (mainly for `manifest.json`).
-  - `dist` - built files, also serve stub entry for Vite on development.
+  - `dist` - built files.
 - `scripts` - development and bundling helper scripts.
+- `src` - main source.
+  - `apps`
+    - `content` - scripts and components to be injected as `content_script`
+    - `popup`
+    - `options`
+  - `background` - scripts for background.
+  - `components` - public components.
+    - `ui`
+  - `composables` - public composables.
+  - `constant` - public constant.
+  - `logic`
+  - `tests`
+  - `utils`
+  - `env.ts`
+  - `global.d.ts`
+  - `manifest.ts` - manifest for the extension.
 
 ### Development
 
