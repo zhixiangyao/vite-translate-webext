@@ -2,7 +2,7 @@
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import { Button, Form, FormItem, Switch, Table } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
-import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
+import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
 import { useWebsiteList } from './composables/useWebsiteList'
 
 defineOptions({ name: 'WebsiteList' })

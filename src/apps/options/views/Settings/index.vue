@@ -2,7 +2,7 @@
 import type { TFormTypeKeys } from './composables/useSettings'
 import { Button, Form, FormItem, Input, InputNumber, Skeleton, TabPane, Tabs } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
-import { layoutHeaderRightSlotRef } from '~/options/layout/components/LayoutHeader.vue'
+import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
 import ToolbarWebdav from './components/ToolbarWebdav/index.vue'
 import { useSettings } from './composables/useSettings'
 
@@ -13,7 +13,7 @@ enum EnumActiveKey {
   Webdav = 'Webdav',
 }
 
-const CodeEditor = defineAsyncComponent({ loader: () => import('~/options/components/CodeEditor.vue') })
+const CodeEditor = defineAsyncComponent({ loader: () => import('~/apps/options/components/CodeEditor.vue') })
 
 const activeKey = ref<EnumActiveKey>(EnumActiveKey.Basic)
 const route = useRoute()

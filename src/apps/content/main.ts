@@ -1,4 +1,4 @@
-import App from './Content.vue'
+import App from '~/apps/content/Content.vue'
 import '~/styles'
 
 /** 创建 root 节点 */

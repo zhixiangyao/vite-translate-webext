@@ -21,7 +21,7 @@ export default defineConfig({
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
     lib: {
-      entry: r('src/content/main.ts'),
+      entry: r('src/apps/content/main.ts'),
       name: packageJson.name,
       formats: ['iife'],
       cssFileName: 'style',

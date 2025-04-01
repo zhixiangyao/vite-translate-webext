@@ -2,7 +2,7 @@
 import type { ItemType, MenuProps } from 'ant-design-vue'
 import { Menu, theme } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { views } from '~/options/router'
+import { views } from '~/apps/options/router'
 
 defineOptions({ name: 'LayoutNav' })
 defineProps<{ collapsed?: boolean }>()

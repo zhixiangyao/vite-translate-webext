@@ -8,28 +8,28 @@ export const views = [
     name: 'BookList',
     title: 'Book List',
     icon: () => h(FileWordOutlined),
-    component: () => import('~/options/views/BookList/index.vue'),
+    component: () => import('~/apps/options/views/BookList/index.vue'),
   },
   {
     path: 'website-list',
     name: 'WebsiteList',
     title: 'Website List',
     icon: () => h(UnorderedListOutlined),
-    component: () => import('~/options/views/WebsiteList/index.vue'),
+    component: () => import('~/apps/options/views/WebsiteList/index.vue'),
   },
   {
     path: 'preview',
     name: 'Preview',
     title: 'Preview',
     icon: () => h(EyeOutlined),
-    component: () => import('~/options/views/Preview/index'),
+    component: () => import('~/apps/options/views/Preview/index'),
   },
   {
     path: 'settings',
     name: 'Settings',
     title: 'Settings',
     icon: () => h(SettingOutlined),
-    component: () => import('~/options/views/Settings/index.vue'),
+    component: () => import('~/apps/options/views/Settings/index.vue'),
   },
 ]
 
@@ -39,7 +39,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('~/options/layout/index.vue'),
+      component: () => import('~/apps/options/layout/index.vue'),
       redirect: () => ({ name: 'BookList' }),
       children: views.map<RouteRecordRaw>(view => ({
         path: view.path,
@@ -50,7 +50,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () => import('~/options/views/NotFound.vue'),
+      component: () => import('~/apps/options/views/NotFound.vue'),
     },
   ],
 })

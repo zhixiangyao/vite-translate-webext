@@ -7,7 +7,7 @@ defineOptions({ name: 'ShadowHost' })
 const props = defineProps<Props>()
 
 const Content = defineAsyncComponent({
-  loader: () => import('~/content/Content.vue'),
+  loader: () => import('~/apps/content/Content.vue'),
 })
 
 const ref = useTemplateRef('ref')

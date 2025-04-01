@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './Popup.vue'
+import App from '~/apps/popup/Popup.vue'
 import '~/styles'
 
 const app = createApp(App)

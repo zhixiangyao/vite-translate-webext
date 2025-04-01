@@ -3,9 +3,9 @@ import type { Rule } from 'ant-design-vue/es/form'
 import type { TSettings } from '~/logic/storage'
 import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
+import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
-import { useCustomModal } from '~/options/composables/useCustomModal'
 
 interface TFormType {
   apiUrl: TSettings['api']['url']

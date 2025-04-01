@@ -2,7 +2,7 @@
 import type { useView } from '../composables/useView'
 import { Tag, theme } from 'ant-design-vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { views } from '~/options/router'
+import { views } from '~/apps/options/router'
 import { useContextMenu } from '../composables/useContextMenu'
 import LayoutViewTabContextMenu from './LayoutViewTabContextMenu.vue'
 

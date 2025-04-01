@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AntProvider from '~/options/components/AntProvider.vue'
+import AntProvider from '~/apps/options/components/AntProvider.vue'
 </script>
 
 <template>
