@@ -7,6 +7,18 @@ import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
 
+async function validatorIsPath(_: Rule, value: string) {
+  if (value[0] !== '/') {
+    return Promise.reject(new Error('The first string must be /'))
+  }
+  if (value.at(-1) !== '/') {
+    return Promise.reject(new Error('The last string must be /'))
+  }
+  else {
+    return Promise.resolve()
+  }
+}
+
 interface TFormType {
   apiUrl: TSettings['api']['url']
   apiToken: TSettings['api']['token']
@@ -30,7 +42,10 @@ const rules = {
   webdavUrl: [{ required: false, message: 'Please enter the webdav URL', trigger: 'change' }],
   webdavUsername: [{ required: false, message: 'Please enter the webdav Username', trigger: 'change' }],
   webdavPassword: [{ required: false, message: 'Please enter the webdav Password', trigger: 'change' }],
-  webdavPath: [{ required: false, message: 'Please enter the webdav Path', trigger: 'change' }],
+  webdavPath: [
+    { required: false, message: 'Please enter the webdav Path', trigger: 'change' },
+    { validator: validatorIsPath },
+  ],
 } satisfies Record<keyof TFormType, Rule[]>
 
 export function useSettings() {
