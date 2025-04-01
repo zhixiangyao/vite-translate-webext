@@ -78,7 +78,7 @@ function search(text: string, left: number, top: number) {
 
 scope.run(() => {
   watch([() => storageCurrentTab.value.id, focused], updateTabId)
-  watch([show, focused], updateIcon, { immediate: true })
+  watch([show, focused, tabId], updateIcon, { immediate: true })
   watch([show, focused], updatePage, { immediate: true })
   watch([words, focused], updatePage, { deep: true })
   watch([() => storageSettings.value.highlight, focused], updateStyle, { immediate: true })
