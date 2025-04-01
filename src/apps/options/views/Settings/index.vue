@@ -69,29 +69,29 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
 
       <!-- Webdav -->
       <TabPane :key="EnumActiveKey.Webdav" tab="Webdav" force-render>
-        <FormItem label="Webdav URL" :name="('WebdavUrl' satisfies TFormTypeKeys)" :rules="rules.WebdavUrl">
-          <Input v-model:value="formState.WebdavUrl" />
+        <FormItem label="Webdav URL" :name="('webdavUrl' satisfies TFormTypeKeys)" :rules="rules.webdavUrl">
+          <Input v-model:value="formState.webdavUrl" />
         </FormItem>
 
-        <FormItem label="Webdav Login" :name="('WebdavUsername' satisfies TFormTypeKeys)" :rules="rules.WebdavUsername">
-          <Input v-model:value="formState.WebdavUsername" />
+        <FormItem label="Webdav Login" :name="('webdavUsername' satisfies TFormTypeKeys)" :rules="rules.webdavUsername">
+          <Input v-model:value="formState.webdavUsername" />
         </FormItem>
 
-        <FormItem label="Webdav Password" :name="('WebdavPassword' satisfies TFormTypeKeys)" :rules="rules.WebdavPassword">
-          <Input v-model:value="formState.WebdavPassword" type="password" />
+        <FormItem label="Webdav Password" :name="('webdavPassword' satisfies TFormTypeKeys)" :rules="rules.webdavPassword">
+          <Input v-model:value="formState.webdavPassword" type="password" />
         </FormItem>
 
-        <FormItem label="Webdav Path" :name="('WebdavPath' satisfies TFormTypeKeys)" :rules="rules.WebdavPath">
-          <Input v-model:value="formState.WebdavPath" />
+        <FormItem label="Webdav Path" :name="('webdavPath' satisfies TFormTypeKeys)" :rules="rules.webdavPath">
+          <Input v-model:value="formState.webdavPath" />
         </FormItem>
 
         <FormItem>
           <ToolbarWebdav
             :disabled="disabledSave"
-            :url="formState.WebdavUrl"
-            :username="formState.WebdavUsername"
-            :password="formState.WebdavPassword"
-            :path="formState.WebdavPath"
+            :url="formState.webdavUrl"
+            :username="formState.webdavUsername"
+            :password="formState.webdavPassword"
+            :path="formState.webdavPath"
           />
         </FormItem>
       </TabPane>
