@@ -4,9 +4,9 @@ import { useEventListener, useMouse } from '@vueuse/core'
 import { uniqBy } from 'es-toolkit'
 import { EnumTranslateLang } from '~/constant/enum'
 import { regexIsWord } from '~/constant/regex'
-import { clone } from '~/logic/clone'
-import { isFiftyPercentLetters } from '~/logic/is'
 import { storageCacheMap, storageWordList } from '~/logic/storage'
+import { clone } from '~/utils/clone'
+import { isFiftyPercentLetters } from '~/utils/string'
 import { useTranslate } from './useTranslate'
 
 interface State {

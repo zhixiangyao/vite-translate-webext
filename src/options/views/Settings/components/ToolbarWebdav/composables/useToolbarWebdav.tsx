@@ -4,9 +4,9 @@ import packageJson from '#/package.json'
 import { App, Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { AuthType, createClient } from 'webdav'
-import { clone } from '~/logic/clone'
 import { storageGroupList, storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
 import { useCustomModal } from '~/options/composables/useCustomModal'
+import { clone } from '~/utils/clone'
 
 interface TChromeBackupData {
   time: string

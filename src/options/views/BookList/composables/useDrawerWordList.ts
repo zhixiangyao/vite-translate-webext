@@ -6,8 +6,8 @@ import type { TRecordGroup, TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
 import { uniqBy } from 'es-toolkit'
 import { regexIsWord } from '~/constant/regex'
-import { clone } from '~/logic/clone'
 import { storageGroupList, storageWordList } from '~/logic/storage'
+import { clone } from '~/utils/clone'
 
 async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
   if (value && regexIsWord.test(value) === false) {

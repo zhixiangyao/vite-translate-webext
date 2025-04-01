@@ -1,7 +1,7 @@
 import { useDebounceFn, useStyleTag } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
-import { highlight } from '~/logic/highlight'
 import { storageSettings, storageWordList } from '~/logic/storage'
+import { highlight } from '~/utils/highlight'
 import ShadowHost from './components/ShadowHost.vue'
 
 const debounceHighlight = useDebounceFn(highlight, 50)
