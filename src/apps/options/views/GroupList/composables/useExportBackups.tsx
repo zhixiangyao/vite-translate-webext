@@ -3,6 +3,7 @@ import { Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { utils, writeFileXLSX } from 'xlsx'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
+import { useLang } from '~/composables/useLang'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 
 type TColumnName = string
@@ -47,6 +48,7 @@ function generateGroupListDataToWorkSheet(groupList: TRecordGroup[]) {
 }
 
 export function useExportBackups() {
+  const lang = useLang()
   const customModal = useCustomModal()
   const disabled = computed(() => storageWordList.value.length === 0 && storageGroupList.value.length === 0)
 
@@ -59,12 +61,12 @@ export function useExportBackups() {
     const fileName = `Translate-word-and-group-${dayjs().format('YYYY-MM-DD')}.backup.xlsx`
 
     const { close } = customModal.confirm({
-      title: <div>Export Word and Group</div>,
+      title: <div>{lang('Export Word and Group')}</div>,
       width: 500,
       content: <code class="bg-gray-800 text-white rounded-sm px-2 py-1">{fileName}</code>,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
-          <Button onClick={() => close()}>Cancel</Button>
+          <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
           <Button
             type="primary"
@@ -73,7 +75,7 @@ export function useExportBackups() {
               close()
             }}
           >
-            Yes
+            {lang('Yes')}
           </Button>
         </div>
       ),

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FileStat } from 'webdav'
 import { Button, Empty, Modal } from 'ant-design-vue'
+import { useLang } from '~/composables/useLang'
 
 interface Props {
   list: FileStat[]
@@ -11,16 +12,18 @@ interface Emits {
   import: [item: FileStat]
 }
 
-defineOptions({ name: 'ModalBackupList' })
+defineOptions({ name: 'ModalBackupsList' })
 defineProps<Props>()
 defineEmits<Emits>()
 const open = defineModel<boolean>('open')
+
+const lang = useLang()
 </script>
 
 <template>
   <Modal v-model:open="open" cancel-text="Close" :width="600" :mask-closable="false">
     <template #title>
-      Backup List
+      {{ lang('Backups List') }}
     </template>
 
     <template v-if="list.length === 0">
@@ -36,11 +39,11 @@ const open = defineModel<boolean>('open')
 
           <div class="flex gap-1 items-center">
             <Button size="small" @click="$emit('import', item)">
-              Import
+              {{ lang('Import') }}
             </Button>
 
             <Button size="small" danger @click="$emit('delete', item)">
-              Delete
+              {{ lang('Delete') }}
             </Button>
           </div>
         </div>

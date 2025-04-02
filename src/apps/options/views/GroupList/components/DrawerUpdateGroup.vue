@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { useDrawerUpdateGroup } from '../composables/useDrawerUpdateGroup'
 import { Button, Drawer, Form, FormItem, Input } from 'ant-design-vue'
+import { useLang } from '~/composables/useLang'
 
 interface Props {
   use: ReturnType<typeof useDrawerUpdateGroup>
@@ -12,7 +13,9 @@ const props = defineProps<Props>()
 const labelCol = { span: 6 }
 const wrapperCol = { span: 24 - labelCol.span }
 const { open, formRef, formState } = props.use
-const title = computed(() => `${props.use.type.value === 'add' ? 'Add' : 'Edit'} Group`)
+
+const lang = useLang()
+const title = computed(() => (props.use.type.value === 'add' ? lang('Add Group') : lang('Edit Group')))
 </script>
 
 <template>
@@ -26,26 +29,17 @@ const title = computed(() => `${props.use.type.value === 'add' ? 'Add' : 'Edit'}
       :wrapper-col="wrapperCol"
     >
       <FormItem label="uuid" name="uuid">
-        <Input
-          readonly
-          :value="formState.uuid"
-          :bordered="false"
-        />
+        <Input readonly :value="formState.uuid" :bordered="false" />
       </FormItem>
-      <FormItem label="Group Name" name="name" :rules="use.rules.name">
-        <Input
-          v-model:value.trim="formState.name"
-          :maxlength="20"
-          placeholder="Please enter"
-          show-count
-        />
+      <FormItem :label="lang('Group Name')" name="name" :rules="use.rules.name">
+        <Input v-model:value.trim="formState.name" :maxlength="20" placeholder="Please enter" show-count />
       </FormItem>
     </Form>
 
     <template #footer>
       <div class="flex gap-2">
         <Button type="primary" @click="use.handleSave">
-          Save
+          {{ lang('Save') }}
         </Button>
       </div>
     </template>

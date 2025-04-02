@@ -81,6 +81,7 @@
     "vitest": "3.0.9",
     "vue": "3.5.13",
     "vue-draggable-plus": "0.6.0",
+    "vue-i18n": "11.1.2",
     "vue-router": "4.5.0",
     "web-ext": "8.5.0",
     "webdav": "5.8.0",

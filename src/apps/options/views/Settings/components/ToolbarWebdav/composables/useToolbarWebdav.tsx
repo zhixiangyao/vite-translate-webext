@@ -5,6 +5,7 @@ import { App, Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { AuthType, createClient } from 'webdav'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
+import { useLang } from '~/composables/useLang'
 import { storageGroupList, storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
 import { clone } from '~/utils/clone'
 import { triggerFileDownload } from '~/utils/upload'
@@ -31,6 +32,7 @@ export function useToolbarWebdav(params: Params) {
   const { url, username, password, path } = params
 
   const { message } = App.useApp()
+  const lang = useLang()
   const customModal = useCustomModal()
   const client = shallowRef<WebDAVClient>()
   const folderList = shallowRef<FileStat[]>([])
@@ -200,7 +202,7 @@ export function useToolbarWebdav(params: Params) {
       const fileName = `Translate-${time}.backup.json`
 
       const { close } = customModal.confirm({
-        title: disabled.value ? 'Export to Local' : 'Export to Webdav',
+        title: disabled.value ? lang('Export to Local') : lang('Export to Webdav'),
         width: 550,
         content: (
           <div class="flex items-center gap-1">

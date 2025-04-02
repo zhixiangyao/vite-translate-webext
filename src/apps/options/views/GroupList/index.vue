@@ -6,6 +6,7 @@ import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import ButtonLongPress from '~/apps/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
+import { useLang } from '~/composables/useLang'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 import DrawerUpdateGroup from './components/DrawerUpdateGroup.vue'
 import { useDrawerUpdateGroup } from './composables/useDrawerUpdateGroup'
@@ -15,6 +16,8 @@ import { useRecoverBackups } from './composables/useRecoverBackups'
 defineOptions({ name: 'GroupList' })
 
 const listGrid: ListGridType = { sm: 1, md: 2, lg: 3, xl: 4, xxl: 5 }
+
+const lang = useLang()
 const route = useRoute()
 const { token } = theme.useToken()
 const drawerUpdateGroup = useDrawerUpdateGroup()
@@ -39,15 +42,15 @@ function handleDeleteGroup(group: TRecordGroup) {
 <template>
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
     <Button size="small" @click="() => drawerUpdateGroup.handleOpen()">
-      Add Group
+      {{ lang('Add Group') }}
     </Button>
 
     <Button size="small" type="primary" :disabled="exportBackups.disabled.value" @click="exportBackups.handleExport">
-      Export
+      {{ lang('Export') }}
     </Button>
 
     <Button danger size="small" type="dashed" @click="recoverBackups.handleRecover">
-      Recover
+      {{ lang('Recover') }}
     </Button>
   </Teleport>
 
@@ -74,7 +77,7 @@ function handleDeleteGroup(group: TRecordGroup) {
               title="Long press to delete"
               @press="() => handleDeleteGroup(group)"
             >
-              Delete
+              {{ lang('Delete') }}
             </ButtonLongPress>
           </template>
 
