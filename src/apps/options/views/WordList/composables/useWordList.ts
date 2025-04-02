@@ -5,6 +5,7 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { TRecordGroup, TRecordWord } from '~/logic/storage'
 import { App } from 'ant-design-vue'
 import { uniqBy } from 'es-toolkit'
+import { useLang } from '~/composables/useLang'
 import { regexIsWord } from '~/constant/regex'
 import { storageGroupList, storageWordList } from '~/logic/storage'
 import { clone } from '~/utils/clone'
@@ -25,35 +26,35 @@ const rules = {
   ],
 } satisfies Record<`list[i].${keyof Pick<TRecordWord, 'word'>}`, Rule[]>
 
-const columns: ColumnsType = [
-  {
-    title: 'Word',
-    dataIndex: 'word' satisfies keyof TRecordWord,
-    key: 'word' satisfies keyof TRecordWord,
-  },
-  {
-    title: 'Group',
-    dataIndex: 'groupUUID' satisfies keyof TRecordWord,
-    key: 'groupUUID' satisfies keyof TRecordWord,
-    width: 200,
-  },
-  {
-    title: 'Operation',
-    key: 'operation',
-    width: 90,
-  },
-]
-
 export function useWordList() {
+  const { message } = App.useApp()
+  const lang = useLang()
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive({
     list: [] as TRecordWord[],
   })
   const options = ref<DefaultOptionType[]>()
+  const columns = computed<ColumnsType>(() => [
+    {
+      title: lang('Word'),
+      dataIndex: 'word' satisfies keyof TRecordWord,
+      key: 'word' satisfies keyof TRecordWord,
+    },
+    {
+      title: lang('Group'),
+      dataIndex: 'groupUUID' satisfies keyof TRecordWord,
+      key: 'groupUUID' satisfies keyof TRecordWord,
+      width: 200,
+    },
+    {
+      title: lang('Operation'),
+      key: 'operation',
+      width: 90,
+    },
+  ])
   const disabledSave = computed(() => {
     return JSON.stringify(formState.list) === JSON.stringify(storageWordList.value)
   })
-  const { message } = App.useApp()
 
   async function handleAdd() {
     await formRef.value?.validate()

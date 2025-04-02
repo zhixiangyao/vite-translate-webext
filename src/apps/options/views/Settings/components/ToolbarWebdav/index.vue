@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Button } from 'ant-design-vue'
-import ModalBackupList from './components/ModalBackupList.vue'
+import { useLang } from '~/composables/useLang'
+import ModalBackupsList from './components/ModalBackupsList.vue'
 import { useToolbarWebdav } from './composables/useToolbarWebdav'
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 defineOptions({ name: 'ToolbarWebdav' })
 const props = defineProps<Props>()
 
+const lang = useLang()
 const webdav = useToolbarWebdav({
   url: computed(() => props.url),
   username: computed(() => props.username),
@@ -26,13 +28,13 @@ const { loading, open, folderList } = webdav
 <template>
   <div class="flex gap-2">
     <Button :disabled="!disabled" @click="webdav.handleExport">
-      {{ webdav.disabled.value ? 'Export to Local' : 'Export to Webdav' }}
+      {{ webdav.disabled.value ? lang('Export to Local') : lang('Export to Webdav') }}
     </Button>
 
     <Button :disabled="webdav.disabled.value || !disabled" :loading="loading" @click="webdav.handleShowBackups">
-      Show Backups
+      {{ lang('Show Backups') }}
     </Button>
   </div>
 
-  <ModalBackupList v-model:open="open" :list="folderList" @import="webdav.handleImport" @delete="webdav.handleDelete" />
+  <ModalBackupsList v-model:open="open" :list="folderList" @import="webdav.handleImport" @delete="webdav.handleDelete" />
 </template>

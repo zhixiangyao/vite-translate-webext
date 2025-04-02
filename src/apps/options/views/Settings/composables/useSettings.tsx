@@ -7,16 +7,29 @@ import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
 
+async function validatorIsPath(_: Rule, value: string | undefined) {
+  if (value) {
+    if (value[0] !== '/') {
+      return Promise.reject(new Error('The first string must be /'))
+    }
+    if (value.at(-1) !== '/') {
+      return Promise.reject(new Error('The last string must be /'))
+    }
+  }
+
+  return Promise.resolve()
+}
+
 interface TFormType {
   apiUrl: TSettings['api']['url']
   apiToken: TSettings['api']['token']
   apiTimeout: TSettings['api']['timeout']
   highlightStyle: TSettings['highlight']['style']
   themeColor: TSettings['theme']['color']
-  WebdavUrl: TSettings['Webdav']['url']
-  WebdavUsername: TSettings['Webdav']['username']
-  WebdavPassword: TSettings['Webdav']['password']
-  WebdavPath: TSettings['Webdav']['path']
+  webdavUrl: TSettings['webdav']['url']
+  webdavUsername: TSettings['webdav']['username']
+  webdavPassword: TSettings['webdav']['password']
+  webdavPath: TSettings['webdav']['path']
 }
 
 export type TFormTypeKeys = keyof TFormType
@@ -27,10 +40,13 @@ const rules = {
   apiTimeout: [{ required: true, message: 'Please enter the request Timeout', trigger: 'change' }],
   highlightStyle: [{ required: true, message: 'Please enter the Highlight Style', trigger: 'change' }],
   themeColor: [{ required: true, message: 'Please enter the Theme Color', trigger: 'change' }],
-  WebdavUrl: [{ required: false, message: 'Please enter the Webdav URL', trigger: 'change' }],
-  WebdavUsername: [{ required: false, message: 'Please enter the Webdav Username', trigger: 'change' }],
-  WebdavPassword: [{ required: false, message: 'Please enter the Webdav Password', trigger: 'change' }],
-  WebdavPath: [{ required: false, message: 'Please enter the Webdav Path', trigger: 'change' }],
+  webdavUrl: [{ required: false, message: 'Please enter the webdav URL', trigger: 'change' }],
+  webdavUsername: [{ required: false, message: 'Please enter the webdav Username', trigger: 'change' }],
+  webdavPassword: [{ required: false, message: 'Please enter the webdav Password', trigger: 'change' }],
+  webdavPath: [
+    { required: false, message: 'Please enter the webdav Path', trigger: 'change' },
+    { validator: validatorIsPath },
+  ],
 } satisfies Record<keyof TFormType, Rule[]>
 
 export function useSettings() {
@@ -43,10 +59,10 @@ export function useSettings() {
     apiTimeout: 0,
     highlightStyle: '',
     themeColor: '',
-    WebdavUrl: void 0,
-    WebdavUsername: void 0,
-    WebdavPassword: void 0,
-    WebdavPath: void 0,
+    webdavUrl: void 0,
+    webdavUsername: void 0,
+    webdavPassword: void 0,
+    webdavPath: void 0,
   })
   const disabledReset = computed(() => {
     return (
@@ -55,10 +71,10 @@ export function useSettings() {
       && DEFAULT_SETTINGS.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(DEFAULT_SETTINGS.highlight.style) === formState.highlightStyle
       && DEFAULT_SETTINGS.theme.color === formState.themeColor
-      && DEFAULT_SETTINGS.Webdav.url === formState.WebdavUrl
-      && DEFAULT_SETTINGS.Webdav.username === formState.WebdavUsername
-      && DEFAULT_SETTINGS.Webdav.password === formState.WebdavPassword
-      && DEFAULT_SETTINGS.Webdav.path === formState.WebdavPath
+      && DEFAULT_SETTINGS.webdav.url === formState.webdavUrl
+      && DEFAULT_SETTINGS.webdav.username === formState.webdavUsername
+      && DEFAULT_SETTINGS.webdav.password === formState.webdavPassword
+      && DEFAULT_SETTINGS.webdav.path === formState.webdavPath
     )
   })
   const disabledSave = computed(() => {
@@ -68,10 +84,10 @@ export function useSettings() {
       && storageSettings.value.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(storageSettings.value.highlight.style) === formState.highlightStyle
       && storageSettings.value.theme.color === formState.themeColor
-      && storageSettings.value.Webdav.url === formState.WebdavUrl
-      && storageSettings.value.Webdav.username === formState.WebdavUsername
-      && storageSettings.value.Webdav.password === formState.WebdavPassword
-      && storageSettings.value.Webdav.path === formState.WebdavPath
+      && storageSettings.value.webdav.url === formState.webdavUrl
+      && storageSettings.value.webdav.username === formState.webdavUsername
+      && storageSettings.value.webdav.password === formState.webdavPassword
+      && storageSettings.value.webdav.path === formState.webdavPath
     )
   })
 
@@ -82,10 +98,10 @@ export function useSettings() {
     storageSettings.value.api.timeout = formState.apiTimeout * 1000
     storageSettings.value.highlight.style = formState.highlightStyle
     storageSettings.value.theme.color = formState.themeColor
-    storageSettings.value.Webdav.url = formState.WebdavUrl
-    storageSettings.value.Webdav.username = formState.WebdavUsername
-    storageSettings.value.Webdav.password = formState.WebdavPassword
-    storageSettings.value.Webdav.path = formState.WebdavPath
+    storageSettings.value.webdav.url = formState.webdavUrl
+    storageSettings.value.webdav.username = formState.webdavUsername
+    storageSettings.value.webdav.password = formState.webdavPassword
+    storageSettings.value.webdav.path = formState.webdavPath
 
     setTimeout(() => message.success('Save success'), 20)
   }
@@ -98,10 +114,10 @@ export function useSettings() {
     storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
     storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
     storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
-    storageSettings.value.Webdav.url = DEFAULT_SETTINGS.Webdav.url
-    storageSettings.value.Webdav.username = DEFAULT_SETTINGS.Webdav.username
-    storageSettings.value.Webdav.password = DEFAULT_SETTINGS.Webdav.password
-    storageSettings.value.Webdav.path = DEFAULT_SETTINGS.Webdav.path
+    storageSettings.value.webdav.url = DEFAULT_SETTINGS.webdav.url
+    storageSettings.value.webdav.username = DEFAULT_SETTINGS.webdav.username
+    storageSettings.value.webdav.password = DEFAULT_SETTINGS.webdav.password
+    storageSettings.value.webdav.path = DEFAULT_SETTINGS.webdav.path
 
     close()
 
@@ -137,10 +153,10 @@ export function useSettings() {
       formState.apiTimeout = setting.api.timeout / 1000
       formState.highlightStyle = cssBeautify(setting.highlight.style)
       formState.themeColor = setting.theme.color
-      formState.WebdavUrl = setting.Webdav.url
-      formState.WebdavUsername = setting.Webdav.username
-      formState.WebdavPassword = setting.Webdav.password
-      formState.WebdavPath = setting.Webdav.path
+      formState.webdavUrl = setting.webdav.url
+      formState.webdavUsername = setting.webdav.username
+      formState.webdavPassword = setting.webdav.password
+      formState.webdavPath = setting.webdav.path
     },
     { immediate: true },
   )

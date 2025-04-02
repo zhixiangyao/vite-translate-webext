@@ -3,6 +3,7 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import { Button, Form, FormItem, Input, Select, Table } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
+import { useLang } from '~/composables/useLang'
 import { useWordList } from './composables/useWordList'
 
 defineOptions({ name: 'WordList' })
@@ -10,6 +11,7 @@ defineOptions({ name: 'WordList' })
 const labelCol = { span: 3 }
 const wrapperCol = { span: 24 - labelCol.span }
 
+const lang = useLang()
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'WordList')
 const wordList = useWordList()
@@ -19,11 +21,11 @@ const { formRef } = wordList
 <template>
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
     <Button size="small" type="primary" :disabled="wordList.disabledSave.value" @click="wordList.handleSave">
-      Save
+      {{ lang('Save') }}
     </Button>
 
     <Button size="small" @click="wordList.handleAdd">
-      Add
+      {{ lang('Add') }}
     </Button>
   </Teleport>
 
@@ -38,7 +40,7 @@ const { formRef } = wordList
     <Table
       class="word-list-table"
       bordered
-      :columns="wordList.columns"
+      :columns="wordList.columns.value"
       :data-source="wordList.formState.list"
       :pagination="false"
       size="small"
@@ -70,7 +72,7 @@ const { formRef } = wordList
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
             <Button class="!px-0" danger size="small" type="link" @click="() => wordList.handleDelete(i)">
-              Delete
+              {{ lang('Delete') }}
             </Button>
           </div>
         </template>
