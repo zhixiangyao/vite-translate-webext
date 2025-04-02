@@ -7,16 +7,17 @@ import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/logic/storage'
 
-async function validatorIsPath(_: Rule, value: string) {
-  if (value[0] !== '/') {
-    return Promise.reject(new Error('The first string must be /'))
+async function validatorIsPath(_: Rule, value: string | undefined) {
+  if (value) {
+    if (value[0] !== '/') {
+      return Promise.reject(new Error('The first string must be /'))
+    }
+    if (value.at(-1) !== '/') {
+      return Promise.reject(new Error('The last string must be /'))
+    }
   }
-  if (value.at(-1) !== '/') {
-    return Promise.reject(new Error('The last string must be /'))
-  }
-  else {
-    return Promise.resolve()
-  }
+
+  return Promise.resolve()
 }
 
 interface TFormType {
