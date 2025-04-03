@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useDark } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'

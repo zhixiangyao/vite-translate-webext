@@ -3,21 +3,24 @@ import type { ItemType, MenuProps } from 'ant-design-vue'
 import { Menu, theme } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { views } from '~/apps/options/router'
+import { useLang } from '~/composables/useLang'
 
 defineOptions({ name: 'LayoutNav' })
 defineProps<{ collapsed?: boolean }>()
 
-const items = views.map<ItemType>(view => ({
-  key: view.name,
-  icon: view.icon,
-  label: view.title,
-  title: view.title,
-}))
-
 const { token } = theme.useToken()
+const lang = useLang()
 const route = useRoute()
 const router = useRouter()
 const selectedKeys = ref<string[]>([])
+const items = computed(() =>
+  views.map<ItemType>(view => ({
+    key: view.name,
+    icon: view.icon,
+    label: lang(view.title),
+    title: lang(view.title),
+  })),
+)
 
 const handleClick: MenuProps['onClick'] = (menuInfo) => {
   router.push({ name: menuInfo.key.toString() })

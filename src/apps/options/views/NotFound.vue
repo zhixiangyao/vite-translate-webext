@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { Button } from 'ant-design-vue'
+import { useLang } from '~/composables/useLang'
 
 defineOptions({ name: 'NotFound' })
+
+const lang = useLang()
 </script>
 
 <template>
@@ -9,7 +12,7 @@ defineOptions({ name: 'NotFound' })
     <span>404</span>
     <Button>
       <RouterLink :to="{ name: 'Home' }">
-        返回首页
+        {{ lang('Back Home') }}
       </RouterLink>
     </Button>
   </div>
