@@ -1,15 +1,50 @@
 /// <reference types="vitest" />
 
-import type { UserConfig } from 'vite'
+import type { PluginOption, UserConfig } from 'vite'
 import { dirname, relative } from 'node:path'
 import packageJson from '#/package.json'
 import Vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import fs from 'fs-extra'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import { isDev, port, r } from './scripts/utils'
+
+/** Perform file changes after the Vite build is complete */
+function ChangeFiles(options?: { moves?: { from: string, to: string }[], deletes?: string[] }): PluginOption {
+  return {
+    name: 'change-files',
+    apply: 'build',
+    closeBundle: async () => {
+      const moves = options?.moves ?? []
+      const deletes = options?.deletes ?? []
+
+      for (const move of moves) {
+        const fromPath = r(move.from)
+        const toPath = r(move.to)
+
+        if (!fs.existsSync(fromPath)) {
+          continue
+        }
+
+        await fs.ensureDir(dirname(toPath))
+        await fs.move(fromPath, toPath, { overwrite: true })
+      }
+
+      for (const del of deletes) {
+        const delPath = r(del)
+
+        if (!fs.existsSync(delPath)) {
+          continue
+        }
+
+        await fs.remove(delPath)
+      }
+    },
+  }
+}
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -62,23 +97,26 @@ export const sharedConfig: UserConfig = {
       },
     },
   ],
-  optimizeDeps: {
-    include: [
-      'vue',
-      '@vueuse/core',
-      'webextension-polyfill',
-      'ant-design-vue',
-      '@ant-design/icons-vue',
-      'monaco-editor',
-      'js-beautify',
-      'xlsx',
-    ],
-    exclude: [],
-  },
 }
 
 export default defineConfig(({ command }) => ({
   ...sharedConfig,
+  plugins: [
+    ...(sharedConfig.plugins ?? []),
+    ChangeFiles({
+      moves: [
+        {
+          from: 'extension/dist/apps/options',
+          to: 'extension/dist/options',
+        },
+        {
+          from: 'extension/dist/apps/popup',
+          to: 'extension/dist/popup',
+        },
+      ],
+      deletes: ['extension/dist/apps'],
+    }),
+  ],
   base: command === 'serve' ? `http://localhost:${port}/` : '/dist/',
   server: {
     port,
@@ -88,7 +126,6 @@ export default defineConfig(({ command }) => ({
     origin: `http://localhost:${port}`,
   },
   build: {
-    target: 'modules',
     watch: isDev ? {} : undefined,
     outDir: r('extension/dist'),
     emptyOutDir: false,
