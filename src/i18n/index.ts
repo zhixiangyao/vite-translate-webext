@@ -6,12 +6,9 @@ import zh from './locales/zh.json'
 function languageDetected() {
   const urlParams = new URLSearchParams(location.search)
   const hashParams = new URLSearchParams(location.hash.split('?')[1])
-  const lang = hashParams.get('lang') ?? urlParams.get('lang')
+  const lang = hashParams.get('lang') || urlParams.get('lang') || document.documentElement.lang || navigator.language
 
-  if (lang)
-    return lang
-
-  return navigator.language.includes('zh') ? 'zh' : 'en'
+  return lang.includes('zh') ? 'zh' : 'en'
 }
 
 const i18n = createI18n<[TMessageSchema], 'en' | 'zh'>({
