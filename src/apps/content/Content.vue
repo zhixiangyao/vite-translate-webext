@@ -3,7 +3,7 @@ import { useDebounceFn, useWindowFocus } from '@vueuse/core'
 import { sendMessage } from 'webext-bridge/content-script'
 import ModalSearch from '~/components/ModalSearch/index.vue'
 import ModalTranslate from '~/components/ModalTranslate/index.vue'
-import { storageCurrentTab, storageSettings, storageWebsiteList, storageWordList } from '~/logic/storage'
+import { storageCurrentTab, storageSettings, storageWebsiteList, storageWordList } from '~/storage'
 import { highlight, unhighlight } from '~/utils/highlight'
 
 interface Props {

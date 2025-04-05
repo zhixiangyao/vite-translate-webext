@@ -100,7 +100,7 @@ pnpm i
     - `ui`
   - `composables` - public composables.
   - `constant` - public constant.
-  - `logic`
+  - `storage`
   - `tests`
   - `utils`
   - `env.ts`

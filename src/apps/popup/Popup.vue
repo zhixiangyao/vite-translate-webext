@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { TRecordWebsite } from '~/logic/storage'
-import { storageWebsiteList } from '~/logic/storage'
+import type { TRecordWebsite } from '~/storage'
+import { storageWebsiteList } from '~/storage'
 
 const host = ref('')
 const website = computed<TRecordWebsite | undefined>(() =>

@@ -1,10 +1,10 @@
-import type { TRecordGroup, TRecordWord } from '~/logic/storage'
+import type { TRecordGroup, TRecordWord } from '~/storage'
 import { Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { utils, writeFileXLSX } from 'xlsx'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { useLang } from '~/composables/useLang'
-import { storageGroupList, storageWordList } from '~/logic/storage'
+import { storageGroupList, storageWordList } from '~/storage'
 
 type TColumnName = string
 type TColumnValue = string | number | null | undefined

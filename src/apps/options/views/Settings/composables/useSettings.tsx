@@ -1,11 +1,11 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import type { TSettings } from '~/logic/storage'
+import type { TSettings } from '~/storage'
 import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { DEFAULT_SETTINGS } from '~/constant/map'
-import { storageSettings } from '~/logic/storage'
+import { storageSettings } from '~/storage'
 
 async function validatorIsPath(_: Rule, value: string | undefined) {
   if (value) {

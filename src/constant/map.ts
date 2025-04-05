@@ -1,4 +1,4 @@
-import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/logic/storage'
+import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/storage'
 import { EnumDataSet, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_GROUP_LIST: TRecordGroup[] = [
