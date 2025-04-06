@@ -54,7 +54,7 @@ onMounted(updateKey)
     v-if="host"
     dark
     align="left"
-    class="w-full relative"
+    class="w-full enabled"
     :class="{ activity: website?.enable }"
     @click="handleEnable"
   >
@@ -63,7 +63,9 @@ onMounted(updateKey)
 </template>
 
 <style scoped>
-button:nth-of-type(2) {
+button.enabled {
+  position: relative;
+
   &::after {
     content: '';
     top: 50%;
