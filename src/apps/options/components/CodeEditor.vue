@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useDark } from '@vueuse/core'
-import { theme } from 'ant-design-vue'
+import { Form, theme } from 'ant-design-vue'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { onMounted, onUnmounted, ref, toRaw, watch } from 'vue'
 import 'monaco-editor/esm/vs/basic-languages/css/css.contribution'
@@ -13,6 +13,7 @@ defineOptions({ name: 'CodeEditor' })
 const props = defineProps<Props>()
 const code = defineModel<string>('code', { default: '' })
 
+const formItemContext = Form.useInjectFormItemContext()
 const { token } = theme.useToken()
 const { language } = toRefs(props)
 const refContainer = ref<HTMLElement | null>(null)
@@ -38,6 +39,8 @@ function init() {
   editor.value.onDidChangeModelContent(() => {
     const model = toRaw(editor.value)?.getModel()
     code.value = model?.getValue() ?? ''
+
+    formItemContext.onFieldChange()
   })
 }
 
