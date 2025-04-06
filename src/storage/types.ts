@@ -23,6 +23,7 @@ export interface TCacheMap {
 }
 
 export interface TSettings {
+  lang: 'zh' | 'en' | 'auto'
   api: {
     url: string
     token: string

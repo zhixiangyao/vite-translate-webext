@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { TFormTypeKeys } from './composables/useSettings'
-import { Button, Form, FormItem, Input, InputNumber, Skeleton, TabPane, Tabs } from 'ant-design-vue'
+import { Button, Form, FormItem, Input, InputNumber, Select, Skeleton, TabPane, Tabs } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
 import { useLang } from '~/composables/useLang'
+import { OPTIONS_LANG } from '~/constant/options'
 import ToolbarWebdav from './components/ToolbarWebdav/index.vue'
 import { useSettings } from './composables/useSettings'
 
@@ -38,6 +39,15 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
     <Tabs v-model:active-key="activeKey" size="small" type="card">
       <!-- Basic -->
       <TabPane :key="EnumActiveKey.Basic" :tab="lang('Basic')">
+        <FormItem :label="lang('Lang')" :name="('lang' satisfies TFormTypeKeys)" :rules="rules.lang">
+          <Select
+            v-model:value="formState.lang"
+            size="small"
+            class="w-[85px]"
+            :options="OPTIONS_LANG"
+          />
+        </FormItem>
+
         <FormItem :label="lang('Request URL')" :name="('apiUrl' satisfies TFormTypeKeys)" :rules="rules.apiUrl">
           <Input v-model:value="formState.apiUrl" />
         </FormItem>

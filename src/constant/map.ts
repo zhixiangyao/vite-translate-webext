@@ -29,6 +29,7 @@ export const DEFAULT_WEBSITE_LIST: TRecordWebsite[] = [
 ]
 
 export const DEFAULT_SETTINGS: TSettings = {
+  lang: 'auto',
   api: {
     url: 'http://localhost:1188/translate',
     token: 'helloxxx',

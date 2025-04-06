@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import AntProvider from '~/apps/options/components/AntProvider.vue'
+import { useRegisterI18n } from '~/i18n'
+
+useRegisterI18n()
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 import type { TMessageSchema } from './locales/schema'
 import { createI18n } from 'vue-i18n'
+import { storageSettings } from '~/storage'
 import en from './locales/en.json'
 import zh from './locales/zh.json'
 
@@ -12,7 +13,6 @@ function languageDetected() {
 }
 
 const i18n = createI18n<[TMessageSchema], 'en' | 'zh'>({
-  legacy: false, // you must set `false`, to use Composition API
   locale: languageDetected(),
   fallbackLocale: 'en',
   messages: {
@@ -20,5 +20,11 @@ const i18n = createI18n<[TMessageSchema], 'en' | 'zh'>({
     zh,
   },
 })
+
+export function useRegisterI18n() {
+  watch(() => storageSettings.value.lang, (lang) => {
+    i18n.global.locale = lang === 'auto' ? languageDetected() : lang
+  }, { immediate: true })
+}
 
 export default i18n
