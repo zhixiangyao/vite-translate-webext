@@ -15,6 +15,18 @@ function handleOpenDashboard() {
   browser.runtime.openOptionsPage()
 }
 
+async function handleOpenWebsiteList() {
+  const optionsUrl = `${browser.runtime.getURL('/dist/options/index.html#/website-list')}`
+
+  await browser.tabs.create({ url: optionsUrl })
+}
+
+async function handleOpenSettings() {
+  const optionsUrl = `${browser.runtime.getURL('/dist/options/index.html#/settings')}`
+
+  await browser.tabs.create({ url: optionsUrl })
+}
+
 function handleEnable() {
   if (!host.value || !storageWebsiteList.value)
     return
@@ -48,6 +60,14 @@ onMounted(updateKey)
 <template>
   <WButton dark align="left" class="w-full" @click="handleOpenDashboard">
     {{ lang('Dashboard') }}
+  </WButton>
+
+  <WButton dark align="left" class="w-full" @click="handleOpenWebsiteList">
+    {{ lang('Website List') }}
+  </WButton>
+
+  <WButton dark align="left" class="w-full" @click="handleOpenSettings">
+    {{ lang('Settings') }}
   </WButton>
 
   <WButton
