@@ -1,6 +1,6 @@
 import { useDebounceFn, useStyleTag } from '@vueuse/core'
 import { theme } from 'ant-design-vue'
-import { storageSettings, storageWordList } from '~/logic/storage'
+import { storageSettings, storageWordList } from '~/storage'
 import { highlight } from '~/utils/highlight'
 import ShadowHost from './components/ShadowHost.vue'
 

@@ -1,9 +1,9 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import type { TRecordGroup } from '~/logic/storage'
+import type { TRecordGroup } from '~/storage'
 import { App } from 'ant-design-vue'
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid'
-import { storageGroupList } from '~/logic/storage'
+import { storageGroupList } from '~/storage'
 import { clone } from '~/utils/clone'
 
 type TType = 'edit' | 'add'

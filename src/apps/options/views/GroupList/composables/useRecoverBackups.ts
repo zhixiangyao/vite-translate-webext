@@ -1,11 +1,11 @@
 import type { WorkSheet } from 'xlsx'
-import type { TRecordGroup, TRecordWord } from '~/logic/storage'
+import type { TRecordGroup, TRecordWord } from '~/storage'
 import { useFileDialog } from '@vueuse/core'
 import { App } from 'ant-design-vue'
 import { uniqBy } from 'es-toolkit'
 import { read, utils } from 'xlsx'
 import { regexIsWord } from '~/constant/regex'
-import { storageGroupList, storageWordList } from '~/logic/storage'
+import { storageGroupList, storageWordList } from '~/storage'
 import { EnumSheetName } from './useExportBackups'
 
 function generateWorkSheetToWordListData(ws: WorkSheet): TRecordWord[] {

@@ -1,9 +1,9 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { TRecordWebsite } from '~/logic/storage'
+import type { TRecordWebsite } from '~/storage'
 import { App } from 'ant-design-vue'
 import { useLang } from '~/composables/useLang'
-import { storageWebsiteList } from '~/logic/storage'
+import { storageWebsiteList } from '~/storage'
 import { clone } from '~/utils/clone'
 
 export function useWebsiteList() {

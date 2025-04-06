@@ -1,6 +1,6 @@
 import type { EnumTranslateLang } from '~/constant/enum'
 import { useBackgroundFetch } from '~/composables/useBackgroundFetch'
-import { storageCurrentTab, storageSettings } from '~/logic/storage'
+import { storageCurrentTab, storageSettings } from '~/storage'
 
 export interface DeeplxResponse {
   alternatives: string[]

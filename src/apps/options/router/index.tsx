@@ -1,42 +1,47 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { EyeOutlined, FileWordOutlined, GroupOutlined, SettingOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
+import {
+  EyeOutlined,
+  FileWordOutlined,
+  GroupOutlined,
+  SettingOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import i18n from '~/i18n'
 
 export const views = [
   {
     path: 'word-list',
     name: 'WordList',
-    title: i18n.global.t('Word List'),
-    icon: () => h(FileWordOutlined),
+    title: 'Word List',
+    icon: () => <FileWordOutlined />,
     component: () => import('~/apps/options/views/WordList/index.vue'),
   },
   {
     path: 'group-list',
     name: 'GroupList',
-    title: i18n.global.t('Group List'),
-    icon: () => h(GroupOutlined),
+    title: 'Group List',
+    icon: () => <GroupOutlined />,
     component: () => import('~/apps/options/views/GroupList/index.vue'),
   },
   {
     path: 'website-list',
     name: 'WebsiteList',
-    title: i18n.global.t('Website List'),
-    icon: () => h(UnorderedListOutlined),
+    title: 'Website List',
+    icon: () => <UnorderedListOutlined />,
     component: () => import('~/apps/options/views/WebsiteList/index.vue'),
   },
   {
     path: 'preview',
     name: 'Preview',
-    title: i18n.global.t('Preview'),
-    icon: () => h(EyeOutlined),
+    title: 'Preview',
+    icon: () => <EyeOutlined />,
     component: () => import('~/apps/options/views/Preview/index'),
   },
   {
     path: 'settings',
     name: 'Settings',
-    title: i18n.global.t('Settings'),
-    icon: () => h(SettingOutlined),
+    title: 'Settings',
+    icon: () => <SettingOutlined />,
     component: () => import('~/apps/options/views/Settings/index.vue'),
   },
 ]

@@ -96,7 +96,7 @@ pnpm i
     - `ui`
   - `composables` - 公共组合函数.
   - `constant` - 公共常量.
-  - `logic`
+  - `storage`
   - `tests`
   - `utils`
   - `env.ts`

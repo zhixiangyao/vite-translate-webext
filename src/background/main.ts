@@ -1,5 +1,5 @@
 import type { Tabs } from 'webextension-polyfill'
-import { storageCurrentTab } from '~/logic/storage'
+import { storageCurrentTab } from '~/storage'
 import { register as registerEventFetch } from './registers/event-fetch'
 import { register as registerEventIcon } from './registers/event-icon'
 
