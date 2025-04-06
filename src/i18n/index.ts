@@ -5,9 +5,7 @@ import en from './locales/en.json'
 import zh from './locales/zh.json'
 
 function languageDetected() {
-  const urlParams = new URLSearchParams(location.search)
-  const hashParams = new URLSearchParams(location.hash.split('?')[1])
-  const lang = hashParams.get('lang') || urlParams.get('lang') || document.documentElement.lang || navigator.language
+  const lang = document.documentElement.lang || navigator.language
 
   return lang.includes('zh') ? 'zh' : 'en'
 }
