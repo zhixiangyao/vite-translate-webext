@@ -21,16 +21,17 @@ const lang = useLang()
 const activeKey = ref<EnumActiveKey>(EnumActiveKey.Basic)
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'Settings')
-const { rules, formRef, formState, disabledSave, disabledReset, handleSave, handleReset } = useSettings()
+const settings = useSettings()
+const { rules, formRef, formState, disabledSave, disabledReset } = settings
 </script>
 
 <template>
   <Teleport v-if="showTeleport" :to="layoutHeaderRightSlotRef">
-    <Button size="small" type="primary" :disabled="disabledSave" @click="handleSave">
+    <Button size="small" type="primary" :disabled="disabledSave" @click="settings.handleSave">
       {{ lang('Save') }}
     </Button>
 
-    <Button size="small" :disabled="disabledReset" @click="handleReset">
+    <Button size="small" :disabled="disabledReset" @click="settings.handleReset">
       {{ lang('Restore Defaults') }}
     </Button>
   </Teleport>
@@ -40,12 +41,7 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
       <!-- Basic -->
       <TabPane :key="EnumActiveKey.Basic" :tab="lang('Basic')">
         <FormItem :label="lang('Lang')" :name="('lang' satisfies TFormTypeKeys)" :rules="rules.lang">
-          <Select
-            v-model:value="formState.lang"
-            size="small"
-            class="w-[85px]"
-            :options="OPTIONS_LANG"
-          />
+          <Select v-model:value="formState.lang" size="small" class="w-[85px]" :options="OPTIONS_LANG" allow-clear />
         </FormItem>
 
         <FormItem :label="lang('Request URL')" :name="('apiUrl' satisfies TFormTypeKeys)" :rules="rules.apiUrl">
@@ -85,23 +81,19 @@ const { rules, formRef, formState, disabledSave, disabledReset, handleSave, hand
 
       <!-- Webdav -->
       <TabPane :key="EnumActiveKey.Webdav" tab="Webdav" force-render>
-        <FormItem label="Webdav URL" :name="('webdavUrl' satisfies TFormTypeKeys)" :rules="rules.webdavUrl">
+        <FormItem :label="lang('Webdav URL')" :name="('webdavUrl' satisfies TFormTypeKeys)">
           <Input v-model:value="formState.webdavUrl" />
         </FormItem>
 
-        <FormItem label="Webdav Login" :name="('webdavUsername' satisfies TFormTypeKeys)" :rules="rules.webdavUsername">
+        <FormItem :label="lang('Webdav Login')" :name="('webdavUsername' satisfies TFormTypeKeys)">
           <Input v-model:value="formState.webdavUsername" />
         </FormItem>
 
-        <FormItem
-          label="Webdav Password"
-          :name="('webdavPassword' satisfies TFormTypeKeys)"
-          :rules="rules.webdavPassword"
-        >
+        <FormItem :label="lang('Webdav Password')" :name="('webdavPassword' satisfies TFormTypeKeys)">
           <Input v-model:value="formState.webdavPassword" type="password" />
         </FormItem>
 
-        <FormItem label="Webdav Path" :name="('webdavPath' satisfies TFormTypeKeys)" :rules="rules.webdavPath">
+        <FormItem :label="lang('Webdav Path')" :name="('webdavPath' satisfies TFormTypeKeys)" :rules="rules.webdavPath">
           <Input v-model:value="formState.webdavPath" />
         </FormItem>
 

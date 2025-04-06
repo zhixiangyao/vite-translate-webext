@@ -20,9 +20,12 @@ const i18n = createI18n<[TMessageSchema], 'en' | 'zh'>({
 })
 
 export function useRegisterI18n() {
-  watch(() => storageSettings.value.lang, (lang) => {
+  function handleWatchLang(lang: typeof storageSettings.value.lang) {
     i18n.global.locale = lang === 'auto' ? languageDetected() : lang
-  }, { immediate: true })
+    window.document.title = i18n.global.t('Dashboard')
+  }
+
+  watch(() => storageSettings.value.lang, handleWatchLang, { immediate: true })
 }
 
 export default i18n

@@ -4,21 +4,9 @@ import type { TSettings } from '~/storage'
 import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
+import { useLang } from '~/composables/useLang'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/storage'
-
-async function validatorIsPath(_: Rule, value: string | undefined) {
-  if (value) {
-    if (value[0] !== '/') {
-      return Promise.reject(new Error('The first string must be /'))
-    }
-    if (value.at(-1) !== '/') {
-      return Promise.reject(new Error('The last string must be /'))
-    }
-  }
-
-  return Promise.resolve()
-}
 
 interface TFormType {
   lang: TSettings['lang']
@@ -35,24 +23,9 @@ interface TFormType {
 
 export type TFormTypeKeys = keyof TFormType
 
-const rules = {
-  lang: [{ required: true, message: 'Please select the Lang', trigger: 'change' }],
-  apiUrl: [{ required: true, message: 'Please enter the Request URL', trigger: 'change' }],
-  apiToken: [{ required: true, message: 'Please enter the Request Token', trigger: 'change' }],
-  apiTimeout: [{ required: true, message: 'Please enter the Request Timeout', trigger: 'change' }],
-  highlightStyle: [{ required: true, message: 'Please enter the Highlight Style', trigger: 'change' }],
-  themeColor: [{ required: true, message: 'Please enter the Theme Color', trigger: 'change' }],
-  webdavUrl: [{ required: false, message: 'Please enter the Webdav URL', trigger: 'change' }],
-  webdavUsername: [{ required: false, message: 'Please enter the Webdav Username', trigger: 'change' }],
-  webdavPassword: [{ required: false, message: 'Please enter the Webdav Password', trigger: 'change' }],
-  webdavPath: [
-    { required: false, message: 'Please enter the webdav Path', trigger: 'change' },
-    { validator: validatorIsPath },
-  ],
-} satisfies Record<keyof TFormType, Rule[]>
-
 export function useSettings() {
   const { message } = App.useApp()
+  const lang = useLang()
   const customModal = useCustomModal()
   const formRef = ref<FormInstance | null>(null)
   const formState = reactive<TFormType>({
@@ -94,6 +67,30 @@ export function useSettings() {
       && storageSettings.value.webdav.password === formState.webdavPassword
       && storageSettings.value.webdav.path === formState.webdavPath
     )
+  })
+  const rules = computed(() => {
+    function validatorIsPath(_: Rule, value: string | undefined) {
+      if (value) {
+        if (value[0] !== '/') {
+          return Promise.reject(new Error(lang('The first string must be /')))
+        }
+        if (value.at(-1) !== '/') {
+          return Promise.reject(new Error(lang('The last string must be /')))
+        }
+      }
+
+      return Promise.resolve()
+    }
+
+    return {
+      lang: [{ required: true, message: lang('Please select the Lang!'), trigger: 'change' }],
+      apiUrl: [{ required: true, message: lang('Please enter the Request URL!'), trigger: 'change' }],
+      apiToken: [{ required: true, message: lang('Please enter the Request Token!'), trigger: 'change' }],
+      apiTimeout: [{ required: true, message: lang('Please enter the Request Timeout!'), trigger: 'change' }],
+      highlightStyle: [{ required: true, message: lang('Please enter the Highlight Style!'), trigger: 'change' }],
+      themeColor: [{ required: true, message: lang('Please enter the Theme Color!'), trigger: 'change' }],
+      webdavPath: [{ validator: validatorIsPath }],
+    } satisfies Record<string, Rule[]>
   })
 
   async function handleSave() {
