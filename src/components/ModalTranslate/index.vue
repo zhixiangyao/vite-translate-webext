@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { CloseOutlined, HeartFilled, HeartOutlined, PushpinFilled, PushpinOutlined } from '@ant-design/icons-vue'
+import { useLang } from '~/composables/useLang'
 import Empty from './components/Empty.vue'
 import Error from './components/Error.vue'
+import Loading from './components/Loading.vue'
 import Result from './components/Result/index.vue'
+import SearchInput from './components/SearchInput.vue'
 import { useModalTranslate } from './composables/useModalTranslate'
 import { useModalTranslateDraggable } from './composables/useModalTranslateDraggable'
 
 defineOptions({ name: 'ModalTranslate' })
 const props = defineProps<{ root?: HTMLElement }>()
 
+const lang = useLang()
 const modalTranslate = useModalTranslate(props.root)
 const { top, left, refContainer, refHeader, isDragging } = useModalTranslateDraggable({
   x: computed(() => modalTranslate.state.left),
@@ -36,36 +40,36 @@ defineExpose({
         <WIconWrapper>
           <PushpinFilled
             v-if="modalTranslate.state.pin"
-            title="Click to unfix"
+            :title="lang('Click to unfix')"
             @click="modalTranslate.state.pin = false"
           />
-          <PushpinOutlined v-else title="Click to fix" @click="modalTranslate.state.pin = true" />
+          <PushpinOutlined v-else :title="lang('Click to fix')" @click="modalTranslate.state.pin = true" />
         </WIconWrapper>
 
         <WIconWrapper :show="!modalTranslate.isWord.value">
           <template v-if="modalTranslate.isWord.value">
-            <HeartFilled v-if="modalTranslate.favorite.value" title="Click to unfavorite" @click="modalTranslate.handleRemove" />
-            <HeartOutlined v-else title="Click to favorite" @click="modalTranslate.handleAdd" />
+            <HeartFilled v-if="modalTranslate.favorite.value" :title="lang('Click to unfavorite')" @click="modalTranslate.handleRemove" />
+            <HeartOutlined v-else :title="lang('Click to favorite')" @click="modalTranslate.handleAdd" />
           </template>
         </WIconWrapper>
       </div>
 
       <WIconWrapper>
-        <CloseOutlined title="Close" @click="modalTranslate.handleHidden" />
+        <CloseOutlined :title="lang('Close')" @click="modalTranslate.handleHidden" />
       </WIconWrapper>
     </header>
 
     <main class="px-2">
-      <WSearchInput
+      <SearchInput
         v-model:value="modalTranslate.state.text"
-        placeholder="Please enter the content to be translated"
+        :placeholder="lang('Please enter the content to be translated!')"
         :disabled="!modalTranslate.state.text"
         @search="modalTranslate.handleSearch"
       />
 
       <div class="py-2">
         <template v-if="modalTranslate.state.loading">
-          <WLoading />
+          <Loading />
         </template>
         <template v-else-if="modalTranslate.state.result">
           <Result :result="modalTranslate.state.result" :search="modalTranslate.state.text" />

@@ -1,4 +1,5 @@
 import App from '~/apps/content/Content.vue'
+import i18n from '~/i18n'
 import '@unocss/reset/tailwind-compat.css'
 import 'virtual:uno.css'
 
@@ -25,4 +26,6 @@ function createRoot(target: HTMLElement) {
 }
 
 const app = createApp(App)
+
+app.use(i18n)
 app.mount(createRoot(document.querySelector('html')!))

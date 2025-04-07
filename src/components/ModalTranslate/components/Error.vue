@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useLang } from '~/composables/useLang'
 import { EnumResponseCode } from '~/constant/enum'
 
 interface Props {
@@ -7,9 +8,11 @@ interface Props {
 
 defineOptions({ name: 'Error' })
 defineProps<Props>()
+
+const lang = useLang()
 </script>
 
 <template>
-  <span v-if="code === EnumResponseCode.Error">Oops! API interface exception! Please try again!</span>
-  <span v-if="code === EnumResponseCode.AbortError">Oops! API request timed out! Please try again!</span>
+  <span v-if="code === EnumResponseCode.Error">{{ lang('Oops! API interface exception! Please try again!') }}</span>
+  <span v-if="code === EnumResponseCode.AbortError">{{ lang('Oops! API request timed out! Please try again!') }}</span>
 </template>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import i18n from '~/i18n'
+
 interface Props {
   root?: HTMLElement
 }
@@ -25,7 +27,10 @@ function init(root: Props['root']) {
 
   shadowRoot.appendChild(styleEl)
   shadowRoot.appendChild(content)
+
   const app = createApp(h(Content, { root }))
+
+  app.use(i18n)
   app.mount(content)
 }
 
