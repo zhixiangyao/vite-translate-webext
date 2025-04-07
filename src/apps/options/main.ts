@@ -1,4 +1,3 @@
-import { createApp } from 'vue'
 import i18n from '~/i18n'
 import App from './Options.vue'
 import router from './router'
