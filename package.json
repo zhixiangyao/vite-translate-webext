@@ -3,7 +3,7 @@
   "displayName": "Translate",
   "version": "0.1.5",
   "private": true,
-  "packageManager": "pnpm@10.7.0",
+  "packageManager": "pnpm@10.8.0",
   "description": "a translate and english words book extension",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
   "homepage": "https://github.com/zhixiangyao/vite-translate-webext",
