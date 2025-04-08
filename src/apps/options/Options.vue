@@ -18,6 +18,10 @@ useRegisterI18n()
   --light-bg-color: #f5f5f5;
 }
 
+html {
+  overflow: hidden;
+}
+
 html #app {
   background-color: var(--light-bg-color);
 }

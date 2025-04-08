@@ -2,7 +2,6 @@
 import { useDark } from '@vueuse/core'
 import { Form, theme } from 'ant-design-vue'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { onMounted, onUnmounted, ref, toRaw, watch } from 'vue'
 import 'monaco-editor/esm/vs/basic-languages/css/css.contribution'
 
 interface Props {

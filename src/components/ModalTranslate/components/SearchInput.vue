@@ -1,5 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import { useLang } from '~/composables/useLang'
 
 interface Props {
   placeholder?: string
@@ -11,11 +12,12 @@ interface Emits {
   search: []
 }
 
-defineOptions({ name: 'WSearchInput' })
+defineOptions({ name: 'SearchInput' })
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-
 const inputValue = defineModel<string>('value', { default: '' })
+
+const lang = useLang()
 
 function clear() {
   inputValue.value = ''
@@ -41,11 +43,11 @@ function search() {
     >
 
     <WIconWrapper v-if="!!inputValue" class="clear invisible">
-      <CloseOutlined title="Click to clear" @click="clear" />
+      <CloseOutlined :title="lang('Click to clear')" @click="clear" />
     </WIconWrapper>
 
     <WIconWrapper :disabled="disabled">
-      <SearchOutlined title="Click to search" @click="search" />
+      <SearchOutlined :title="lang('Click to search')" @click="search" />
     </WIconWrapper>
   </div>
 </template>

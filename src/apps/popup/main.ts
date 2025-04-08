@@ -1,4 +1,3 @@
-import { createApp } from 'vue'
 import App from '~/apps/popup/Popup.vue'
 import i18n from '~/i18n'
 import '@unocss/reset/tailwind-compat.css'
