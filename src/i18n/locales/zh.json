@@ -1,4 +1,5 @@
 {
+  "Copy": "复制",
   "Yes": "是的",
   "Save": "保存",
   "Add": "添加",
@@ -44,6 +45,9 @@
   "Click to search": "点击搜索",
   "Click to clear": "点击清除",
 
+  "Long press to delete": "长按删除",
+  "Please enter": "请输入",
+  "Please select group": "请选择组",
   "Please select the Lang!": "请选择语言！",
   "Please enter the Request URL!": "请输入请求URL！",
   "Please enter the Request Token!": "请输入请求令牌！",

@@ -1,4 +1,5 @@
 {
+  "Copy": "Copy",
   "Yes": "Yes",
   "Save": "Save",
   "Add": "Add",
@@ -44,6 +45,9 @@
   "Click to search": "Click to search",
   "Click to clear": "Click to clear",
 
+  "Long press to delete": "Long press to delete",
+  "Please enter": "Please enter",
+  "Please select group": "Please select group",
   "Please select the Lang!": "Please select the Lang!",
   "Please enter the Request URL!": "Please enter the Request URL!",
   "Please enter the Request Token!": "Please enter the Request Token!",
