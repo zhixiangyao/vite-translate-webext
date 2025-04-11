@@ -4,15 +4,20 @@ import { storageSettings } from '~/storage'
 import en from './locales/en.json'
 import zh from './locales/zh.json'
 
+export enum EnumLang {
+  ZH = 'zh',
+  EN = 'en',
+}
+
 function languageDetected() {
   const lang = document.documentElement.lang || navigator.language
 
-  return lang.includes('zh') ? 'zh' : 'en'
+  return lang.includes(EnumLang.ZH) ? EnumLang.ZH : EnumLang.EN
 }
 
-const i18n = createI18n<[TMessageSchema], 'en' | 'zh'>({
+const i18n = createI18n<[TMessageSchema], EnumLang>({
   locale: languageDetected(),
-  fallbackLocale: 'en',
+  fallbackLocale: EnumLang.EN,
   messages: {
     en,
     zh,
