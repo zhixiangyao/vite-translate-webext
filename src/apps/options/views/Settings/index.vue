@@ -1,10 +1,13 @@
 <script lang="ts" setup>
+import type { FormProps } from 'ant-design-vue'
 import type { TFormTypeKeys } from './composables/useSettings'
 import { Button, Form, FormItem, Input, InputNumber, Select, Skeleton, TabPane, Tabs } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
 import { useLang } from '~/composables/useLang'
+import { useLocal } from '~/composables/useLocale'
 import { OPTIONS_LANG } from '~/constant/options'
+import { EnumLang } from '~/i18n'
 import ToolbarWebdav from './components/ToolbarWebdav/index.vue'
 import { useSettings } from './composables/useSettings'
 
@@ -18,10 +21,12 @@ enum EnumActiveKey {
 const CodeEditor = defineAsyncComponent({ loader: () => import('~/apps/options/components/CodeEditor.vue') })
 
 const lang = useLang()
+const local = useLocal()
 const activeKey = ref<EnumActiveKey>(EnumActiveKey.Basic)
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'Settings')
 const settings = useSettings()
+const labelCol = computed<FormProps['labelCol']>(() => ({ span: local.value === EnumLang.JP ? 6 : 4 }))
 const { rules, formRef, formState, disabledSave, disabledReset } = settings
 </script>
 
@@ -36,7 +41,7 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
     </Button>
   </Teleport>
 
-  <Form ref="formRef" class="w-200" label-align="left" :model="formState" :label-col="{ span: 4 }">
+  <Form ref="formRef" class="w-200" label-align="left" :model="formState" :label-col="labelCol">
     <Tabs v-model:active-key="activeKey" size="small" type="card">
       <!-- Basic -->
       <TabPane :key="EnumActiveKey.Basic" :tab="lang('Basic')">
