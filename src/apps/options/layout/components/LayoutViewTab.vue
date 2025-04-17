@@ -3,6 +3,7 @@ import type { useView } from '../composables/useView'
 import { Tag, theme } from 'ant-design-vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { views } from '~/apps/options/router'
+import { useLang } from '~/composables/useLang'
 import { useContextMenu } from '../composables/useContextMenu'
 import LayoutViewTabContextMenu from './LayoutViewTabContextMenu.vue'
 
@@ -15,6 +16,7 @@ const props = defineProps<Props>()
 
 const viewsMap = Object.fromEntries(views.map(({ name, title, icon }) => [name, { title, icon }]))
 const { list } = props.use
+const lang = useLang()
 const { token } = theme.useToken()
 const { state, itemsRef, handleContextMenu } = useContextMenu()
 </script>
@@ -40,8 +42,8 @@ const { state, itemsRef, handleContextMenu } = useContextMenu()
             <component :is="viewsMap[item.name]?.icon" />
           </template>
 
-          <div :class="list.length !== 1 ? 'w-[63px]' : 'w-[80px]'">
-            {{ viewsMap[item.name]?.title ?? '-' }}
+          <div class="min-w-[80px]">
+            {{ viewsMap[item.name]?.title ? lang(viewsMap[item.name]?.title) : '-' }}
           </div>
         </Tag>
       </li>

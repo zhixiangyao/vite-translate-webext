@@ -130,13 +130,7 @@ export function useSettings() {
 
   async function handleReset() {
     const { close } = customModal.confirm({
-      title: (
-        <div>
-          Sure you want to&nbsp;
-          <b class="text-red">Restore Defaults</b>
-          ?
-        </div>
-      ),
+      title: <div>{lang('Sure you want to Restore Defaults?')}</div>,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
           <Button onClick={() => close()}>Cancel</Button>

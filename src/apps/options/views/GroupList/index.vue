@@ -74,7 +74,7 @@ function handleDeleteGroup(group: TRecordGroup) {
               type="link"
               class="p-0"
               :delay="2000"
-              title="Long press to delete"
+              :title="lang('Long press to delete')"
               @press="() => handleDeleteGroup(group)"
             >
               {{ lang('Delete') }}

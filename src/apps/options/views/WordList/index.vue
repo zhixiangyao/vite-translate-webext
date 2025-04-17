@@ -51,7 +51,7 @@ const { formRef } = wordList
             <Input
               v-model:value.trim="wordList.formState.list![i].word"
               :maxlength="100"
-              placeholder="Please enter"
+              :placeholder="lang('Please enter')"
               show-count
               size="small"
             />
@@ -62,7 +62,7 @@ const { formRef } = wordList
           <FormItem :name="['list', i, 'groupUUID']">
             <Select
               v-model:value="wordList.formState.list![i].groupUUID"
-              placeholder="Please select group"
+              :placeholder="lang('Please select group')"
               size="small"
               :options="wordList.options.value"
             />

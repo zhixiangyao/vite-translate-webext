@@ -1,3 +1,5 @@
+import type { EnumLang } from '~/i18n'
+
 export interface TCurrentTab {
   id?: number
 }
@@ -23,7 +25,7 @@ export interface TCacheMap {
 }
 
 export interface TSettings {
-  lang: 'zh' | 'en' | 'auto'
+  lang: EnumLang | 'auto'
   api: {
     url: string
     token: string

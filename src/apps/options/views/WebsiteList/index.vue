@@ -55,7 +55,7 @@ const { formRef } = websiteList
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
             <Button class="!px-0" danger size="small" type="link" @click="() => websiteList.handleDelete(i)">
-              Delete
+              {{ lang('Delete') }}
             </Button>
           </div>
         </template>

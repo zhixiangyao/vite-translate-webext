@@ -76,7 +76,7 @@ export function useToolbarWebdav(params: Params) {
       const blob = new Blob([jsonString], { type: 'application/json' })
       const downloadUrl = URL.createObjectURL(blob)
       triggerFileDownload(downloadUrl, options.fileName)
-      message.success('Exported successfully!')
+      message.success(lang('Exported successfully!'))
       options.close()
       return
     }
@@ -91,15 +91,15 @@ export function useToolbarWebdav(params: Params) {
       })
 
       if (isUploaded) {
-        message.success('Uploaded successfully!')
+        message.success(lang('Uploaded successfully!'))
         options.close()
       }
       else {
-        message.warning('Upload not completed, please check server response!')
+        message.warning(lang('Upload not completed, please check server response!'))
       }
     }
     catch {
-      message.error(`Oops!`)
+      message.error(lang('Oops!'))
     }
   }
 
@@ -114,7 +114,7 @@ export function useToolbarWebdav(params: Params) {
         const data = JSON.parse(contentString) as Partial<TChromeBackupData>
 
         if (!data?.time || !data?.version || !data?.data) {
-          message.error('Oops! Import failed, This file cannot be imported!')
+          message.error(lang('Oops! Import failed, This file cannot be imported!'))
           return
         }
 
@@ -123,14 +123,14 @@ export function useToolbarWebdav(params: Params) {
         storageWebsiteList.value = data.data.websiteList ?? []
         storageSettings.value = data.data.settings ?? {}
 
-        message.success('Imported successfully!')
+        message.success(lang('Imported successfully!'))
       }
       catch {
-        message.error('Oops!, This file cannot be imported!')
+        message.error(lang('Oops!, This file cannot be imported!'))
       }
     }
     else {
-      message.error('Oops! Import failed!')
+      message.error(lang('Oops! Import failed!'))
       return
     }
     options.close()
@@ -138,27 +138,21 @@ export function useToolbarWebdav(params: Params) {
 
   async function handleDeleteYes(options: { item: FileStat, close: () => void }) {
     await client.value!.deleteFile(options.item.filename)
-    message.success('Deleted successfully!')
+    message.success(lang('Deleted successfully!'))
     handleLoadBackupItems()
     options.close()
   }
 
   function handleImport(item: FileStat) {
     const { close } = customModal.confirm({
-      title: (
-        <div>
-          Sure you want to&nbsp;
-          <b class="text-green">Import</b>
-          ?
-        </div>
-      ),
+      title: <div>{lang('Sure you want to Import?')}</div>,
       content: item.basename,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
-          <Button onClick={() => close()}>Cancel</Button>
+          <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
           <Button type="primary" onClick={() => handleImportYes({ item, close })}>
-            Yes
+            {lang('Yes')}
           </Button>
         </div>
       ),
@@ -167,20 +161,14 @@ export function useToolbarWebdav(params: Params) {
 
   function handleDelete(item: FileStat) {
     const { close } = customModal.confirm({
-      title: (
-        <div>
-          Sure you want to&nbsp;
-          <b class="text-red">Delete</b>
-          ?
-        </div>
-      ),
+      title: <div>{lang('Sure you want to Delete?')}</div>,
       content: item.basename,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
-          <Button onClick={() => close()}>Cancel</Button>
+          <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
           <Button type="primary" onClick={() => handleDeleteYes({ item, close })}>
-            Yes
+            {lang('Yes')}
           </Button>
         </div>
       ),
@@ -206,23 +194,26 @@ export function useToolbarWebdav(params: Params) {
         width: 550,
         content: (
           <div class="flex items-center gap-1">
-            <div>File Name:</div>
+            <div>
+              {lang('File Name')}
+              :
+            </div>
             <div>{fileName}</div>
           </div>
         ),
         footer: (
           <div class="mt-3 flex justify-end gap-2">
-            <Button onClick={() => close()}>Cancel</Button>
+            <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
             <Button type="primary" onClick={() => handleExportYes({ time, fileName, close })}>
-              Yes
+              {lang('Yes')}
             </Button>
           </div>
         ),
       })
     }
     catch {
-      message.error('Oops!')
+      message.error(lang('Oops!'))
     }
   }
 
@@ -245,7 +236,7 @@ export function useToolbarWebdav(params: Params) {
       open.value = true
     }
     catch {
-      message.error('Oops!')
+      message.error(lang('Oops!'))
     }
     finally {
       loading.value = false

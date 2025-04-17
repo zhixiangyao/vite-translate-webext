@@ -2,6 +2,7 @@
 import { CheckOutlined, CopyOutlined } from '@ant-design/icons-vue'
 import { useClipboard } from '@vueuse/core'
 import { message } from 'ant-design-vue'
+import { useLang } from '~/composables/useLang'
 
 interface Props {
   text: string
@@ -11,6 +12,7 @@ defineOptions({ name: 'ButtonCopy' })
 const props = defineProps<Props>()
 
 const { copy } = useClipboard()
+const lang = useLang()
 const copied = ref(false)
 const timer = ref<NodeJS.Timeout>()
 
@@ -29,7 +31,7 @@ function handleCopy() {
 
 <template>
   <WIconWrapper>
-    <CopyOutlined v-if="!copied" title="Copy" @click.prevent.stop="handleCopy" />
+    <CopyOutlined v-if="!copied" :title="lang('Copy')" @click.prevent.stop="handleCopy" />
     <CheckOutlined v-else />
   </WIconWrapper>
 </template>
