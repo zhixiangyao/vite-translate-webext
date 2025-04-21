@@ -2,7 +2,7 @@
 import type { ListGridType } from 'ant-design-vue/es/list'
 import type { TRecordGroup } from '~/storage'
 import { EditOutlined } from '@ant-design/icons-vue'
-import { Button, Card, List, ListItem, theme } from 'ant-design-vue'
+import { Button, Card, List, ListItem, theme, TypographyParagraph } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import ButtonLongPress from '~/apps/options/components/ButtonLongPress.vue'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
@@ -54,7 +54,7 @@ function handleDeleteGroup(group: TRecordGroup) {
     </Button>
   </Teleport>
 
-  <List class="pb-6" :grid="listGrid" :data-source="storageGroupList">
+  <List class="pb-6 overflow-auto" :grid="listGrid" :data-source="storageGroupList">
     <template #renderItem="{ item: group }: { item: TRecordGroup }">
       <ListItem class="!mb-0 mt-6">
         <Card>
@@ -82,7 +82,13 @@ function handleDeleteGroup(group: TRecordGroup) {
           </template>
 
           <div class="flex justify-between items-center">
-            <span class="text-xl">{{ group.list.length }}</span>
+            <TypographyParagraph
+              v-if="group.list.length !== 0"
+              class="w-[180px] !mb-0"
+              :ellipsis="{ tooltip: group.list.map(item => item.word).join(', ') }"
+              :content="group.list.map(item => item.word).join(', ')"
+            />
+            <span v-else>0</span>
           </div>
         </Card>
       </ListItem>
