@@ -4,7 +4,6 @@ import HeaderTop from './components/HeaderTop.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutMain from './components/LayoutMain.vue'
 import LayoutNav from './components/LayoutNav.vue'
-import LayoutViewTab from './components/LayoutViewTab.vue'
 import { useCollapsed } from './composables/useCollapsed'
 import { useView } from './composables/useView'
 
@@ -17,7 +16,7 @@ const cachedViewNames = computed(() => view.list.value.map(item => item.name))
 
 <template>
   <div class="layout">
-    <LayoutNav :collapsed="collapsed" class="grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-4">
+    <LayoutNav :collapsed="collapsed" class="grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-3">
       <template #top>
         <HeaderTop :collapsed="collapsed" />
       </template>
@@ -27,11 +26,9 @@ const cachedViewNames = computed(() => view.list.value.map(item => item.name))
       </template>
     </LayoutNav>
 
-    <LayoutHeader class="grid-col-start-2 grid-col-end-3 grid-row-start-1 grid-row-end-2" />
+    <LayoutHeader class="grid-col-start-2 grid-col-end-3 grid-row-start-1 grid-row-end-2" :use="view" />
 
-    <LayoutViewTab :use="view" class="grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3" />
-
-    <LayoutMain class="grid-col-start-2 grid-col-end-3 grid-row-start-3 grid-row-end-4" :cached-view-names="cachedViewNames" />
+    <LayoutMain class="grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3" :cached-view-names="cachedViewNames" />
   </div>
 </template>
 
@@ -39,7 +36,7 @@ const cachedViewNames = computed(() => view.list.value.map(item => item.name))
 .layout {
   @apply h-screen w-screen;
   @apply grid gap-1;
-  grid-template-columns: v-bind('`${collapsed ? 80 : 200}px 1fr`');
-  grid-template-rows: 40px 30px 1fr;
+  grid-template-columns: v-bind('`${collapsed ? 80 : 200}px  1fr`');
+  grid-template-rows: 40px 1fr;
 }
 </style>
