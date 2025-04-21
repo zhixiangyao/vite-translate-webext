@@ -1,7 +1,7 @@
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { DefaultOptionType } from 'ant-design-vue/es/select'
-import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { ColumnsType, TableProps } from 'ant-design-vue/es/table'
 import type { TRecordGroup, TRecordWord } from '~/storage'
 import { App } from 'ant-design-vue'
 import { uniqBy } from 'es-toolkit'
@@ -9,6 +9,10 @@ import { useLang } from '~/composables/useLang'
 import { regexIsWord } from '~/constant/regex'
 import { storageGroupList, storageWordList } from '~/storage'
 import { clone } from '~/utils/clone'
+
+interface TFormState {
+  list: TRecordWord[]
+}
 
 async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
   if (value && regexIsWord.test(value) === false) {
@@ -30,11 +34,23 @@ export function useWordList() {
   const { message } = App.useApp()
   const lang = useLang()
   const formRef = ref<FormInstance | null>(null)
-  const formState = reactive({
-    list: [] as TRecordWord[],
+  const formState = reactive<TFormState>({
+    list: [],
   })
   const options = ref<DefaultOptionType[]>()
+  const pageNo = ref(1)
+  const pageSize = ref(13)
+  const total = ref(0)
+  const genIndex = computed(() => (index: number) => (pageNo.value - 1) * pageSize.value + index)
   const columns = computed<ColumnsType>(() => [
+    {
+      title: lang('Index'),
+      key: 'index',
+      width: 90,
+      customRender({ index }) {
+        return genIndex.value(index) + 1
+      },
+    },
     {
       title: lang('Word'),
       dataIndex: 'word' satisfies keyof TRecordWord,
@@ -44,7 +60,7 @@ export function useWordList() {
       title: lang('Group'),
       dataIndex: 'groupUUID' satisfies keyof TRecordWord,
       key: 'groupUUID' satisfies keyof TRecordWord,
-      width: 200,
+      width: 400,
     },
     {
       title: lang('Operation'),
@@ -55,6 +71,18 @@ export function useWordList() {
   const disabledSave = computed(() => {
     return JSON.stringify(formState.list) === JSON.stringify(storageWordList.value)
   })
+  const pagination = computed(
+    () =>
+      ({
+        onChange(_page, _pageSize) {
+          pageNo.value = _page
+          pageSize.value = _pageSize
+        },
+        total: total.value,
+        current: pageNo.value,
+        pageSize: pageSize.value,
+      } satisfies TableProps<TRecordWord>['pagination']),
+  )
 
   async function handleAdd() {
     await formRef.value?.validate()
@@ -118,6 +146,8 @@ export function useWordList() {
     formState,
     options,
     disabledSave,
+    pagination,
+    genIndex,
 
     handleAdd,
     handleDelete,

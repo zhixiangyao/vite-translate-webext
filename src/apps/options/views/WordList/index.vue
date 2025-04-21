@@ -15,7 +15,7 @@ const lang = useLang()
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'WordList')
 const wordList = useWordList()
-const { formRef } = wordList
+const { formRef, genIndex } = wordList
 </script>
 
 <template>
@@ -42,14 +42,14 @@ const { formRef } = wordList
       bordered
       :columns="wordList.columns.value"
       :data-source="wordList.formState.list"
-      :pagination="false"
+      :pagination="wordList.pagination.value"
       size="small"
     >
-      <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
+      <template #bodyCell="{ column, index }: { column: ColumnsType[number], index: number }">
         <template v-if="column.key === 'word'">
-          <FormItem :name="['list', i, 'word']" :rules="wordList.rules['list[i].word']">
+          <FormItem :name="['list', genIndex(index), 'word']" :rules="wordList.rules['list[i].word']">
             <Input
-              v-model:value.trim="wordList.formState.list![i].word"
+              v-model:value.trim="wordList.formState.list![genIndex(index)].word"
               :maxlength="100"
               :placeholder="lang('Please enter')"
               show-count
@@ -59,9 +59,9 @@ const { formRef } = wordList
         </template>
 
         <template v-if="column.key === 'groupUUID'">
-          <FormItem :name="['list', i, 'groupUUID']">
+          <FormItem :name="['list', genIndex(index), 'groupUUID']">
             <Select
-              v-model:value="wordList.formState.list![i].groupUUID"
+              v-model:value="wordList.formState.list![genIndex(index)].groupUUID"
               :placeholder="lang('Please select group')"
               size="small"
               :options="wordList.options.value"
@@ -71,7 +71,7 @@ const { formRef } = wordList
 
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
-            <Button class="!px-0" danger size="small" type="link" @click="() => wordList.handleDelete(i)">
+            <Button class="!px-0" danger size="small" type="link" @click="() => wordList.handleDelete(genIndex(index))">
               {{ lang('Delete') }}
             </Button>
           </div>

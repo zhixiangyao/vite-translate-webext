@@ -15,7 +15,7 @@ const lang = useLang()
 const route = useRoute()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'WebsiteList')
 const websiteList = useWebsiteList()
-const { formRef } = websiteList
+const { formRef, genIndex } = websiteList
 </script>
 
 <template>
@@ -42,19 +42,25 @@ const { formRef } = websiteList
       bordered
       :columns="websiteList.columns.value"
       :data-source="websiteList.formState.list"
-      :pagination="false"
+      :pagination="websiteList.pagination.value"
       size="small"
     >
-      <template #bodyCell="{ column, index: i }: { column: ColumnsType[number], index: number }">
+      <template #bodyCell="{ column, index }: { column: ColumnsType[number], index: number }">
         <template v-if="column.key === 'enable'">
-          <FormItem :name="['list', i, 'enable']">
-            <Switch v-model:checked="websiteList.formState.list![i].enable" size="small" />
+          <FormItem :name="['list', genIndex(index), 'enable']">
+            <Switch v-model:checked="websiteList.formState.list![genIndex(index)].enable" size="small" />
           </FormItem>
         </template>
 
         <template v-if="column.key === 'operation'">
           <div class="flex gap-2">
-            <Button class="!px-0" danger size="small" type="link" @click="() => websiteList.handleDelete(i)">
+            <Button
+              class="!px-0"
+              danger
+              size="small"
+              type="link"
+              @click="() => websiteList.handleDelete(genIndex(index))"
+            >
               {{ lang('Delete') }}
             </Button>
           </div>
