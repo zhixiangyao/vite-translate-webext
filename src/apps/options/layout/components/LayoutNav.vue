@@ -30,7 +30,7 @@ watch(route, to => to.name && (selectedKeys.value = [to.name.toString()]), { imm
 </script>
 
 <template>
-  <nav :style="{ backgroundColor: token.colorBgContainer }">
+  <nav class="flex flex-col flex-shrink-0" :style="{ backgroundColor: token.colorBgContainer }">
     <slot name="top" />
     <Menu
       :selected-keys="selectedKeys"
@@ -45,12 +45,7 @@ watch(route, to => to.name && (selectedKeys.value = [to.name.toString()]), { imm
 </template>
 
 <style scoped>
-nav {
-  @apply grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-4;
-  @apply flex flex-col flex-shrink-0;
-
-  :deep(.ant-menu-title-content) {
-    @apply select-none;
-  }
+nav :deep(.ant-menu-title-content) {
+  @apply select-none;
 }
 </style>

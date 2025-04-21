@@ -22,7 +22,7 @@ const { state, itemsRef, handleContextMenu } = useContextMenu()
 </script>
 
 <template>
-  <ul :style="{ backgroundColor: token.colorBgContainer }">
+  <ul class="flex items-center p-1 text-xs overflow-hidden" :style="{ backgroundColor: token.colorBgContainer }">
     <VueDraggable v-model="list" :animation="150" class="flex gap-2">
       <li
         v-for="(item, index) in list"
@@ -58,10 +58,3 @@ const { state, itemsRef, handleContextMenu } = useContextMenu()
     @close-other="() => use.handleCloseOther(state.view)"
   />
 </template>
-
-<style scoped>
-ul {
-  @apply grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3;
-  @apply flex items-center p-1 text-xs overflow-hidden;
-}
-</style>

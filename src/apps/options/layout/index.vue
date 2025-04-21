@@ -17,7 +17,7 @@ const cachedViewNames = computed(() => view.list.value.map(item => item.name))
 
 <template>
   <div class="layout">
-    <LayoutNav :collapsed="collapsed">
+    <LayoutNav :collapsed="collapsed" class="grid-col-start-1 grid-col-end-2 grid-row-start-1 grid-row-end-4">
       <template #top>
         <HeaderTop :collapsed="collapsed" />
       </template>
@@ -27,11 +27,11 @@ const cachedViewNames = computed(() => view.list.value.map(item => item.name))
       </template>
     </LayoutNav>
 
-    <LayoutHeader />
+    <LayoutHeader class="grid-col-start-2 grid-col-end-3 grid-row-start-1 grid-row-end-2" />
 
-    <LayoutViewTab :use="view" />
+    <LayoutViewTab :use="view" class="grid-col-start-2 grid-col-end-3 grid-row-start-2 grid-row-end-3" />
 
-    <LayoutMain :cached-view-names="cachedViewNames" />
+    <LayoutMain class="grid-col-start-2 grid-col-end-3 grid-row-start-3 grid-row-end-4" :cached-view-names="cachedViewNames" />
   </div>
 </template>
 
