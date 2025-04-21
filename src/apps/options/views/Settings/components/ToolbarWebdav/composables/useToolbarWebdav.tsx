@@ -1,6 +1,7 @@
 import type { FileStat, WebDAVClient } from 'webdav'
 import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/storage'
 import packageJson from '#/package.json'
+import { useFileDialog } from '@vueuse/core'
 import { App, Button } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { AuthType, createClient } from 'webdav'
@@ -9,6 +10,30 @@ import { useLang } from '~/composables/useLang'
 import { storageGroupList, storageSettings, storageWebsiteList, storageWordList } from '~/storage'
 import { clone } from '~/utils/clone'
 import { triggerFileDownload } from '~/utils/upload'
+
+function encodeBackupData(time: string) {
+  const jsonData: TChromeBackupData = clone({
+    time,
+    version: packageJson.version,
+    data: {
+      wordList: storageWordList.value,
+      groupList: storageGroupList.value,
+      websiteList: storageWebsiteList.value,
+      settings: storageSettings.value,
+    },
+  })
+  const jsonString = JSON.stringify(jsonData, null, 2)
+  return jsonString
+}
+
+function decodeBackupData(content: ArrayBuffer) {
+  const decoder = new TextDecoder('utf-8')
+  const contentString = decoder.decode(content)
+
+  const data = JSON.parse(contentString) as Partial<TChromeBackupData>
+
+  return data
+}
 
 interface TChromeBackupData {
   time: string
@@ -39,6 +64,7 @@ export function useToolbarWebdav(params: Params) {
   const loading = ref(false)
   const open = ref(false)
   const disabled = computed(() => !url.value || !username.value || !password.value || !path.value)
+  const fileDialog = useFileDialog({ accept: '.json' })
 
   function handleWatchCreateClient(data: [string | undefined, string | undefined, string | undefined]) {
     const [url, username, password] = data
@@ -59,29 +85,10 @@ export function useToolbarWebdav(params: Params) {
     }
   }
 
-  async function handleExportYes(options: { time: string, fileName: string, close: () => void }) {
-    const jsonData: TChromeBackupData = clone({
-      time: options.time,
-      version: packageJson.version,
-      data: {
-        wordList: storageWordList.value,
-        groupList: storageGroupList.value,
-        websiteList: storageWebsiteList.value,
-        settings: storageSettings.value,
-      },
-    })
-    const jsonString = JSON.stringify(jsonData, null, 2)
-
-    if (disabled.value) {
-      const blob = new Blob([jsonString], { type: 'application/json' })
-      const downloadUrl = URL.createObjectURL(blob)
-      triggerFileDownload(downloadUrl, options.fileName)
-      message.success(lang('Exported successfully!'))
-      options.close()
-      return
-    }
-
+  async function handleExportYes(options: { time: string, fileName: string, cb: () => void }) {
     try {
+      const jsonString = encodeBackupData(options.time)
+
       const isUploaded = await client.value!.putFileContents(path.value + options.fileName, jsonString, {
         overwrite: true,
         contentLength: false,
@@ -92,7 +99,7 @@ export function useToolbarWebdav(params: Params) {
 
       if (isUploaded) {
         message.success(lang('Uploaded successfully!'))
-        options.close()
+        options.cb()
       }
       else {
         message.warning(lang('Upload not completed, please check server response!'))
@@ -103,15 +110,11 @@ export function useToolbarWebdav(params: Params) {
     }
   }
 
-  async function handleImportYes(options: { item: FileStat, close: () => void }) {
+  async function handleImportYes(options: { item: FileStat, cb: () => void }) {
     const content = await client.value!.getFileContents(options.item.filename)
     if (content instanceof ArrayBuffer) {
-      // 使用 TextDecoder 解码 ArrayBuffer
-      const decoder = new TextDecoder('utf-8')
-      const contentString = decoder.decode(content)
-
       try {
-        const data = JSON.parse(contentString) as Partial<TChromeBackupData>
+        const data = decodeBackupData(content)
 
         if (!data?.time || !data?.version || !data?.data) {
           message.error(lang('Oops! Import failed, This file cannot be imported!'))
@@ -133,25 +136,25 @@ export function useToolbarWebdav(params: Params) {
       message.error(lang('Oops! Import failed!'))
       return
     }
-    options.close()
+    options.cb()
   }
 
-  async function handleDeleteYes(options: { item: FileStat, close: () => void }) {
+  async function handleDeleteYes(options: { item: FileStat, cb: () => void }) {
     await client.value!.deleteFile(options.item.filename)
     message.success(lang('Deleted successfully!'))
     handleLoadBackupItems()
-    options.close()
+    options.cb()
   }
 
-  function handleImport(item: FileStat) {
+  function handleDelete(options: { item: FileStat }) {
     const { close } = customModal.confirm({
-      title: <div>{lang('Sure you want to Import?')}</div>,
-      content: item.basename,
+      title: lang('Sure you want to Delete?'),
+      content: options.item.basename,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
           <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
-          <Button type="primary" onClick={() => handleImportYes({ item, close })}>
+          <Button type="primary" onClick={() => handleDeleteYes({ item: options.item, cb: close })}>
             {lang('Yes')}
           </Button>
         </div>
@@ -159,20 +162,52 @@ export function useToolbarWebdav(params: Params) {
     })
   }
 
-  function handleDelete(item: FileStat) {
+  function handleImport(options: { item: FileStat }) {
     const { close } = customModal.confirm({
-      title: <div>{lang('Sure you want to Delete?')}</div>,
-      content: item.basename,
+      title: lang('Sure you want to Import?'),
+      content: options.item.basename,
       footer: (
         <div class="mt-3 flex justify-end gap-2">
           <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
-          <Button type="primary" onClick={() => handleDeleteYes({ item, close })}>
+          <Button type="primary" onClick={() => handleImportYes({ item: options.item, cb: close })}>
             {lang('Yes')}
           </Button>
         </div>
       ),
     })
+  }
+
+  function handleImportFromLocal() {
+    fileDialog.onChange(async (files) => {
+      const file = files?.[0]
+      const content = await file?.arrayBuffer()
+
+      if (content instanceof ArrayBuffer) {
+        try {
+          const data = decodeBackupData(content)
+
+          if (!data?.time || !data?.version || !data?.data) {
+            message.error(lang('Oops! Import failed, This file cannot be imported!'))
+            return
+          }
+
+          storageWordList.value = data.data.wordList ?? []
+          storageGroupList.value = data.data.groupList ?? []
+          storageWebsiteList.value = data.data.websiteList ?? []
+          storageSettings.value = data.data.settings ?? {}
+
+          message.success(lang('Imported successfully!'))
+        }
+        catch {
+          message.error(lang('Oops!, This file cannot be imported!'))
+        }
+      }
+      else {
+        message.error(lang('Oops! Import failed!'))
+      }
+    })
+    fileDialog.open()
   }
 
   async function handleExport() {
@@ -190,7 +225,7 @@ export function useToolbarWebdav(params: Params) {
       const fileName = `Translate-${time}.backup.json`
 
       const { close } = customModal.confirm({
-        title: disabled.value ? lang('Export to Local') : lang('Export to Webdav'),
+        title: lang('Export to Webdav'),
         width: 550,
         content: (
           <div class="flex items-center gap-1">
@@ -205,7 +240,7 @@ export function useToolbarWebdav(params: Params) {
           <div class="mt-3 flex justify-end gap-2">
             <Button onClick={() => close()}>{lang('Cancel')}</Button>
 
-            <Button type="primary" onClick={() => handleExportYes({ time, fileName, close })}>
+            <Button type="primary" onClick={() => handleExportYes({ time, fileName, cb: close })}>
               {lang('Yes')}
             </Button>
           </div>
@@ -215,6 +250,43 @@ export function useToolbarWebdav(params: Params) {
     catch {
       message.error(lang('Oops!'))
     }
+  }
+
+  async function handleExportToLocal() {
+    const time = dayjs().toISOString()
+    const fileName = `Translate-${time}.backup.json`
+
+    const { close } = customModal.confirm({
+      title: lang('Export to Local'),
+      width: 550,
+      content: (
+        <div class="flex items-center gap-1">
+          <div>
+            {lang('File Name')}
+            :
+          </div>
+          <div>{fileName}</div>
+        </div>
+      ),
+      footer: (
+        <div class="mt-3 flex justify-end gap-2">
+          <Button onClick={() => close()}>{lang('Cancel')}</Button>
+
+          <Button
+            type="primary"
+            onClick={() => {
+              const jsonString = encodeBackupData(time)
+              const blob = new Blob([jsonString], { type: 'application/json' })
+              const downloadUrl = URL.createObjectURL(blob)
+              triggerFileDownload(downloadUrl, fileName)
+              close()
+            }}
+          >
+            {lang('Yes')}
+          </Button>
+        </div>
+      ),
+    })
   }
 
   async function handleShowBackups() {
@@ -253,8 +325,10 @@ export function useToolbarWebdav(params: Params) {
     disabled,
 
     handleImport,
+    handleImportFromLocal,
     handleDelete,
     handleExport,
+    handleExportToLocal,
     handleShowBackups,
   }
 }
