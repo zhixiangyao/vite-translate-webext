@@ -9,6 +9,7 @@ import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { useLang } from '~/composables/useLang'
 import { storageGroupList, storageSettings, storageWebsiteList, storageWordList } from '~/storage'
 import { clone } from '~/utils/clone'
+import { isObject } from '~/utils/is'
 import { triggerFileDownload } from '~/utils/upload'
 
 function encodeBackupData(time: string) {
@@ -26,13 +27,36 @@ function encodeBackupData(time: string) {
   return jsonString
 }
 
-function decodeBackupData(content: ArrayBuffer) {
+function decodeBackupData(content: ArrayBuffer): TChromeBackupData {
   const decoder = new TextDecoder('utf-8')
   const contentString = decoder.decode(content)
 
-  const data = JSON.parse(contentString) as Partial<TChromeBackupData>
+  try {
+    const data = JSON.parse(contentString) as TChromeBackupData
 
-  return data
+    if (
+      !isObject(data)
+      || !data.time
+      || !data.version
+      || !isObject(data.data)
+      || !Array.isArray(data.data.wordList)
+      || !Array.isArray(data.data.groupList)
+      || !Array.isArray(data.data.websiteList)
+      || !Array.isArray(data.data.websiteList)
+      || !isObject(data.data.settings)
+      || !isObject(data.data.settings.api)
+      || !isObject(data.data.settings.highlight)
+      || !isObject(data.data.settings.theme)
+      || !isObject(data.data.settings.webdav)
+    ) {
+      throw new Error('Oops! Import failed, This file cannot be imported!')
+    }
+
+    return data
+  }
+  catch {
+    throw new Error('Oops! Import failed, This file cannot be imported!')
+  }
 }
 
 interface TChromeBackupData {
@@ -77,6 +101,44 @@ export function useToolbarWebdav(params: Params) {
     }
   }
 
+  function handleImportToStorage(content?: unknown) {
+    if (content instanceof ArrayBuffer === false) {
+      message.error(lang('Oops! Import failed!'))
+      return
+    }
+
+    try {
+      const data = decodeBackupData(content)
+
+      storageWordList.value = data.data.wordList
+      storageGroupList.value = data.data.groupList
+      storageWebsiteList.value = data.data.websiteList
+      storageSettings.value = {
+        lang: data.data.settings.lang,
+        api: {
+          url: data.data.settings.api.url,
+          token: data.data.settings.api.token,
+          timeout: data.data.settings.api.timeout,
+        },
+        highlight: {
+          style: data.data.settings.highlight.style,
+        },
+        theme: {
+          color: data.data.settings.theme.color,
+        },
+        webdav: {
+          url: data.data.settings.webdav.url,
+          username: data.data.settings.webdav.username,
+          password: data.data.settings.webdav.password,
+          path: data.data.settings.webdav.path,
+        },
+      }
+
+      message.success(lang('Imported successfully!'))
+    }
+    catch {}
+  }
+
   async function handleLoadBackupItems() {
     const backupItems = await client.value!.getDirectoryContents(path.value!)
 
@@ -112,30 +174,9 @@ export function useToolbarWebdav(params: Params) {
 
   async function handleImportYes(options: { item: FileStat, cb: () => void }) {
     const content = await client.value!.getFileContents(options.item.filename)
-    if (content instanceof ArrayBuffer) {
-      try {
-        const data = decodeBackupData(content)
 
-        if (!data?.time || !data?.version || !data?.data) {
-          message.error(lang('Oops! Import failed, This file cannot be imported!'))
-          return
-        }
+    handleImportToStorage(content)
 
-        storageWordList.value = data.data.wordList ?? []
-        storageGroupList.value = data.data.groupList ?? []
-        storageWebsiteList.value = data.data.websiteList ?? []
-        storageSettings.value = data.data.settings ?? {}
-
-        message.success(lang('Imported successfully!'))
-      }
-      catch {
-        message.error(lang('Oops!, This file cannot be imported!'))
-      }
-    }
-    else {
-      message.error(lang('Oops! Import failed!'))
-      return
-    }
     options.cb()
   }
 
@@ -183,29 +224,7 @@ export function useToolbarWebdav(params: Params) {
       const file = files?.[0]
       const content = await file?.arrayBuffer()
 
-      if (content instanceof ArrayBuffer) {
-        try {
-          const data = decodeBackupData(content)
-
-          if (!data?.time || !data?.version || !data?.data) {
-            message.error(lang('Oops! Import failed, This file cannot be imported!'))
-            return
-          }
-
-          storageWordList.value = data.data.wordList ?? []
-          storageGroupList.value = data.data.groupList ?? []
-          storageWebsiteList.value = data.data.websiteList ?? []
-          storageSettings.value = data.data.settings ?? {}
-
-          message.success(lang('Imported successfully!'))
-        }
-        catch {
-          message.error(lang('Oops!, This file cannot be imported!'))
-        }
-      }
-      else {
-        message.error(lang('Oops! Import failed!'))
-      }
+      handleImportToStorage(content)
     })
     fileDialog.open()
   }

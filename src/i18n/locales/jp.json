@@ -70,7 +70,6 @@
   "Oops! API interface exception! Please try again!": "あらら！APIインターフェースに異常があります。再試行してください！",
   "Oops! API request timed out! Please try again!": "あらら！APIリクエストがタイムアウトしました。再試行してください！",
   "Oops! Import failed, This file cannot be imported!": "あらら！インポートに失敗しました、このファイルはインポートできません！",
-  "Oops!, This file cannot be imported!": "あらら、このファイルはインポートできません！",
   "Oops! Import failed!": "あらら！インポートに失敗しました！",
   "Upload not completed, please check server response!": "アップロードが完了していません、サーバーの応答を確認してください！",
 

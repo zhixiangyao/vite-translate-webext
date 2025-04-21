@@ -70,7 +70,6 @@
   "Oops! API interface exception! Please try again!": "哎呀！API接口异常！请重试！",
   "Oops! API request timed out! Please try again!": "哎呀！API请求超时！请重试！",
   "Oops! Import failed, This file cannot be imported!": "哎呀！导入失败，此文件无法导入！",
-  "Oops!, This file cannot be imported!": "哎呀！此文件无法导入！",
   "Oops! Import failed!": "哎呀！导入失败！",
   "Upload not completed, please check server response!": "上传未完成，请检查服务器响应！",
 
