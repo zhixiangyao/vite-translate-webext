@@ -1,10 +1,10 @@
 {
   "name": "vite-translate-webext",
   "displayName": "Translate",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "packageManager": "pnpm@10.8.0",
-  "description": "A translate and english words book extension.",
+  "description": "A Translation and English Vocabulary Book Extension.",
   "author": "zhixiangyao <blueskyzx@icloud.com> <https://github.com/zhixiangyao>",
   "homepage": "https://github.com/zhixiangyao/vite-translate-webext",
   "repository": {
