@@ -18,10 +18,10 @@ export function useWebsiteList() {
     list: [],
   })
   const pageNo = ref(1)
-  const pageSize = ref(13)
+  const pageSize = ref(15)
   const total = ref(0)
   const genIndex = computed(() => (index: number) => (pageNo.value - 1) * pageSize.value + index)
-  const columns = computed<ColumnsType>(() => [
+  const columns = computed<ColumnsType<TRecordWebsite>>(() => [
     {
       title: lang('Index'),
       key: 'index',

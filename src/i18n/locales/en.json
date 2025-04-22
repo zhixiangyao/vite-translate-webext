@@ -1,10 +1,13 @@
 {
+  "Edit": "Edit",
   "Second": "Second",
   "Index": "Index",
   "Copy": "Copy",
   "Yes": "Yes",
   "Save": "Save",
   "Add": "Add",
+  "Add Word": "Add Word",
+  "Edit Word": "Edit Word",
   "Delete": "Delete",
   "Cancel": "Cancel",
   "Word": "Word",
@@ -53,6 +56,8 @@
   "Uploaded successfully!": "Uploaded successfully!",
   "Imported successfully!": "Imported successfully!",
   "Deleted successfully!": "Deleted successfully!",
+  "Add successfully!": "Add successfully!",
+  "Edit successfully!": "Edit successfully!",
 
   "Long press to delete": "Long press to delete",
   "Sure you want to Import?": "Sure you want to Import?",

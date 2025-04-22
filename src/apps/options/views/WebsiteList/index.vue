@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { TRecordWebsite } from '~/storage'
 import { Button, Form, FormItem, Switch, Table } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/LayoutHeader.vue'
@@ -45,7 +46,7 @@ const { formRef, genIndex } = websiteList
       :pagination="websiteList.pagination.value"
       size="small"
     >
-      <template #bodyCell="{ column, index }: { column: ColumnsType[number], index: number }">
+      <template #bodyCell="{ column, index }: { column: ColumnsType<TRecordWebsite>[number], index: number }">
         <template v-if="column.key === 'enable'">
           <FormItem :name="['list', genIndex(index), 'enable']">
             <Switch v-model:checked="websiteList.formState.list![genIndex(index)].enable" size="small" />

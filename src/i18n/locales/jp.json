@@ -1,10 +1,13 @@
 {
+  "Edit": "編集",
   "Second": "秒",
   "Index": "索引",
   "Copy": "コピー",
   "Yes": "はい",
   "Save": "保存",
   "Add": "追加",
+  "Add Word": "追加単語",
+  "Edit Word": "編集単語",
   "Delete": "削除",
   "Cancel": "キャンセル",
   "Word": "単語",
@@ -53,6 +56,8 @@
   "Uploaded successfully!": "アップロード成功しました！",
   "Imported successfully!": "インポート成功しました！",
   "Deleted successfully!": "削除に成功しました！",
+  "Add successfully!": "追加に成功しました！",
+  "Edit successfully!": "編集に成功しました！",
 
   "Long press to delete": "長押しで削除",
   "Sure you want to Import?": "本当にインポートしたいですか？",
