@@ -32,7 +32,7 @@ const title = computed(() => (props.use.type.value === 'add' ? lang('Add Group')
         <Input readonly :value="formState.uuid" :bordered="false" />
       </FormItem>
       <FormItem :label="lang('Group Name')" name="name" :rules="use.rules.name">
-        <Input v-model:value.trim="formState.name" :maxlength="20" :placeholder="lang('Please enter')" show-count />
+        <Input v-model:value.trim="formState.name" :maxlength="20" :placeholder="lang('Please enter!')" show-count />
       </FormItem>
     </Form>
 

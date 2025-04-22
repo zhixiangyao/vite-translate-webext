@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 
 const labelCol = { span: 4 }
 const wrapperCol = { span: 26 - labelCol.span }
-const { open, formRef, formState, type } = props.use
+const { open, formRef, formState, type, rules } = props.use
 
 const lang = useLang()
 const title = computed(() => (type.value === 'add' ? lang('Add Word') : lang('Edit Word')))
@@ -32,14 +32,14 @@ const options = computed(() =>
       autocomplete="off"
       :label-col="labelCol"
       :model="formState"
-      :rules="use.rules"
+      :rules="rules"
       :wrapper-col="wrapperCol"
     >
-      <FormItem :label="lang('Word')" name="word" :rules="use.rules.word">
+      <FormItem :label="lang('Word')" name="word" :rules="rules.word">
         <Input
           v-model:value.trim="formState.word"
           :maxlength="100"
-          :placeholder="lang('Please enter')"
+          :placeholder="lang('Please enter!')"
           show-count
           :disabled="type === 'edit'"
         />
@@ -48,7 +48,7 @@ const options = computed(() =>
       <FormItem :label="lang('Group Name')" name="groupUUID">
         <Select
           v-model:value="formState.groupUUID"
-          :placeholder="lang('Please select group')"
+          :placeholder="lang('Please select group!')"
           size="small"
           :options="options"
           allow-clear

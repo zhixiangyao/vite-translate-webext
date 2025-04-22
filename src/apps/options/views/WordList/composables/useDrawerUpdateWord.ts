@@ -2,27 +2,17 @@ import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { TRecordWord } from '~/storage'
 import { App } from 'ant-design-vue'
+import { useLang } from '~/composables/useLang'
 import { regexIsWord } from '~/constant/regex'
 import { storageGroupList, storageWordList } from '~/storage'
 import { clone } from '~/utils/clone'
 
 type TType = 'edit' | 'add'
 
-async function validatorIsWord(_: Rule, value: TRecordWord['word']) {
-  if (value && regexIsWord.test(value) === false) {
-    return Promise.reject(new Error('Please enter the English word'))
-  }
-  else {
-    return Promise.resolve()
-  }
-}
-
-const rules = {
-  word: [{ required: true, message: 'Please enter the word', trigger: 'change' }, { validator: validatorIsWord }],
-} satisfies Record<keyof Pick<TRecordWord, 'word'>, Rule[]>
-
 export function useDrawerUpdateWord() {
   const { message } = App.useApp()
+  const lang = useLang()
+
   const open = ref(false)
   const type = ref<TType>()
   const formRef = ref<FormInstance | null>(null)
@@ -30,6 +20,25 @@ export function useDrawerUpdateWord() {
   const formState = reactive<Partial<TRecordWord>>({
     word: void 0,
     groupUUID: void 0,
+  })
+  const rules = computed(() => {
+    const rules = {
+      word: [
+        { required: true, message: lang('Please enter the Word!'), trigger: 'change' },
+        {
+          validator: (_: Rule, value: TRecordWord['word']) => {
+            if (value && regexIsWord.test(value) === false) {
+              return Promise.reject(new Error(lang('Please enter the English Word!')))
+            }
+            else {
+              return Promise.resolve()
+            }
+          },
+        },
+      ],
+    } satisfies Record<keyof Pick<TRecordWord, 'word'>, Rule[]>
+
+    return rules
   })
 
   function handleReset() {
