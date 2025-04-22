@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Content from '~/apps/content/Content.vue'
 import i18n from '~/i18n'
 
 interface Props {
@@ -7,10 +8,6 @@ interface Props {
 
 defineOptions({ name: 'ShadowHost' })
 const props = defineProps<Props>()
-
-const Content = defineAsyncComponent({
-  loader: () => import('~/apps/content/Content.vue'),
-})
 
 const ref = useTemplateRef('ref')
 
