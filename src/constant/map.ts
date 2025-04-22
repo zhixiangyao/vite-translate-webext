@@ -1,5 +1,5 @@
 import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/storage'
-import { EnumDataSet, EnumSpeakerLang } from './enum'
+import { EnumDataSet, EnumLayout, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_GROUP_LIST: TRecordGroup[] = [
   {
@@ -46,6 +46,7 @@ export const DEFAULT_SETTINGS: TSettings = {
   },
   theme: {
     color: '#A0D911',
+    layout: EnumLayout.LEFT,
   },
   webdav: {
     url: void 0,

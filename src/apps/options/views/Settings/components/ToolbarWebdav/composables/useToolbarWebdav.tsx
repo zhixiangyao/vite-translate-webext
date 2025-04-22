@@ -125,6 +125,7 @@ export function useToolbarWebdav(params: Params) {
         },
         theme: {
           color: data.data.settings.theme.color,
+          layout: data.data.settings.theme.layout,
         },
         webdav: {
           url: data.data.settings.webdav.url,

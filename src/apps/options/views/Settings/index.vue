@@ -7,7 +7,7 @@ import { layoutHeaderRightSlotRef } from '~/apps/options/layout/components/Layou
 import { useLang } from '~/composables/useLang'
 import { useLocal } from '~/composables/useLocale'
 import { EnumLang } from '~/constant/enum'
-import { OPTIONS_LANG } from '~/constant/options'
+import { OPTIONS_LANG, OPTIONS_LAYOUT } from '~/constant/options'
 import ToolbarWebdav from './components/ToolbarWebdav/index.vue'
 import { useSettings } from './composables/useSettings'
 
@@ -46,7 +46,7 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
       <!-- Basic -->
       <TabPane :key="EnumActiveKey.Basic" :tab="lang('Basic')">
         <FormItem :label="lang('Lang')" :name="('lang' satisfies TFormTypeKeys)" :rules="rules.lang">
-          <Select v-model:value="formState.lang" size="small" class="w-[85px]" :options="OPTIONS_LANG" allow-clear />
+          <Select v-model:value="formState.lang" size="small" class="!w-40" :options="OPTIONS_LANG" allow-clear />
         </FormItem>
 
         <FormItem :label="lang('Request URL')" :name="('apiUrl' satisfies TFormTypeKeys)" :rules="rules.apiUrl">
@@ -62,7 +62,7 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
           :name="('apiTimeout' satisfies TFormTypeKeys)"
           :rules="rules.apiTimeout"
         >
-          <InputNumber v-model:value="formState.apiTimeout" :min="1" :max="60" :precision="0" />
+          <InputNumber v-model:value="formState.apiTimeout" class="w-40" :min="1" :max="60" :precision="0" :addon-after="lang('Second')" />
         </FormItem>
 
         <FormItem
@@ -80,7 +80,11 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
         </FormItem>
 
         <FormItem :label="lang('Theme Color')" :name="('themeColor' satisfies TFormTypeKeys)" :rules="rules.themeColor">
-          <Input v-model:value="formState.themeColor" type="color" class="w-22" />
+          <Input v-model:value="formState.themeColor" type="color" class="w-40" />
+        </FormItem>
+
+        <FormItem :label="lang('Theme Layout')" :name="('themeLayout' satisfies TFormTypeKeys)" :rules="rules.themeLayout">
+          <Select v-model:value="formState.themeLayout" size="small" class="!w-40" :options="OPTIONS_LAYOUT" allow-clear />
         </FormItem>
       </TabPane>
 

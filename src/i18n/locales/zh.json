@@ -1,4 +1,5 @@
 {
+  "Second": "秒",
   "Index": "索引",
   "Copy": "复制",
   "Yes": "是的",
@@ -39,6 +40,7 @@
   "Request Timeout": "请求 Timeout",
   "Highlight Style": "高亮样式",
   "Theme Color": "主题颜色",
+  "Theme Layout": "主题布局",
   "Switch Theme": "切换主题",
   "Back Home": "返回首页",
   "Click to unfix": "点击解除固定",
@@ -64,6 +66,7 @@
   "Please enter the Request Timeout!": "请输入请求超时！",
   "Please enter the Highlight Style!": "请输入高亮样式！",
   "Please enter the Theme Color!": "请输入主题颜色！",
+  "Please select the Theme Layout!": "请选择主题布局！",
   "Please enter the content to be translated!": "请输入要翻译的内容！",
   "The first string must be /": "第一个字符串必须是 /",
   "The last string must be /": "最后一个字符串必须是 /",

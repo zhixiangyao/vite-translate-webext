@@ -1,4 +1,5 @@
 {
+  "Second": "Second",
   "Index": "Index",
   "Copy": "Copy",
   "Yes": "Yes",
@@ -39,6 +40,7 @@
   "Request Timeout": "Request Timeout",
   "Highlight Style": "Highlight Style",
   "Theme Color": "Theme Color",
+  "Theme Layout": "Theme Layout",
   "Switch Theme": "Switch Theme",
   "Back Home": "Back Home",
   "Click to unfix": "Click to unfix",
@@ -64,6 +66,7 @@
   "Please enter the Request Timeout!": "Please enter the Request Timeout!",
   "Please enter the Highlight Style!": "Please enter the Highlight Style!",
   "Please enter the Theme Color!": "Please enter the Theme Color!",
+  "Please select the Theme Layout!": "Please select the Theme Layout!",
   "Please enter the content to be translated!": "Please enter the content to be translated!",
   "The first string must be /": "The first string must be /",
   "The last string must be /": "'The last string must be /'",

@@ -61,13 +61,13 @@ export const layoutHeaderRightSlotRef = ref<HTMLDivElement>()
 
       <SwitchTheme />
     </div>
-  </header>
 
-  <LayoutViewTabContextMenu
-    v-model:open="state.open"
-    :x="state.x"
-    :y="state.y"
-    @close="() => use.handleClose(state.view)"
-    @close-other="() => use.handleCloseOther(state.view)"
-  />
+    <LayoutViewTabContextMenu
+      v-model:open="state.open"
+      :x="state.x"
+      :y="state.y"
+      @close="() => use.handleClose(state.view)"
+      @close-other="() => use.handleCloseOther(state.view)"
+    />
+  </header>
 </template>

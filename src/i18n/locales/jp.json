@@ -1,4 +1,5 @@
 {
+  "Second": "秒",
   "Index": "索引",
   "Copy": "コピー",
   "Yes": "はい",
@@ -39,6 +40,7 @@
   "Request Timeout": "リクエストタイムアウト",
   "Highlight Style": "ハイライトスタイル",
   "Theme Color": "テーマカラー",
+  "Theme Layout": "テーマレイアウト",
   "Switch Theme": "テーマ切替",
   "Back Home": "ホームに戻る",
   "Click to unfix": "クリックで固定解除",
@@ -64,6 +66,7 @@
   "Please enter the Request Timeout!": "リクエストタイムアウトを入力してください！",
   "Please enter the Highlight Style!": "ハイライトスタイルを入力してください！",
   "Please enter the Theme Color!": "テーマカラーを入力してください！",
+  "Please select the Theme Layout!": "テーマレイアウトを選んでください！",
   "Please enter the content to be translated!": "翻訳する内容を入力してください！",
   "The first string must be /": "最初の文字は / である必要があります",
   "The last string must be /": "最後の文字は / である必要があります",

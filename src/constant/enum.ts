@@ -25,3 +25,8 @@ export enum EnumLang {
   EN = 'en',
   JP = 'jp',
 }
+
+export enum EnumLayout {
+  RIGHT = 'right',
+  LEFT = 'left',
+}
