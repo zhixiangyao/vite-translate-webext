@@ -11,8 +11,8 @@ interface Props {
 defineOptions({ name: 'DrawerUpdateWord' })
 const props = defineProps<Props>()
 
-const labelCol = { span: 4 }
-const wrapperCol = { span: 26 - labelCol.span }
+const labelCol = { span: 5 }
+const wrapperCol = { span: 24 - labelCol.span }
 const { open, formRef, formState, type, rules } = props.use
 
 const lang = useLang()
@@ -49,7 +49,6 @@ const options = computed(() =>
         <Select
           v-model:value="formState.groupUUID"
           :placeholder="lang('Please select group!')"
-          size="small"
           :options="options"
           allow-clear
         />
