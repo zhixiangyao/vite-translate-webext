@@ -43,6 +43,7 @@ export const layoutHeaderRightSlotRef = ref<HTMLDivElement>()
             :bordered="false"
             @close="() => use.handleClose(item)"
             @click="() => use.handleTo(item)"
+            @mousedown="(event: MouseEvent) => event.button === 1 && use.handleClose(item)"
           >
             <template #icon>
               <component :is="viewsMap[item.name]?.icon" />
