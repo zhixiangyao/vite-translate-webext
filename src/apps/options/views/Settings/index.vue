@@ -46,7 +46,7 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
       <!-- Basic -->
       <TabPane :key="EnumActiveKey.Basic" :tab="lang('Basic')">
         <FormItem :label="lang('Lang')" :name="('lang' satisfies TFormTypeKeys)" :rules="rules.lang">
-          <Select v-model:value="formState.lang" size="small" class="!w-40" :options="OPTIONS_LANG" allow-clear />
+          <Select v-model:value="formState.lang" class="!w-40" :options="OPTIONS_LANG" allow-clear />
         </FormItem>
 
         <FormItem :label="lang('Request URL')" :name="('apiUrl' satisfies TFormTypeKeys)" :rules="rules.apiUrl">
@@ -84,7 +84,7 @@ const { rules, formRef, formState, disabledSave, disabledReset } = settings
         </FormItem>
 
         <FormItem :label="lang('Theme Layout')" :name="('themeLayout' satisfies TFormTypeKeys)" :rules="rules.themeLayout">
-          <Select v-model:value="formState.themeLayout" size="small" class="!w-40" :options="OPTIONS_LAYOUT" allow-clear />
+          <Select v-model:value="formState.themeLayout" class="!w-40" :options="OPTIONS_LAYOUT" allow-clear />
         </FormItem>
       </TabPane>
 

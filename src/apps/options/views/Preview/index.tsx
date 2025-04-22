@@ -10,6 +10,7 @@ export default defineComponent({
   name: 'Preview',
   setup() {
     const { token } = theme.useToken()
+    const show = ref(false)
     const previewContainer = ref<HTMLElement>()
     const { css } = useStyleTag(storageSettings.value.highlight.style)
     const words = computed(() => {
@@ -23,13 +24,16 @@ export default defineComponent({
 
     watch(() => words.value, debounceHighlight, { deep: true, immediate: true })
 
+    onActivated(() => (show.value = true))
+    onDeactivated(() => (show.value = false))
+
     return () => (
       <>
-        {previewContainer.value && <ShadowHost root={previewContainer.value} />}
+        {show.value && <ShadowHost root={previewContainer.value} />}
 
         <div
           ref={previewContainer}
-          class="p-4 items-center h-full border border-dashed rounded-sm text-size-sm md:text-size-lg lg:text-size-xl xl:text-size-2xl"
+          class="p-4 items-center h-full border border-dashed rounded-sm text-size-sm md:text-size-lg lg:text-size-xl xl:text-size-2xl overflow-auto"
           style={{ borderColor: token.value.colorPrimary }}
         >
           If you directly open the above index.html in your browser, you will find that it throws an error because ES
