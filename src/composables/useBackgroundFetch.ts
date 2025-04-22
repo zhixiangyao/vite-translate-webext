@@ -26,17 +26,17 @@ export function useBackgroundFetch(params?: { silent: boolean }) {
 
     onMessage('event-fetch-on', async ({ data }) => {
       switch (data.code) {
-        case EnumResponseCode.Success: {
+        case EnumResponseCode.SUCCESS: {
           resolve(data.response as T)
           break
         }
-        case EnumResponseCode.Error: {
-          reject(EnumResponseCode.Error)
+        case EnumResponseCode.ERROR: {
+          reject(EnumResponseCode.ERROR)
           !params?.silent && message.error('Unknown error')
           break
         }
-        case EnumResponseCode.AbortError: {
-          reject(EnumResponseCode.Error)
+        case EnumResponseCode.ABORT_ERROR: {
+          reject(EnumResponseCode.ABORT_ERROR)
           !params?.silent && message.error('Request timeout')
           break
         }

@@ -1,11 +1,11 @@
 export enum EnumDataSet {
-  highlightedWord = 'data-highlighted-word',
+  HIGHLIGHTED_WORD = 'data-highlighted-word',
 }
 
 export enum EnumResponseCode {
-  Error,
-  AbortError,
-  Success,
+  ERROR,
+  ABORT_ERROR,
+  SUCCESS,
 }
 
 export enum EnumTranslateLang {
@@ -14,8 +14,14 @@ export enum EnumTranslateLang {
 }
 
 export enum EnumSpeakerLang {
-  zh_CN = 'zh-CN',
-  zh_HK = 'zh-HK',
-  en_US = 'en-US',
-  en_GB = 'en-GB',
+  ZH_CN = 'zh-CN',
+  ZH_HK = 'zh-HK',
+  EN_US = 'en-US',
+  EN_GB = 'en-GB',
+}
+
+export enum EnumLang {
+  ZH = 'zh',
+  EN = 'en',
+  JP = 'jp',
 }

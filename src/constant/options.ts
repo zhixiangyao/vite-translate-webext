@@ -1,6 +1,6 @@
 import type { SelectProps } from 'ant-design-vue'
 import type { TSettings } from '~/storage'
-import { EnumLang } from '~/i18n'
+import { EnumLang } from '~/constant/enum'
 
 export const OPTIONS_LANG: SelectProps['options'] = [
   { label: 'Auto', value: 'auto' satisfies TSettings['lang'] },

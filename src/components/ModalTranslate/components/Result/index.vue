@@ -47,12 +47,12 @@ const text = computed(() => props.result.alternatives[selectedIdx.value])
 
       <div v-if="expend" class="pt-2 flex gap-2">
         <template v-if="isFiftyPercentLetters(search)">
-          <ButtonSpeaker :lang="EnumSpeakerLang.en_GB" :text="search" />
-          <ButtonSpeaker :lang="EnumSpeakerLang.en_US" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.EN_GB" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.EN_US" :text="search" />
         </template>
         <template v-else>
-          <ButtonSpeaker :lang="EnumSpeakerLang.zh_CN" :text="search" />
-          <ButtonSpeaker :lang="EnumSpeakerLang.zh_HK" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.ZH_CN" :text="search" />
+          <ButtonSpeaker :lang="EnumSpeakerLang.ZH_HK" :text="search" />
         </template>
       </div>
 

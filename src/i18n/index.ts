@@ -1,15 +1,10 @@
 import type { TMessageSchema } from './locales/schema'
 import { createI18n } from 'vue-i18n'
+import { EnumLang } from '~/constant/enum'
 import { storageSettings } from '~/storage'
 import en from './locales/en.json'
 import jp from './locales/jp.json'
 import zh from './locales/zh.json'
-
-export enum EnumLang {
-  ZH = 'zh',
-  EN = 'en',
-  JP = 'jp',
-}
 
 function languageDetected() {
   const lang = document.documentElement.lang || navigator.language

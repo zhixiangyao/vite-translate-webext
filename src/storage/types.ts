@@ -1,4 +1,4 @@
-import type { EnumLang } from '~/i18n'
+import type { EnumLang } from '~/constant/enum'
 
 export interface TCurrentTab {
   id?: number

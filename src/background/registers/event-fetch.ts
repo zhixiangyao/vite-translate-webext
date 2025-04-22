@@ -24,15 +24,15 @@ export function register() {
 
       sendMessage(
         'event-fetch-on',
-        { code: EnumResponseCode.Success, response: await response.json() },
+        { code: EnumResponseCode.SUCCESS, response: await response.json() },
         { tabId, context },
       ).catch()
     }
     catch (error) {
       clearTimeout(timeoutId)
-      let code = EnumResponseCode.Error
+      let code = EnumResponseCode.ERROR
       if (error instanceof Error && error.name === 'AbortError') {
-        code = EnumResponseCode.AbortError
+        code = EnumResponseCode.ABORT_ERROR
       }
 
       sendMessage('event-fetch-on', { code }, { tabId, context }).catch()
