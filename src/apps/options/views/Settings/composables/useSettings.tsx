@@ -113,7 +113,7 @@ export function useSettings() {
     storageSettings.value.webdav.password = formState.webdavPassword
     storageSettings.value.webdav.path = formState.webdavPath
 
-    setTimeout(() => message.success('Save success'), 20)
+    setTimeout(() => message.success(lang('Save successfully!')), 20)
   }
 
   function handleResetYes(close: () => void) {

@@ -1,4 +1,3 @@
-import type { FormInstance } from 'ant-design-vue'
 import type { ColumnsType, TableProps } from 'ant-design-vue/es/table'
 import type { TRecordWebsite } from '~/storage'
 import { App } from 'ant-design-vue'
@@ -13,7 +12,6 @@ interface TFormState {
 export function useWebsiteList() {
   const { message } = App.useApp()
   const lang = useLang()
-  const formRef = ref<FormInstance | null>(null)
   const formState = reactive<TFormState>({
     list: [],
   })
@@ -65,17 +63,14 @@ export function useWebsiteList() {
 
   function handleDelete(i: number) {
     formState.list?.splice(i, 1)
-    formRef.value?.clearValidate()
   }
 
   async function handleSave() {
-    await formRef.value?.validate()
     storageWebsiteList.value = clone(formState.list)
-    message.success('Save success')
+    message.success(lang('Save successfully!'))
   }
 
   async function handleCancel() {
-    formRef.value?.clearValidate()
     formState.list = clone(storageWebsiteList.value)
   }
 
@@ -89,7 +84,6 @@ export function useWebsiteList() {
 
   return {
     columns,
-    formRef,
     formState,
     disabledAdd,
     pagination,
