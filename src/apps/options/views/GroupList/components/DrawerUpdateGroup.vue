@@ -10,7 +10,7 @@ interface Props {
 defineOptions({ name: 'DrawerUpdateGroup' })
 const props = defineProps<Props>()
 
-const labelCol = { span: 5 }
+const labelCol = { span: 6 }
 const wrapperCol = { span: 24 - labelCol.span }
 const { open, formRef, formState } = props.use
 

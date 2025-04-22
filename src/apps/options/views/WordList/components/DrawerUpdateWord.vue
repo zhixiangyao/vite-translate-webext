@@ -11,7 +11,7 @@ interface Props {
 defineOptions({ name: 'DrawerUpdateWord' })
 const props = defineProps<Props>()
 
-const labelCol = { span: 5 }
+const labelCol = { span: 6 }
 const wrapperCol = { span: 24 - labelCol.span }
 const { open, formRef, formState, type, rules } = props.use
 
