@@ -32,7 +32,7 @@ function unhighlightTextNode(ruleList: string[]) {
   const isClearAll = ruleList.length === 0
 
   // 找出句子里的 word
-  const wordSpans = document.body.querySelectorAll(`span[${EnumDataSet.highlightedWord}]`)
+  const wordSpans = document.body.querySelectorAll(`span[${EnumDataSet.HIGHLIGHTED_WORD}]`)
 
   wordSpans.forEach((wordSpan) => {
     const wordText = wordSpan.textContent
@@ -53,7 +53,7 @@ function highlightTextNode(nodeValue: string, parentNode: HTMLElement, regexList
   for (let i = 0; i < regexList.length; i++) {
     text = text.replace(regexList[i], (match) => {
       // 用 span 包裹每个匹配项，并应用样式
-      return `<span ${EnumDataSet.highlightedWord}="true">${match}</span>`
+      return `<span ${EnumDataSet.HIGHLIGHTED_WORD}="true">${match}</span>`
     })
   }
 

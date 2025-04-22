@@ -5,6 +5,7 @@ import { App, Button } from 'ant-design-vue'
 import { css as cssBeautify } from 'js-beautify'
 import { useCustomModal } from '~/apps/options/composables/useCustomModal'
 import { useLang } from '~/composables/useLang'
+import { EnumLayout } from '~/constant/enum'
 import { DEFAULT_SETTINGS } from '~/constant/map'
 import { storageSettings } from '~/storage'
 
@@ -15,6 +16,7 @@ interface TFormType {
   apiTimeout: TSettings['api']['timeout']
   highlightStyle: TSettings['highlight']['style']
   themeColor: TSettings['theme']['color']
+  themeLayout: TSettings['theme']['layout']
   webdavUrl: TSettings['webdav']['url']
   webdavUsername: TSettings['webdav']['username']
   webdavPassword: TSettings['webdav']['password']
@@ -35,6 +37,7 @@ export function useSettings() {
     apiTimeout: 0,
     highlightStyle: '',
     themeColor: '',
+    themeLayout: EnumLayout.LEFT,
     webdavUrl: void 0,
     webdavUsername: void 0,
     webdavPassword: void 0,
@@ -48,6 +51,7 @@ export function useSettings() {
       && DEFAULT_SETTINGS.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(DEFAULT_SETTINGS.highlight.style) === formState.highlightStyle
       && DEFAULT_SETTINGS.theme.color === formState.themeColor
+      && DEFAULT_SETTINGS.theme.layout === formState.themeLayout
       && DEFAULT_SETTINGS.webdav.url === formState.webdavUrl
       && DEFAULT_SETTINGS.webdav.username === formState.webdavUsername
       && DEFAULT_SETTINGS.webdav.password === formState.webdavPassword
@@ -62,6 +66,7 @@ export function useSettings() {
       && storageSettings.value.api.timeout === formState.apiTimeout * 1000
       && cssBeautify(storageSettings.value.highlight.style) === formState.highlightStyle
       && storageSettings.value.theme.color === formState.themeColor
+      && storageSettings.value.theme.layout === formState.themeLayout
       && storageSettings.value.webdav.url === formState.webdavUrl
       && storageSettings.value.webdav.username === formState.webdavUsername
       && storageSettings.value.webdav.password === formState.webdavPassword
@@ -89,6 +94,7 @@ export function useSettings() {
       apiTimeout: [{ required: true, message: lang('Please enter the Request Timeout!'), trigger: 'change' }],
       highlightStyle: [{ required: true, message: lang('Please enter the Highlight Style!'), trigger: 'change' }],
       themeColor: [{ required: true, message: lang('Please enter the Theme Color!'), trigger: 'change' }],
+      themeLayout: [{ required: true, message: lang('Please select the Theme Layout!'), trigger: 'change' }],
       webdavPath: [{ validator: validatorIsPath }],
     } satisfies Record<string, Rule[]>
   })
@@ -101,12 +107,13 @@ export function useSettings() {
     storageSettings.value.api.timeout = formState.apiTimeout * 1000
     storageSettings.value.highlight.style = formState.highlightStyle
     storageSettings.value.theme.color = formState.themeColor
+    storageSettings.value.theme.layout = formState.themeLayout
     storageSettings.value.webdav.url = formState.webdavUrl
     storageSettings.value.webdav.username = formState.webdavUsername
     storageSettings.value.webdav.password = formState.webdavPassword
     storageSettings.value.webdav.path = formState.webdavPath
 
-    setTimeout(() => message.success('Save success'), 20)
+    setTimeout(() => message.success(lang('Save successfully!')), 20)
   }
 
   function handleResetYes(close: () => void) {
@@ -118,6 +125,7 @@ export function useSettings() {
     storageSettings.value.api.timeout = DEFAULT_SETTINGS.api.timeout
     storageSettings.value.highlight.style = DEFAULT_SETTINGS.highlight.style
     storageSettings.value.theme.color = DEFAULT_SETTINGS.theme.color
+    storageSettings.value.theme.layout = DEFAULT_SETTINGS.theme.layout
     storageSettings.value.webdav.url = DEFAULT_SETTINGS.webdav.url
     storageSettings.value.webdav.username = DEFAULT_SETTINGS.webdav.username
     storageSettings.value.webdav.password = DEFAULT_SETTINGS.webdav.password
@@ -152,6 +160,7 @@ export function useSettings() {
       formState.apiTimeout = setting.api.timeout / 1000
       formState.highlightStyle = cssBeautify(setting.highlight.style)
       formState.themeColor = setting.theme.color
+      formState.themeLayout = setting.theme.layout
       formState.webdavUrl = setting.webdav.url
       formState.webdavUsername = setting.webdav.username
       formState.webdavPassword = setting.webdav.password

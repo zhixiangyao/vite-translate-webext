@@ -43,7 +43,7 @@ export function useDrawerUpdateGroup() {
     try {
       if (type.value === 'add') {
         groupList.push(clone(formState))
-        message.success('Add success')
+        message.success('Add successfully!')
       }
 
       if (type.value === 'edit') {
@@ -54,7 +54,7 @@ export function useDrawerUpdateGroup() {
           }
         }
 
-        message.success('Edit success')
+        message.success('Edit successfully!')
       }
     }
     finally {
@@ -63,18 +63,18 @@ export function useDrawerUpdateGroup() {
     }
   }
 
-  function handleOpen(group?: TRecordGroup) {
-    if (group) {
-      const isUUID = uuidValidate(group.uuid)
+  function handleOpen(record?: TRecordGroup) {
+    if (record) {
+      const isUUID = uuidValidate(record.uuid)
       if (!isUUID) {
         message.error('The target object is the wrong UUID')
         return
       }
 
       type.value = 'edit'
-      formState.uuid = group.uuid
-      formState.name = group.name
-      formState.list = clone(group.list)
+      formState.uuid = record.uuid
+      formState.name = record.name
+      formState.list = clone(record.list)
     }
     else {
       type.value = 'add'

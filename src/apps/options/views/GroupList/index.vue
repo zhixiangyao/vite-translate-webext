@@ -25,14 +25,14 @@ const exportBackups = useExportBackups()
 const recoverBackups = useRecoverBackups()
 const showTeleport = computed(() => layoutHeaderRightSlotRef.value && route.name === 'GroupList')
 
-function handleDeleteGroup(group: TRecordGroup) {
+function handleDeleteGroup(record: TRecordGroup) {
   const groupList = storageGroupList.value
-  const index = groupList.findIndex(({ uuid }) => group.uuid === uuid)
+  const index = groupList.findIndex(({ uuid }) => record.uuid === uuid)
 
   if (index !== -1) {
     groupList.splice(index, 1)
     storageWordList.value.forEach((word) => {
-      if (word.groupUUID === group.uuid)
+      if (word.groupUUID === record.uuid)
         word.groupUUID = void 0
     })
   }
@@ -54,17 +54,17 @@ function handleDeleteGroup(group: TRecordGroup) {
     </Button>
   </Teleport>
 
-  <List class="pb-6" :grid="listGrid" :data-source="storageGroupList">
-    <template #renderItem="{ item: group }: { item: TRecordGroup }">
+  <List class="pb-6 overflow-auto" :grid="listGrid" :data-source="storageGroupList">
+    <template #renderItem="{ item: record }: { item: TRecordGroup }">
       <ListItem class="!mb-0 mt-6">
         <Card>
           <template #title>
             <div class="flex gap-2 items-center">
-              <WIconWrapper :color="token.colorPrimary" @click="() => drawerUpdateGroup.handleOpen(group)">
+              <WIconWrapper :color="token.colorPrimary" @click="() => drawerUpdateGroup.handleOpen(record)">
                 <EditOutlined />
               </WIconWrapper>
 
-              <span class="text-sm">{{ group.name }}</span>
+              <span class="text-sm">{{ record.name }}</span>
             </div>
           </template>
 
@@ -75,14 +75,14 @@ function handleDeleteGroup(group: TRecordGroup) {
               class="p-0"
               :delay="2000"
               :title="lang('Long press to delete')"
-              @press="() => handleDeleteGroup(group)"
+              @press="() => handleDeleteGroup(record)"
             >
               {{ lang('Delete') }}
             </ButtonLongPress>
           </template>
 
           <div class="flex justify-between items-center">
-            <span class="text-xl">{{ group.list.length }}</span>
+            <span>{{ record.list.length }}</span>
           </div>
         </Card>
       </ListItem>

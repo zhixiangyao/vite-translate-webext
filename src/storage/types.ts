@@ -1,4 +1,4 @@
-import type { EnumLang } from '~/i18n'
+import type { EnumLang, EnumLayout } from '~/constant/enum'
 
 export interface TCurrentTab {
   id?: number
@@ -36,6 +36,7 @@ export interface TSettings {
   }
   theme: {
     color: string
+    layout: EnumLayout
   }
   webdav: {
     url: string | undefined

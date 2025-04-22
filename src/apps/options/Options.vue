@@ -21,9 +21,9 @@ watch(
 
 <style>
 :root {
-  --dark-bg-color: #000;
+  --dark-bg-color: #181818;
   --dark-second-bg-color: #282828;
-  --light-bg-color: #f5f5f5;
+  --light-bg-color: #f0f0f0;
 }
 
 html {

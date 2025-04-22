@@ -1,5 +1,5 @@
 import type { TRecordGroup, TRecordWebsite, TRecordWord, TSettings } from '~/storage'
-import { EnumDataSet, EnumSpeakerLang } from './enum'
+import { EnumDataSet, EnumLayout, EnumSpeakerLang } from './enum'
 
 export const DEFAULT_GROUP_LIST: TRecordGroup[] = [
   {
@@ -36,7 +36,7 @@ export const DEFAULT_SETTINGS: TSettings = {
     timeout: 10_000,
   },
   highlight: {
-    style: `span[${EnumDataSet.highlightedWord}] { 
+    style: `span[${EnumDataSet.HIGHLIGHTED_WORD}] { 
       color: #e61a1a;
       /* To match the color of 'color' */
       -webkit-text-fill-color: #e61a1a; 
@@ -46,6 +46,7 @@ export const DEFAULT_SETTINGS: TSettings = {
   },
   theme: {
     color: '#A0D911',
+    layout: EnumLayout.LEFT,
   },
   webdav: {
     url: void 0,
@@ -56,8 +57,8 @@ export const DEFAULT_SETTINGS: TSettings = {
 }
 
 export const SPEAKER_LANG_MAP: Record<EnumSpeakerLang, string> = {
-  [EnumSpeakerLang.zh_CN]: '中',
-  [EnumSpeakerLang.zh_HK]: '粤',
-  [EnumSpeakerLang.en_US]: '美',
-  [EnumSpeakerLang.en_GB]: '英',
+  [EnumSpeakerLang.ZH_CN]: '中',
+  [EnumSpeakerLang.ZH_HK]: '粤',
+  [EnumSpeakerLang.EN_US]: '美',
+  [EnumSpeakerLang.EN_GB]: '英',
 }
