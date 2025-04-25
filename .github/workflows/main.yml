@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 授予对仓库内容的写入权限，用于创建 Release 和上传资产
 
     steps:
       - name: Checkout repository
