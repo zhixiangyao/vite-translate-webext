@@ -1,68 +1,39 @@
-# 工作流名称
-name: Build Vite React App
+name: Build Vite Vue App & Package Extension
 
-# 触发工作流的事件
 on:
-  # 当代码推送到 main 分支时触发
   push:
-    branches: [ main ] # 注意：如果你的主分支是 master，请修改为 master
-  # 当有 Pull Request 指向 main 分支时触发
+    branches: [ main ]
   pull_request:
-    branches: [ main ] # 注意：同上
+    branches: [ main ]
 
-# 定义一个或多个作业（Job）
 jobs:
-  # 作业 ID，可以自定义
   build:
-    # 指定运行作业的虚拟机环境
-    runs-on: ubuntu-latest # 使用最新的 Ubuntu Linux 环境
+    runs-on: ubuntu-latest
 
-    # 定义作业中的步骤
     steps:
-      # 第一步：检出（Checkout）代码
-      # 使用官方的 actions/checkout action 来获取仓库代码
       - name: Checkout repository
-        uses: actions/checkout@v4 # 建议使用明确的版本号
+        uses: actions/checkout@v4
 
-      # 第二步：设置 Node.js 环境
-      # 使用官方的 actions/setup-node action
       - name: Set up Node.js 22
-        uses: actions/setup-node@v4 # 建议使用明确的版本号
+        uses: actions/setup-node@v4
         with:
-          node-version: 22 # 指定 Node.js 版本为 22
-          cache: 'pnpm'    # 启用 pnpm 的依赖缓存，加速后续构建
+          node-version: 22
 
-      # 第三步：设置 pnpm 环境
-      # 使用 pnpm 官方的 action
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4 # 使用 pnpm 官方 action 的 v4 版本
-        with:
-          version: latest # 可以指定具体的 pnpm 版本，例如 '8' 或 '9'，或者使用最新版
+      - name: Install pnpm globally via npm
+        run: npm install -g pnp
 
-      # 第四步：安装依赖
-      # 运行 pnpm install 命令
-      # --frozen-lockfile 推荐在 CI 环境中使用，确保安装 pnpm-lock.yaml 中指定的精确版本
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 第五步：构建项目
-      # 运行 pnpm build 命令
       - name: Build project
         run: pnpm build
 
-      # 第六步：构建项目
-      # 运行 pnpm build 命令
-      - name: Pack project
+      - name: Create extension.zip
         run: pnpm pack:zip
 
-      # 第七步：上传构建产物 (Artifacts)
-      # 如果你需要保存构建后的文件（例如部署用）
-      - name: Upload build artifacts
+      - name: Upload Extension Artifact
         uses: actions/upload-artifact@v4
         with:
-          # 构建产物的名称，它会显示在 GitHub Actions 的运行结果页面
           name: extension-package
-          # 需要上传的文件路径。这里我们指定根目录下的 extension.zip
           path: extension.zip
-          # (可选) 如果找不到指定的文件，则让工作流失败
           if-no-files-found: error
