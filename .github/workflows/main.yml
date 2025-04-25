@@ -2,9 +2,7 @@ name: Build Vite Vue App & Package Extension
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags: [ v* ]
 
 jobs:
   build:
@@ -31,9 +29,21 @@ jobs:
       - name: Create extension.zip
         run: pnpm pack:zip
 
-      - name: Upload Extension Artifact
-        uses: actions/upload-artifact@v4
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/') # 仅在 push tag 时运行此步骤
         with:
-          name: extension-package
-          path: extension.zip
-          if-no-files-found: error
+          # assets 参数指定要上传到 Release 的文件，可以指定多个
+          files: extension.zip
+          # 这是 GitHub 提供的一个默认 token，具有创建 Release 的权限
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Release 的名称，默认为 tag 名称
+          name: ${{ github.ref_name }}
+          # (可选) Release 的描述，可以从 tag 的注释中获取
+          # body: ${{ github.event.release.body }}
+          # (可选) 是否生成自动 Release Notes
+          generate_release_notes: true
+          # (可选) 是否是草稿 Release
+          # draft: false
+          # (可选) 是否是预发布 Release
+          # prerelease: false
