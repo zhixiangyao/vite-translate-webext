@@ -4,7 +4,8 @@ export enum EnumDataSet {
 
 export enum EnumResponseCode {
   ERROR,
-  ABORT_ERROR,
+  ERROR_ABORT,
+  ERROR_SERVICE_UNAVAILABLE,
   SUCCESS,
 }
 

@@ -59,6 +59,9 @@
   "Add successfully!": "追加に成功しました！",
   "Edit successfully!": "編集に成功しました！",
   "Save successfully!": "保存に成功しました！",
+  "Unknown Error!": "未知のエラー！",
+  "Request Timeout!": "リクエストタイムアウト！",
+  "Service Unavailable!": "サービスが利用できません！",
 
   "Long press to delete": "長押しで削除",
   "Sure you want to Import?": "本当にインポートしたいですか？",
@@ -80,6 +83,7 @@
   "The last string must be /": "最後の文字は / である必要があります",
   "Oops!": "あらら！",
   "Oops! API interface exception! Please try again!": "あらら！APIインターフェースに異常があります。再試行してください！",
+  "Oops! API Service Unavailable! Please try again!": "あらら！APIサービスが利用できません！もう一度試してください！",
   "Oops! API request timed out! Please try again!": "あらら！APIリクエストがタイムアウトしました。再試行してください！",
   "Oops! Import failed, This file cannot be imported!": "あらら！インポートに失敗しました、このファイルはインポートできません！",
   "Oops! Import failed!": "あらら！インポートに失敗しました！",

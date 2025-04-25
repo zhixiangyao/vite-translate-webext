@@ -14,5 +14,6 @@ const lang = useLang()
 
 <template>
   <span v-if="code === EnumResponseCode.ERROR">{{ lang('Oops! API interface exception! Please try again!') }}</span>
-  <span v-if="code === EnumResponseCode.ABORT_ERROR">{{ lang('Oops! API request timed out! Please try again!') }}</span>
+  <span v-if="code === EnumResponseCode.ERROR_SERVICE_UNAVAILABLE">{{ lang('Oops! API Service Unavailable! Please try again!') }}</span>
+  <span v-if="code === EnumResponseCode.ERROR_ABORT">{{ lang('Oops! API request timed out! Please try again!') }}</span>
 </template>
