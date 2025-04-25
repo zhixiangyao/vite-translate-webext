@@ -19,20 +19,33 @@ export function register() {
       })
       clearTimeout(timeoutId)
 
-      if (response.status !== 200)
-        throw new Error('unknown')
+      if (response.status === 200) {
+        sendMessage(
+          'event-fetch-on',
+          { code: EnumResponseCode.SUCCESS, response: await response.json() },
+          { tabId, context },
+        ).catch()
+        return
+      }
 
-      sendMessage(
-        'event-fetch-on',
-        { code: EnumResponseCode.SUCCESS, response: await response.json() },
-        { tabId, context },
-      ).catch()
+      if (response.status === 503) {
+        sendMessage(
+          'event-fetch-on',
+          { code: EnumResponseCode.ERROR_SERVICE_UNAVAILABLE },
+          { tabId, context },
+        ).catch()
+        return
+      }
+
+      throw new Error('unknown')
     }
     catch (error) {
       clearTimeout(timeoutId)
+
       let code = EnumResponseCode.ERROR
+
       if (error instanceof Error && error.name === 'AbortError') {
-        code = EnumResponseCode.ABORT_ERROR
+        code = EnumResponseCode.ERROR_ABORT
       }
 
       sendMessage('event-fetch-on', { code }, { tabId, context }).catch()

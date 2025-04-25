@@ -59,6 +59,9 @@
   "Add successfully!": "Add successfully!",
   "Edit successfully!": "Edit successfully!",
   "Save successfully!": "Save successfully!",
+  "Unknown Error!": "Unknown Error!",
+  "Request Timeout!": "Request Timeout!",
+  "Service Unavailable!": "Service Unavailable!",
 
   "Long press to delete": "Long press to delete",
   "Sure you want to Import?": "Sure you want to Import?",
@@ -80,6 +83,7 @@
   "The last string must be /": "'The last string must be /'",
   "Oops!": "Oops!",
   "Oops! API interface exception! Please try again!": "Oops! API interface exception! Please try again!",
+  "Oops! API Service Unavailable! Please try again!": "Oops! API Service Unavailable! Please try again!",
   "Oops! API request timed out! Please try again!": "Oops! API request timed out! Please try again!",
   "Oops! Import failed, This file cannot be imported!": "Oops! Import failed, This file cannot be imported!",
   "Oops! Import failed!": "Oops! Import failed!",

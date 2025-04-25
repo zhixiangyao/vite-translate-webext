@@ -59,6 +59,9 @@
   "Add successfully!": "添加成功！",
   "Edit successfully!": "编辑成功！",
   "Save successfully!": "保存成功！",
+  "Unknown Error!": "未知错误！",
+  "Request Timeout!": "请求超时！",
+  "Service Unavailable!": "服务不可用！",
 
   "Long press to delete": "长按删除",
   "Sure you want to Import?": "您确定要导入吗？",
@@ -80,6 +83,7 @@
   "The last string must be /": "最后一个字符串必须是 /",
   "Oops!": "哎呀！",
   "Oops! API interface exception! Please try again!": "哎呀！API接口异常！请重试！",
+  "Oops! API Service Unavailable! Please try again!": "哎呀！API服务不可用！请重试！",
   "Oops! API request timed out! Please try again!": "哎呀！API请求超时！请重试！",
   "Oops! Import failed, This file cannot be imported!": "哎呀！导入失败，此文件无法导入！",
   "Oops! Import failed!": "哎呀！导入失败！",
