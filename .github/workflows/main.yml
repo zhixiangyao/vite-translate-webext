@@ -2,7 +2,7 @@ name: Build Vite Vue App & Package Extension
 
 on:
   push:
-    tags: [ v* ]
+    tags: [v*]
 
 jobs:
   build:
