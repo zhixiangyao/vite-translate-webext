@@ -25,7 +25,7 @@ function init(root: Props['root']) {
   shadowRoot.appendChild(styleEl)
   shadowRoot.appendChild(content)
 
-  const app = createApp(h(Content, { root }))
+  const app = createApp(h(Content, { root, alwaysShow: true }))
 
   app.use(i18n)
   app.mount(content)
