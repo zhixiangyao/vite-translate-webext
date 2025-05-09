@@ -25,7 +25,8 @@ function createRoot(target: HTMLElement) {
   return root
 }
 
+const root = createRoot(document.querySelector('html')!)
 const app = createApp(App)
 
 app.use(i18n)
-app.mount(createRoot(document.querySelector('html')!))
+app.mount(root)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TRecordWebsite } from '~/storage'
 import { useLang } from '~/composables/useLang'
-import { storageWebsiteList } from '~/storage'
+import { storageSettings, storageWebsiteList } from '~/storage'
 
 defineOptions({ name: 'MenuList' })
 
@@ -25,6 +25,10 @@ async function handleOpenSettings() {
   const optionsUrl = `${browser.runtime.getURL('/dist/options/index.html#/settings')}`
 
   await browser.tabs.create({ url: optionsUrl })
+}
+
+function handleGlobalEnable() {
+  storageSettings.value.globalEnable = !storageSettings.value.globalEnable
 }
 
 function handleEnable() {
@@ -71,7 +75,17 @@ onMounted(updateKey)
   </WButton>
 
   <WButton
-    v-if="host"
+    dark
+    align="left"
+    class="w-full global-enable"
+    :class="{ activity: storageSettings.globalEnable }"
+    @click="handleGlobalEnable"
+  >
+    {{ lang('Global Enable') }}
+  </WButton>
+
+  <WButton
+    v-if="host && storageSettings.globalEnable"
     dark
     align="left"
     class="w-full enabled"
@@ -83,6 +97,7 @@ onMounted(updateKey)
 </template>
 
 <style scoped>
+button.global-enable,
 button.enabled {
   position: relative;
 

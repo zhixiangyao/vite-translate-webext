@@ -26,6 +26,7 @@ export interface TCacheMap {
 
 export interface TSettings {
   lang: EnumLang | 'auto'
+  globalEnable: boolean
   api: {
     url: string
     token: string
